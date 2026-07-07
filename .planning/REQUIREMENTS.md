@@ -9,10 +9,10 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 ### Foundation & Deploy
 
-- [ ] **FND-01**: App boots from the official `fhevm-react-template` (Next.js App Router, wagmi/viem, RainbowKit) pinned to `@zama-fhe/sdk`/`@zama-fhe/react-sdk` ^3.2.0
+- [x] **FND-01**: App boots from the official `fhevm-react-template` (Next.js App Router, wagmi/viem, RainbowKit) pinned to `@zama-fhe/sdk`/`@zama-fhe/react-sdk` ^3.2.0
 - [ ] **FND-02**: User can connect an injected wallet (MetaMask) and the app detects/prompts a switch to Sepolia (chain-id guard)
-- [ ] **FND-03**: FHE SDK is initialized client-only (`initSDK()` → `createInstance`/`ZamaProvider`) behind a memoized provider — no SSR/module-scope init
-- [ ] **FND-04**: A publicly accessible live deployment exists where `crossOriginIsolated === true` (COOP/COEP headers set) — verified on the real URL, not localhost
+- [x] **FND-03**: FHE SDK is initialized client-only (`initSDK()` → `createInstance`/`ZamaProvider`) behind a memoized provider — no SSR/module-scope init
+- [x] **FND-04**: A publicly accessible live deployment exists where `crossOriginIsolated === true` (COOP/COEP headers set) — verified on the real URL, not localhost
 
 ### Registry Browse
 
@@ -82,53 +82,54 @@ Deferred — acknowledged but not in the current roadmap.
 
 Explicitly excluded to prevent scope creep.
 
-| Feature | Reason |
-|---------|--------|
-| Mainnet write operations | Judging is on Sepolia; mainnet registry is read-only reference |
-| Custom ERC-7984 token deployment UI | Registry + faucet cover token supply for the demo |
-| AI-generated pitch video / voice | Bounty explicitly forbids it — real-person pitch only |
-| Custom onchain indexer / backend | App is client-only; onchain is the source of record |
+| Feature                             | Reason                                                         |
+| ----------------------------------- | -------------------------------------------------------------- |
+| Mainnet write operations            | Judging is on Sepolia; mainnet registry is read-only reference |
+| Custom ERC-7984 token deployment UI | Registry + faucet cover token supply for the demo              |
+| AI-generated pitch video / voice    | Bounty explicitly forbids it — real-person pitch only          |
+| Custom onchain indexer / backend    | App is client-only; onchain is the source of record            |
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| FND-01 | Phase 1 | Pending |
-| FND-02 | Phase 1 | Pending |
-| FND-03 | Phase 1 | Pending |
-| FND-04 | Phase 1 | Pending |
-| REG-01 | Phase 2 | Pending |
-| REG-02 | Phase 2 | Pending |
-| REG-03 | Phase 2 | Pending |
-| REG-04 | Phase 2 | Pending |
-| REG-05 | Phase 2 | Pending |
-| REG-06 | Phase 2 | Pending |
-| REG-07 | Phase 2 | Pending |
-| DEC-01 | Phase 3 | Pending |
-| DEC-02 | Phase 3 | Pending |
-| DEC-03 | Phase 3 | Pending |
-| DEC-04 | Phase 3 | Pending |
-| FCT-01 | Phase 4 | Pending |
-| FCT-02 | Phase 4 | Pending |
-| WRP-01 | Phase 4 | Pending |
-| WRP-02 | Phase 4 | Pending |
-| UNW-01 | Phase 5 | Pending |
-| UNW-02 | Phase 5 | Pending |
-| UX-01 | Phase 6 | Pending |
-| UX-02 | Phase 6 | Pending |
-| UX-03 | Phase 6 | Pending |
-| DIF-01 | Phase 7 | Pending |
-| DIF-02 | Phase 7 | Pending |
-| DIF-03 | Phase 7 | Pending |
-| DIF-04 | Phase 7 | Pending |
-| DIF-05 | Phase 7 | Pending |
-| SUB-01 | Phase 7 | Pending |
-| SUB-02 | Phase 7 | Pending |
-| SUB-03 | Phase 1 | Pending |
-| SUB-04 | Phase 7 | Pending |
-| SUB-05 | Phase 7 | Pending |
+| Requirement | Phase   | Status   |
+| ----------- | ------- | -------- |
+| FND-01      | Phase 1 | Complete |
+| FND-02      | Phase 1 | Pending  |
+| FND-03      | Phase 1 | Complete |
+| FND-04      | Phase 1 | Complete |
+| REG-01      | Phase 2 | Pending  |
+| REG-02      | Phase 2 | Pending  |
+| REG-03      | Phase 2 | Pending  |
+| REG-04      | Phase 2 | Pending  |
+| REG-05      | Phase 2 | Pending  |
+| REG-06      | Phase 2 | Pending  |
+| REG-07      | Phase 2 | Pending  |
+| DEC-01      | Phase 3 | Pending  |
+| DEC-02      | Phase 3 | Pending  |
+| DEC-03      | Phase 3 | Pending  |
+| DEC-04      | Phase 3 | Pending  |
+| FCT-01      | Phase 4 | Pending  |
+| FCT-02      | Phase 4 | Pending  |
+| WRP-01      | Phase 4 | Pending  |
+| WRP-02      | Phase 4 | Pending  |
+| UNW-01      | Phase 5 | Pending  |
+| UNW-02      | Phase 5 | Pending  |
+| UX-01       | Phase 6 | Pending  |
+| UX-02       | Phase 6 | Pending  |
+| UX-03       | Phase 6 | Pending  |
+| DIF-01      | Phase 7 | Pending  |
+| DIF-02      | Phase 7 | Pending  |
+| DIF-03      | Phase 7 | Pending  |
+| DIF-04      | Phase 7 | Pending  |
+| DIF-05      | Phase 7 | Pending  |
+| SUB-01      | Phase 7 | Pending  |
+| SUB-02      | Phase 7 | Pending  |
+| SUB-03      | Phase 1 | Pending  |
+| SUB-04      | Phase 7 | Pending  |
+| SUB-05      | Phase 7 | Pending  |
 
 **Coverage:**
+
 - v1 requirements: 34 total
 - Mapped to phases: 34
 - Unmapped: 0 ✓
@@ -136,5 +137,6 @@ Explicitly excluded to prevent scope creep.
 > Note: an earlier coverage summary stated "33 total" — recounted at roadmap creation, the distinct v1 requirement IDs number 34 (FND×4, REG×7, DEC×4, FCT×2, WRP×2, UNW×2, UX×3, DIF×5, SUB×5). All 34 are mapped to exactly one phase; the corrected count is 34/34.
 
 ---
-*Requirements defined: 2026-07-07*
-*Last updated: 2026-07-07 after roadmap creation (traceability confirmed, coverage recount 33 → 34)*
+
+_Requirements defined: 2026-07-07_
+_Last updated: 2026-07-07 after roadmap creation (traceability confirmed, coverage recount 33 → 34)_
