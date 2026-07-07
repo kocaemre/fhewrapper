@@ -7,12 +7,20 @@ import { useState } from "react";
  *
  * Self-hosted `/01-hero.png` engraving (same-origin — COEP `require-corp`,
  * T-02-05) with the overlay copy transcribed verbatim from the .dc.html. 2px
- * `--line` border + hard `--shadow` on hover. Overlay padding `5% 52% 5% 6.5%`.
- * `pairCount` is bound by the caller to the live valid-pair count.
+ * `--line` border + hard `--shadow` on hover. `pairCount` is bound by the caller
+ * to the live valid-pair count.
  *
  * The overlay text colors are FIXED to the engraving palette (dark ink over the
  * always-light hero art) per the source — they intentionally do not follow the
- * cellar theme, so the copy stays legible over the illustration.
+ * cellar theme. Because the engraving's left half is dark, a cream `.hero-scrim`
+ * (matching the #EFE6CC hero ground) is laid behind the copy to restore contrast
+ * without re-tinting the type or hiding the art (see globals.css).
+ *
+ * ANTI-CLIP: the image, scrim and copy are stacked in a single CSS-grid cell
+ * (`gridArea:1/1`). The grid row height is `max(imageHeight, copyHeight)`, so on
+ * narrow screens where the copy is taller than the art the row grows to fit and
+ * the image (`object-fit:cover`, stretched) fills it — the heading's top line is
+ * never clipped, unlike the previous `overflow:hidden` + centered-absolute copy.
  */
 export function RegistryHero({ pairCount }: { pairCount: number }) {
   const [hover, setHover] = useState(false);
@@ -22,6 +30,7 @@ export function RegistryHero({ pairCount }: { pairCount: number }) {
       onMouseLeave={() => setHover(false)}
       style={{
         position: "relative",
+        display: "grid",
         border: "2px solid var(--line)",
         marginBottom: 34,
         boxShadow: hover ? "var(--shadow)" : "none",
@@ -35,17 +44,29 @@ export function RegistryHero({ pairCount }: { pairCount: number }) {
       <img
         src="/01-hero.png"
         alt="Engraved illustration of a stone cellar with bottles aging on wooden racks"
-        style={{ display: "block", width: "100%", height: "auto", minHeight: 340, objectFit: "cover" }}
-      />
-      <div
         style={{
-          position: "absolute",
-          inset: 0,
+          gridArea: "1 / 1",
+          display: "block",
+          width: "100%",
+          height: "auto",
+          minHeight: 340,
+          objectFit: "cover",
+        }}
+      />
+      {/* Cream legibility scrim (see .hero-scrim) — decorative, above the art, below the copy. */}
+      <div aria-hidden="true" className="hero-scrim" style={{ gridArea: "1 / 1", pointerEvents: "none" }} />
+      <div
+        className="hero-overlay"
+        style={{
+          gridArea: "1 / 1",
+          position: "relative",
+          alignSelf: "center",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          padding: "5% 52% 5% 6.5%",
           boxSizing: "border-box",
+          // Subtle cream halo keeps the dark ink crisp where the scrim thins out.
+          textShadow: "0 1px 2px rgba(244, 238, 220, 0.6)",
         }}
       >
         <div
