@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: Registry Browse
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-07-07T16:14:00.000Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-07-07T16:39:19.963Z"
 last_activity: 2026-07-07
 last_activity_desc: Completed 02-01 registry data engine + minimal live render
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 7
-  completed_plans: 4
+  completed_plans: 5
   percent: 14
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 2 — Registry Browse
-Plan: 02-01 complete (1 of 4) — next: 02-02 (Cellar UI + icons)
+Plan: 3-01 complete (1 of 4) — next: 02-02 (Cellar UI + icons)
 Status: Executing — data engine + minimal live render shipped
 Last activity: 2026-07-07 — Completed 02-01 registry data engine + minimal live render
 
@@ -59,6 +59,7 @@ _Updated after each plan completion_
 | Phase 01 P02 | 2min | 2 tasks | 2 files |
 | Phase 01 P03 | 40min | 2 tasks | 8 files |
 | Phase 02 P01 | 11min | 3 tasks | 15 files |
+| Phase 02 P02 | 19min | 3 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -76,6 +77,8 @@ Recent decisions affecting current work:
 - [Phase ?]: crossOriginIsolated read post-mount (useEffect) to show live value without SSR hydration mismatch (01-02)
 - [02-01]: vitest + @vitest/coverage-v8 pinned EXACT 4.1.10 (human-approved legitimacy) — corrected from plan's 3.2.x; no template constraint on the test runner.
 - [02-01]: Registry data engine = useReadContract (enumerate) -> useReadContracts multicall (enrich, allowFailure) -> regroupMeta -> mergePairs(localPairs); multicall mandatory (keyless public RPC rate-limits). Render full onchain array (9 live pairs), never hardcode 7.
+- [Phase 02]: 02-02: Fonts via next/font (self-hosted) not a cross-origin Google Fonts <link> — COEP require-corp would block the CDN (T-02-05)
+- [Phase 02]: 02-02: next-themes value-map light->parchment / dark->cellar keeps RainbowKit resolvedTheme keys intact (layout.tsx only)
 
 ### Pending Todos
 
@@ -103,6 +106,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-07T16:14:00.000Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-07-07T16:39:19.957Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

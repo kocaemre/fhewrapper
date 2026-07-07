@@ -55,10 +55,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. Each pair card shows both-network addresses, symbol / name / decimals, and a valid/revoked badge.
 4. A pair added to `registry/pairs.config.ts` appears in the UI, deduped by confidential-token address (onchain wins on conflict), and the README documents the add-a-pair flow with a concrete example.
 
-**Plans**: 1/4 plans executed
+**Plans**: 2/4 plans executed
 
 - [x] 02-01-PLAN.md — Tested data engine: onchain registry read + multicall metadata + hybrid merge + minimal live render (Wave 1)
-- [ ] 02-02-PLAN.md — Cellar Registry look: fonts/themes, self-hosted optimized icons, full engraving pair cards + hero (Wave 2)
+- [x] 02-02-PLAN.md — Cellar Registry look: fonts/themes, self-hosted optimized icons, full engraving pair cards + hero (Wave 2)
 - [ ] 02-04-PLAN.md — README add-a-pair (hybrid config, onchain-wins) (Wave 2)
 - [ ] 02-03-PLAN.md — Search + valid/revoked filter, loading/empty/error states, visual sign-off (Wave 3)
 
@@ -148,7 +148,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase                              | Plans Complete | Status      | Completed |
 | ---------------------------------- | -------------- | ----------- | --------- |
 | 1. Foundation + Deploy Spike       | 3/3 | Complete    | 2026-07-07 |
-| 2. Registry Browse                 | 1/4 | In Progress|  |
+| 2. Registry Browse                 | 2/4 | In Progress|  |
 | 3. User-Decryption (EIP-712)       | 0/TBD          | Not started | -         |
 | 4. Faucet + Wrap                   | 0/TBD          | Not started | -         |
 | 5. Unwrap (async finalize)         | 0/TBD          | Not started | -         |
