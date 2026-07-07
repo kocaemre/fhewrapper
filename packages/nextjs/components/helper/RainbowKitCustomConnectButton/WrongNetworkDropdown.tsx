@@ -7,7 +7,19 @@ export const WrongNetworkDropdown = () => {
 
   return (
     <div className="dropdown dropdown-end mr-2">
-      <label tabIndex={0} className="btn btn-error btn-sm dropdown-toggle gap-1">
+      <label
+        tabIndex={0}
+        // Cellar Registry wrong-network chip: red-outline treatment (matches the
+        // design's "Switch to Sepolia" CTA) with soft rounded corners.
+        className="btn btn-sm dropdown-toggle gap-1 cursor-pointer font-bold transition-colors"
+        style={{
+          border: "2px solid var(--red)",
+          background: "transparent",
+          color: "var(--red)",
+          borderRadius: "9px",
+          boxShadow: "none",
+        }}
+      >
         <span>Wrong network</span>
         <ChevronDownIcon className="h-6 w-4 ml-2 sm:ml-0" />
       </label>

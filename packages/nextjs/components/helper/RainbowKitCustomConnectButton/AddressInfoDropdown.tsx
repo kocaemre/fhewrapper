@@ -34,7 +34,18 @@ export const AddressInfoDropdown = ({ address, ensAvatar, displayName }: Address
   return (
     <>
       <details ref={dropdownRef} className="dropdown dropdown-end leading-3">
-        <summary className="btn btn-secondary btn-sm pl-0 pr-2 shadow-md dropdown-toggle gap-0 h-auto!">
+        <summary
+          // Cellar Registry address pill: parchment/panel fill with an ink label
+          // + soft rounded corners (matches the design's connected-state chip).
+          className="btn btn-sm pl-0 pr-2 dropdown-toggle gap-0 h-auto! cursor-pointer transition-colors"
+          style={{
+            border: "1.5px solid var(--line)",
+            background: "var(--panel)",
+            color: "var(--ink)",
+            borderRadius: "9px",
+            boxShadow: "var(--shadow)",
+          }}
+        >
           <BlockieAvatar address={checkSumAddress} size={30} ensImage={ensAvatar} />
           <span className="ml-2 mr-1">{displayName}</span>
           <ChevronDownIcon className="h-6 w-4 ml-2 sm:ml-0" />

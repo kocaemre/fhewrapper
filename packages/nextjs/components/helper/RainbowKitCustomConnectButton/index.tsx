@@ -29,7 +29,20 @@ export const RainbowKitCustomConnectButton = () => {
               if (!connected) {
                 return (
                   <button
-                    className="btn btn-md rounded-none bg-[#FFD208] text-gray-900 cursor-pointer border-none"
+                    // Cellar Registry primary CTA: the `--block` inverse fill (dark ink /
+                    // cream label in parchment; cream / dark label in cellar) from the
+                    // design (.dc.html connect button), with a soft rounded radius.
+                    className="cursor-pointer font-semibold transition-transform hover:-translate-x-px hover:-translate-y-px"
+                    style={{
+                      border: "2px solid var(--line)",
+                      background: "var(--block)",
+                      color: "var(--block-fg)",
+                      padding: "10px 20px",
+                      borderRadius: "9px",
+                      fontFamily: "var(--font-gelasio), Georgia, serif",
+                      fontSize: "15px",
+                      boxShadow: "var(--shadow)",
+                    }}
                     onClick={openConnectModal}
                     type="button"
                   >
@@ -44,9 +57,9 @@ export const RainbowKitCustomConnectButton = () => {
 
               return (
                 <>
-                  <div className="flex flex-col items-center mr-1 text-gray-900">
+                  <div className="flex flex-col items-center mr-1 text-[color:var(--ink)]">
                     <Balance address={account.address as Address} className="min-h-0 h-auto" />
-                    <span className="text-xs text-gray-900">{chain.name}</span>
+                    <span className="text-xs text-[color:var(--muted)]">{chain.name}</span>
                   </div>
                   <AddressInfoDropdown
                     address={account.address as Address}
