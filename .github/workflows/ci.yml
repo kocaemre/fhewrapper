@@ -19,22 +19,24 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Install Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
+          cache: npm
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: stable
 
-      - name: pnpm install
-        run: pnpm install --frozen-lockfile
+      - name: npm install
+        # Root install runs the workspace postinstall (scripts/generateTsAbis.ts),
+        # which regenerates the gitignored contracts/FHECounter.local.ts stub that
+        # the frontend build imports. --legacy-peer-deps: next-themes@0.3.0
+        # peer-declares react ^16-18 while the template runs React 19 (matches the
+        # local install decision from 01-01).
+        run: npm ci --legacy-peer-deps
 
       # dependencies/ is gitignored; soldeer resolves deps from foundry.toml.
       - name: Install contract deps
@@ -50,21 +52,24 @@ jobs:
         run: forge test -vv
 
       - name: frontend typecheck
-        run: pnpm --filter ./packages/nextjs check-types
+        working-directory: packages/nextjs
+        run: npm run check-types
 
       - name: frontend lint
-        run: pnpm --filter ./packages/nextjs lint
+        working-directory: packages/nextjs
+        run: npm run lint
 
       - name: frontend build
+        working-directory: packages/nextjs
         env:
           # scaffold.config.ts throws in production if this is unset. CI only
           # exercises the build pipeline — a stub is enough since no RPC call
           # actually happens during `next build`.
           NEXT_PUBLIC_ALCHEMY_API_KEY: ci-stub
-        run: pnpm --filter ./packages/nextjs build
+        run: npm run build
 
       - name: prettier check
-        run: pnpm exec prettier --check .
+        run: npx prettier --check .
 
   gitleaks:
     name: gitleaks

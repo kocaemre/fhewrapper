@@ -6,8 +6,11 @@
 **/build/
 **/*.tsbuildinfo
 
-# lockfiles — let pnpm own the format
-pnpm-lock.yaml
+# lockfiles — npm owns package-lock.json; prettier leaves it alone by default
+package-lock.json
+
+# GSD planning artifacts — docs/notes managed by the GSD workflow, not app source
+.planning/
 
 # foundry
 packages/foundry/lib/
