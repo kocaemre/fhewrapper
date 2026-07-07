@@ -12,8 +12,8 @@ export function PairGrid({ pairs }: { pairs: RegistryPair[] }) {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-        gap: 16,
+        gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+        gap: 18,
         width: "100%",
       }}
     >

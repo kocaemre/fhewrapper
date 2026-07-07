@@ -1,44 +1,185 @@
+"use client";
+
+import { useState } from "react";
+import { AddressCopyButton } from "./AddressCopyButton";
+import { PairBadge } from "./PairBadge";
+import { TokenIcon } from "./TokenIcon";
+import { normalizeSymbol } from "~~/lib/tokenSymbol";
 import type { RegistryPair } from "~~/registry/types";
 
 /**
- * Minimal PairCard (REG-06) — REAL onchain data only, no theme/icons/search.
- * The full Cellar-engraving card (icons, copy affordance, parchment/cellar
- * themes) lands in 02-02; this proves both-side metadata + addresses + status.
+ * Full Cellar-engraving pair card (02-UI-SPEC PairCard) — REG-06.
  *
- * Onchain `name`/`symbol` are untrusted display strings rendered through normal
- * JSX (React escaping) — never dangerouslySetInnerHTML (T-02-01).
+ * Sections top→bottom:
+ *   1. TokenIcon (46px) + `cSymbol ⇄ symbol` + italic name + valid/revoked badge
+ *   2. dashed divider → ERC-20 copy row + ERC-7984 (blue) copy row
+ *   3. dashed divider → decimals + Wrap CTA
+ *
+ * Revoked pairs render at opacity 0.6 with a disabled `Unavailable` CTA. The
+ * `Wrap →` CTA is INERT this phase (wrap ships Phase 4) but stays visible per
+ * the locked design. Each side's own decimals are shown separately (Pitfall 4).
+ *
+ * Onchain `name`/`symbol` are untrusted strings rendered through React/JSX
+ * escaping only — never dangerouslySetInnerHTML (T-02-01).
  */
 export function PairCard({ pair }: { pair: RegistryPair }) {
   const { underlying, confidential, isValid } = pair;
+  const [hover, setHover] = useState(false);
+
+  const cSymbol = normalizeSymbol(confidential.symbol);
+  const symbol = normalizeSymbol(underlying.symbol);
+  const dec = (m: RegistryPair["underlying"]) => (m.decimalsKnown ? String(m.decimals) : "?");
+  const decimalsDiffer =
+    confidential.decimals !== underlying.decimals || confidential.decimalsKnown !== underlying.decimalsKnown;
+
   return (
-    <div
+    <article
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       style={{
-        border: "1px solid #999",
-        borderRadius: 8,
-        padding: 16,
+        border: "2px solid var(--line)",
+        background: "var(--panel)",
+        padding: 20,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
         opacity: isValid ? 1 : 0.6,
-        fontFamily: "monospace",
-        fontSize: 13,
-        lineHeight: 1.6,
-        wordBreak: "break-all",
+        transform: isValid && hover ? "translate(-2px,-2px)" : "none",
+        boxShadow: isValid && hover ? "var(--shadow)" : "none",
+        transition: "transform 0.12s, box-shadow 0.12s",
         textAlign: "left",
       }}
     >
-      <div style={{ fontSize: 16, fontWeight: 700 }}>
-        {confidential.symbol} <span style={{ opacity: 0.6 }}>←</span> {underlying.symbol}
+      {/* Section 1 — identity */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <TokenIcon confidentialSymbol={confidential.symbol} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+            <span style={{ fontWeight: 700, fontSize: 17 }}>{cSymbol}</span>
+            <span style={{ color: "var(--faint)", fontSize: 13, fontFamily: "var(--font-jetbrains-mono), monospace" }}>
+              ⇄ {symbol}
+            </span>
+          </div>
+          <div
+            style={{
+              color: "var(--muted)",
+              fontSize: 13.5,
+              fontStyle: "italic",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {confidential.name}
+          </div>
+        </div>
+        <PairBadge isValid={isValid} />
       </div>
-      <div style={{ opacity: 0.8 }}>{confidential.name}</div>
-      <div>
-        <strong>{isValid ? "✓ Valid" : "✕ Revoked"}</strong>
-        {pair.source === "local" ? " · local" : ""}
+
+      {/* Section 2 — both-network addresses (copyable) */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 7,
+          borderTop: "1px dashed var(--line-soft)",
+          paddingTop: 12,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span
+            style={{
+              width: 86,
+              flex: "none",
+              fontFamily: "var(--font-jetbrains-mono), monospace",
+              fontSize: 10.5,
+              color: "var(--muted)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
+          >
+            ERC-20
+          </span>
+          <AddressCopyButton address={underlying.address} standard="ERC-20" symbol={symbol} />
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span
+            style={{
+              width: 86,
+              flex: "none",
+              fontFamily: "var(--font-jetbrains-mono), monospace",
+              fontSize: 10.5,
+              color: "var(--blue)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
+          >
+            ERC-7984 ◈
+          </span>
+          <AddressCopyButton address={confidential.address} standard="ERC-7984" symbol={cSymbol} />
+        </div>
       </div>
-      <hr style={{ margin: "8px 0", opacity: 0.3 }} />
-      <div>
-        ERC-7984: {confidential.address} · {confidential.decimalsKnown ? `${confidential.decimals} dp` : "? dp"}
+
+      {/* Section 3 — decimals + Wrap CTA */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          borderTop: "1px dashed var(--line-soft)",
+          paddingTop: 13,
+        }}
+      >
+        <span style={{ fontSize: 13, color: "var(--muted)", fontStyle: "italic" }}>
+          decimals{" "}
+          <span
+            style={{
+              fontFamily: "var(--font-jetbrains-mono), monospace",
+              fontStyle: "normal",
+              color: "var(--ink)",
+              fontWeight: 600,
+            }}
+          >
+            {dec(confidential)}
+          </span>
+          {decimalsDiffer && (
+            <span style={{ color: "var(--faint)" }}>
+              {" "}
+              · ERC-20{" "}
+              <span
+                style={{
+                  fontFamily: "var(--font-jetbrains-mono), monospace",
+                  fontStyle: "normal",
+                  color: "var(--ink)",
+                  fontWeight: 600,
+                }}
+              >
+                {dec(underlying)}
+              </span>
+            </span>
+          )}
+        </span>
+        <div style={{ flex: 1 }} />
+        <button
+          type="button"
+          disabled={!isValid}
+          aria-disabled={!isValid}
+          // Inert this phase — wrap ships Phase 4. CTA stays visible per the locked design.
+          onClick={undefined}
+          style={{
+            border: `2px solid ${isValid ? "var(--line)" : "var(--line-soft)"}`,
+            background: isValid ? "var(--block)" : "transparent",
+            color: isValid ? "var(--block-fg)" : "var(--faint)",
+            padding: "8px 18px",
+            fontWeight: 600,
+            fontSize: 14,
+            fontFamily: "var(--font-gelasio), Georgia, serif",
+            cursor: isValid ? "pointer" : "not-allowed",
+          }}
+        >
+          {isValid ? "Wrap →" : "Unavailable"}
+        </button>
       </div>
-      <div>
-        ERC-20: {underlying.address} · {underlying.decimalsKnown ? `${underlying.decimals} dp` : "? dp"}
-      </div>
-    </div>
+    </article>
   );
 }

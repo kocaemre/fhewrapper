@@ -2,62 +2,88 @@
 
 import { ChainGuard } from "~~/components/ChainGuard";
 import { PairGrid } from "~~/components/registry/PairGrid";
+import { RegistryHero } from "~~/components/registry/RegistryHero";
 import { useRegistryPairs } from "~~/hooks/useRegistryPairs";
 
 /**
- * Registry browse — minimal live render (02-01).
+ * Registry browse — Cellar Registry engraving UI (02-02).
  *
  * The client-only FHE provider tree (app/layout.tsx -> DappWrapperWithProviders)
  * and `ChainGuard` (connect + Sepolia gate) are inherited from Phase 1, untouched.
  * `RegistryBody` mounts only once ChainGuard passes, so `useRegistryPairs` runs
- * under a connected Sepolia wallet. This proves the registry read + multicall +
- * merge end-to-end with real data — the full Cellar UI (icons, search, themes)
- * lands in 02-02/02-03.
+ * under a connected Sepolia wallet.
+ *
+ * This plan dresses the working 02-01 slice in the locked engraving design:
+ * hero banner + full PairCard grid. Search/filter + skeleton/error polish land
+ * in 02-03; loading/error keep a minimal engraving-styled fallback here.
  */
 function RegistryBody() {
   const { pairs, validCount, isLoading, isError, refetch } = useRegistryPairs();
 
-  if (isLoading) {
-    return <div>Loading registry pairs…</div>;
-  }
-
-  if (isError) {
-    return (
-      <div className="flex flex-col gap-2 items-center">
-        <div>Failed to read the registry.</div>
-        <button className="btn btn-sm" onClick={() => refetch()}>
-          Retry
-        </button>
-      </div>
-    );
-  }
-
-  if (pairs.length === 0) {
-    return <div>No wrapper pairs found in the registry.</div>;
-  }
-
   return (
-    <div className="flex flex-col gap-4 w-full">
-      <div className="text-sm opacity-70">
-        {pairs.length} pair{pairs.length === 1 ? "" : "s"} · {validCount} valid
-      </div>
-      <PairGrid pairs={pairs} />
-    </div>
+    <>
+      <RegistryHero pairCount={validCount} />
+
+      {isLoading && (
+        <div style={{ textAlign: "center", color: "var(--muted)", padding: "60px 0", fontStyle: "italic" }}>
+          Reading the ledger…
+        </div>
+      )}
+
+      {isError && (
+        <div
+          role="alert"
+          style={{
+            display: "flex",
+            gap: 14,
+            alignItems: "center",
+            border: "2px solid var(--red)",
+            background: "var(--red-dim)",
+            padding: "14px 18px",
+            fontSize: 14.5,
+          }}
+        >
+          <span>
+            <strong>The ledger could not be read.</strong> The Sepolia registry didn&apos;t respond — usually a
+            public-RPC hiccup.
+          </span>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            style={{
+              marginLeft: "auto",
+              border: "2px solid var(--red)",
+              background: "transparent",
+              color: "var(--red)",
+              padding: "7px 16px",
+              fontWeight: 700,
+              fontSize: 13,
+              fontFamily: "var(--font-gelasio), Georgia, serif",
+              cursor: "pointer",
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
+      {!isLoading && !isError && pairs.length === 0 && (
+        <div style={{ textAlign: "center", color: "var(--muted)", padding: "60px 0", fontStyle: "italic" }}>
+          No wrapper pairs are listed on the registry yet.
+        </div>
+      )}
+
+      {!isLoading && !isError && pairs.length > 0 && <PairGrid pairs={pairs} />}
+    </>
   );
 }
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-8 items-center w-full px-3 md:px-0">
-      <div className="max-w-6xl w-full mx-auto p-6">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold mb-2">Confidential Wrapper Registry</h1>
-          <p className="text-gray-600">Official ERC-20 ↔ ERC-7984 wrapper pairs on Sepolia</p>
-        </div>
-        <ChainGuard>
-          <RegistryBody />
-        </ChainGuard>
-      </div>
-    </div>
+    <main style={{ position: "relative", maxWidth: 1180, margin: "0 auto", padding: "40px 30px 120px", width: "100%" }}>
+      <ChainGuard>
+        <RegistryBody />
+      </ChainGuard>
+    </main>
   );
 }
