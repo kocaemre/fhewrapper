@@ -32,7 +32,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. A judge can connect MetaMask; if the wallet is not on Sepolia the app prompts a network switch and disables actions until `chainId === 11155111`.
   3. `next build` completes clean and the deployed route renders without a 500 — the FHE SDK initializes client-only via a single memoized provider (no module-scope / SSR init).
   4. `package.json` pins `@zama-fhe/sdk` / `@zama-fhe/react-sdk` at an exact 3.2.0 version (no `^`), and a fresh `npm ci` + redeploy still boots the app.
-**Plans**: TBD
+**Plans**: 3 plans
+- [ ] 01-01-PLAN.md — Scaffold from fhevm-react-template + exact-pin 3.2.0 + COOP/COEP headers (Wave 1)
+- [ ] 01-02-PLAN.md — Runtime-ready shell + Sepolia chain guard (Wave 2)
+- [ ] 01-03-PLAN.md — Live Vercel deploy + on-URL isolation/wallet verification (Wave 3)
 
 ### Phase 2: Registry Browse
 **Goal**: Every official ERC-20 ↔ ERC-7984 wrapper pair is discoverable, sourced from the onchain Sepolia registry with real token metadata — delivered with no FHE/WASM dependency so it de-risks Coverage immediately.
@@ -115,7 +118,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Deploy Spike | 0/TBD | Not started | - |
+| 1. Foundation + Deploy Spike | 0/3 | Planned | - |
 | 2. Registry Browse | 0/TBD | Not started | - |
 | 3. User-Decryption (EIP-712) | 0/TBD | Not started | - |
 | 4. Faucet + Wrap | 0/TBD | Not started | - |
