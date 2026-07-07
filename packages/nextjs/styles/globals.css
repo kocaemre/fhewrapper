@@ -243,6 +243,37 @@
   }
 }
 
+/* Decrypt blur->reveal (03-UI-SPEC). Idle/in-flight ciphertext breathes under
+   inkPulse behind a 9px blur; the revealed number eases in from blur. Blur is
+   functional (it conveys "encrypted"), so reduced motion keeps the blur but
+   drops the animation and shows the revealed value without motion. */
+.cipher-blur {
+  filter: blur(9px);
+  user-select: none;
+  animation: inkPulse 2.6s ease-in-out infinite;
+}
+@keyframes revealNum {
+  from {
+    filter: blur(12px);
+    opacity: 0.3;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+.reveal-num {
+  animation: revealNum 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cipher-blur {
+    animation: none;
+  }
+  .reveal-num {
+    animation: none;
+  }
+}
+
 :root,
 [data-theme] {
   background: var(--bg, var(--color-base-200));

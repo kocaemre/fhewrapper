@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PairCardDecrypt } from "../decrypt/PairCardDecrypt";
 import { AddressCopyButton } from "./AddressCopyButton";
 import { PairBadge } from "./PairBadge";
 import { TokenIcon } from "./TokenIcon";
@@ -180,6 +181,10 @@ export function PairCard({ pair }: { pair: RegistryPair }) {
           {isValid ? "Wrap →" : "Unavailable"}
         </button>
       </div>
+
+      {/* Section 4 — per-card confidential-balance decrypt (03-01, DEC-01/03/04).
+          Self-gates on connection + Sepolia; registry browse stays ungated. */}
+      <PairCardDecrypt pair={pair} />
     </article>
   );
 }
