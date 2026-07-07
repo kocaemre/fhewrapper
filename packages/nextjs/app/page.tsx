@@ -1,24 +1,32 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { ChainGuard } from "~~/components/ChainGuard";
 import { PairGrid } from "~~/components/registry/PairGrid";
 import { RegistryHero } from "~~/components/registry/RegistryHero";
+import { RegistryToolbar } from "~~/components/registry/RegistryToolbar";
 import { useRegistryPairs } from "~~/hooks/useRegistryPairs";
+import { type RegistryFilter, filterPairs } from "~~/lib/filterPairs";
 
 /**
- * Registry browse — Cellar Registry engraving UI (02-02).
+ * Registry browse — Cellar Registry engraving UI (02-02) + search/filter (02-03).
  *
  * The client-only FHE provider tree (app/layout.tsx -> DappWrapperWithProviders)
  * and `ChainGuard` (connect + Sepolia gate) are inherited from Phase 1, untouched.
  * `RegistryBody` mounts only once ChainGuard passes, so `useRegistryPairs` runs
  * under a connected Sepolia wallet.
  *
- * This plan dresses the working 02-01 slice in the locked engraving design:
- * hero banner + full PairCard grid. Search/filter + skeleton/error polish land
- * in 02-03; loading/error keep a minimal engraving-styled fallback here.
+ * This plan (02-03) adds the client-side search + valid/revoked filter toolbar.
+ * `search`/`filter` state is lifted here and combined (AND) via `filterPairs`.
+ * The dedicated loading/empty/error state components land in Task 2 of 02-03.
  */
 function RegistryBody() {
   const { pairs, validCount, isLoading, isError, refetch } = useRegistryPairs();
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<RegistryFilter>("all");
+
+  const visible = useMemo(() => filterPairs(pairs, search, filter), [pairs, search, filter]);
+  const query = search.trim();
 
   return (
     <>
@@ -67,13 +75,20 @@ function RegistryBody() {
         </div>
       )}
 
-      {!isLoading && !isError && pairs.length === 0 && (
-        <div style={{ textAlign: "center", color: "var(--muted)", padding: "60px 0", fontStyle: "italic" }}>
-          No wrapper pairs are listed on the registry yet.
-        </div>
+      {!isLoading && !isError && (
+        <>
+          <RegistryToolbar search={search} onSearchChange={setSearch} filter={filter} onFilterChange={setFilter} />
+          {visible.length === 0 ? (
+            <div style={{ textAlign: "center", color: "var(--muted)", padding: "60px 0", fontStyle: "italic" }}>
+              {query
+                ? `No pairs match "${query}." Only registry-listed wrappers appear here — unsupported tokens cannot be wrapped.`
+                : "No wrapper pairs are listed on the registry yet."}
+            </div>
+          ) : (
+            <PairGrid pairs={visible} />
+          )}
+        </>
       )}
-
-      {!isLoading && !isError && pairs.length > 0 && <PairGrid pairs={pairs} />}
     </>
   );
 }

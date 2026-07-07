@@ -188,6 +188,22 @@
   outline-offset: 2px;
 }
 
+/* Search placeholder sits at 0.4 opacity per the locked design (02-UI-SPEC). */
+[data-theme] input::placeholder {
+  opacity: 0.4;
+}
+
+/* Loading skeleton pulse (02-03). Decorative — disabled under reduced motion. */
+.skel-pulse {
+  animation: inkPulse 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skel-pulse {
+    animation: none;
+    opacity: 0.55;
+  }
+}
+
 :root,
 [data-theme] {
   background: var(--bg, var(--color-base-200));
