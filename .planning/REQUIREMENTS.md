@@ -22,7 +22,7 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 - [x] **REG-04**: All 7 official cTokenMocks (cUSDC, cUSDT, cWETH, cBRON, cZAMA, ctGBP, cXAUt) surface in the UI
 - [x] **REG-05**: Hybrid sourcing — a local config (`registry/pairs.config.ts`) overlays custom/dev pairs, deduped by confidential-token address (onchain wins on conflict)
 - [x] **REG-06**: Each pair card shows both-network addresses, symbol/name/decimals, and valid/revoked status
-- [ ] **REG-07**: README documents the add-a-pair process with a concrete example (local config mechanism)
+- [x] **REG-07**: README documents the add-a-pair process with a concrete example (local config mechanism)
 
 ### User-Decryption (EIP-712)
 
@@ -103,7 +103,7 @@ Explicitly excluded to prevent scope creep.
 | REG-04      | Phase 2 | Complete |
 | REG-05      | Phase 2 | Complete |
 | REG-06      | Phase 2 | Complete |
-| REG-07      | Phase 2 | Pending  |
+| REG-07      | Phase 2 | Complete |
 | DEC-01      | Phase 3 | Pending  |
 | DEC-02      | Phase 3 | Pending  |
 | DEC-03      | Phase 3 | Pending  |
