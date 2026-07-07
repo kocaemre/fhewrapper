@@ -97,6 +97,60 @@ fhevm-react-template/
 
 The per-contract `Name.ts` imports `Name.local.ts` and merges at module load, so consumer code is agnostic to which chain a deployment lives on. `postinstall` regenerates both on every `pnpm install`, including an empty stub sidecar on a fresh clone.
 
+## Wrapper registry
+
+### How the registry is sourced
+
+The wrapper pairs shown in the app are **read live from the onchain Sepolia Wrappers Registry** at `0x2f0750Bbb0A246059d80e94c454586a7F27a128e` — never hardcoded. Each render:
+
+1. enumerates the registry's ERC-20 ↔ ERC-7984 pairs onchain,
+2. resolves both sides' `symbol` / `name` / `decimals` in a **single Multicall3 batch** (never per-token — a keyless public RPC would rate-limit that), and
+3. flags any revoked pair via the registry's validity bit (`isValid`) so revoked pairs are still shown but marked, not silently dropped.
+
+Supported network: **Sepolia testnet** (chain id `11155111`).
+
+### Adding a wrapper pair
+
+To surface a custom or dev-only wrapper pair that the onchain registry does not list yet, overlay it locally in `packages/nextjs/registry/pairs.config.ts`. That file exports a typed `localPairs: LocalPair[]` array (empty by default) that is merged into the onchain list. The `LocalPair` shape (from `packages/nextjs/registry/types.ts`) is:
+
+```ts
+export type LocalPair = {
+  /** underlying ERC-20 */
+  tokenAddress: `0x${string}`;
+  /** ERC-7984 wrapper (dedup key) */
+  confidentialTokenAddress: `0x${string}`;
+  /** default true */
+  isValid?: boolean;
+  /** optional metadata overrides if a token lacks a readable symbol/name/decimals */
+  overrides?: {
+    underlying?: Partial<TokenMeta>;
+    confidential?: Partial<TokenMeta>;
+  };
+};
+```
+
+Add an entry by pushing an object with both addresses:
+
+```ts
+// packages/nextjs/registry/pairs.config.ts
+import type { LocalPair } from "./types";
+
+export const localPairs: LocalPair[] = [
+  {
+    // underlying ERC-20 (the token being wrapped)
+    tokenAddress: "0x9b5Cd13b8eFbB58Dc25A05CF411D8056058aDFfF",
+    // ERC-7984 confidential wrapper (this is the dedup key)
+    confidentialTokenAddress: "0x7c5BF43B851c1dff1a4feE8dB225b87f2C223639",
+    // isValid defaults to true; set false to render it as revoked
+    // overrides: { confidential: { symbol: "cDEV", name: "Dev cToken", decimals: 6, decimalsKnown: true } },
+  },
+];
+```
+
+The addresses above are **illustrative** — the shipped `pairs.config.ts` stays empty so no fake pair leaks into the live app. Addresses you add are validated with viem `isAddress` / `getAddress` where they enter the read pipeline, so a typo is skipped with a console warning rather than crashing the grid.
+
+**Precedence rule (dedup by confidential address, onchain wins):** merged entries are deduped by the **lowercased ERC-7984 (`confidentialTokenAddress`)**. When the same confidential address exists both onchain and in `localPairs`, **the onchain registry entry always wins** — a local entry can only surface a pair the registry does not already list, and can never override or mask a real onchain pair.
+
 ## Troubleshooting
 
 - **MetaMask nonce mismatch after restarting anvil** — MetaMask → Settings → Advanced → _Clear activity tab data_.
