@@ -4,16 +4,16 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 2
 current_phase_name: Registry Browse
-status: verifying
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-07-07T15:17:35.144Z"
+status: executing
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-07-07T16:14:00.000Z"
 last_activity: 2026-07-07
-last_activity_desc: Phase 01 complete, transitioned to Phase 2
+last_activity_desc: Completed 02-01 registry data engine + minimal live render
 progress:
   total_phases: 7
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 7
+  completed_plans: 4
   percent: 14
 ---
 
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 2 — Registry Browse
-Plan: Not started
-Status: Phase complete — ready for verification
-Last activity: 2026-07-07 — Phase 01 complete, transitioned to Phase 2
+Plan: 02-01 complete (1 of 4) — next: 02-02 (Cellar UI + icons)
+Status: Executing — data engine + minimal live render shipped
+Last activity: 2026-07-07 — Completed 02-01 registry data engine + minimal live render
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░] 25% (phase 02: 1/4 plans)
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ _Updated after each plan completion_
 | Phase 01 P01 | 21 | 3 tasks | 71 files |
 | Phase 01 P02 | 2min | 2 tasks | 2 files |
 | Phase 01 P03 | 40min | 2 tasks | 8 files |
+| Phase 02 P01 | 11min | 3 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,8 @@ Recent decisions affecting current work:
 - [Phase ?]: FND-01 version corrected 3.2.0 -> 3.0.0 (human-approved): template locks 3.0.0; 3.2.0 breaking changes incompatible with preserved provider (FND-03). Exact-pin intent preserved.
 - [Phase ?]: ChainGuard owns connect + wrong-network + on-Sepolia states; page.tsx composes by wrapping guarded content only (01-02)
 - [Phase ?]: crossOriginIsolated read post-mount (useEffect) to show live value without SSR hydration mismatch (01-02)
+- [02-01]: vitest + @vitest/coverage-v8 pinned EXACT 4.1.10 (human-approved legitimacy) — corrected from plan's 3.2.x; no template constraint on the test runner.
+- [02-01]: Registry data engine = useReadContract (enumerate) -> useReadContracts multicall (enrich, allowFailure) -> regroupMeta -> mergePairs(localPairs); multicall mandatory (keyless public RPC rate-limits). Render full onchain array (9 live pairs), never hardcode 7.
 
 ### Pending Todos
 
@@ -100,6 +103,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-07T15:09:06.150Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-07-07T16:14:00.000Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None

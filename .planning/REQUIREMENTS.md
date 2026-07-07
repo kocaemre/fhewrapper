@@ -16,12 +16,12 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 ### Registry Browse
 
-- [ ] **REG-01**: App reads the **onchain** Sepolia Wrappers Registry (`0x2f0750Bbb0A246059d80e94c454586a7F27a128e`) as source of truth (never hardcoded pairs)
-- [ ] **REG-02**: Revoked pairs are filtered client-side via `isValid`
-- [ ] **REG-03**: Token metadata (symbol, decimals, name) is resolved from the token contracts (multicall) since the registry stores only addresses + isValid
-- [ ] **REG-04**: All 7 official cTokenMocks (cUSDC, cUSDT, cWETH, cBRON, cZAMA, ctGBP, cXAUt) surface in the UI
-- [ ] **REG-05**: Hybrid sourcing — a local config (`registry/pairs.config.ts`) overlays custom/dev pairs, deduped by confidential-token address (onchain wins on conflict)
-- [ ] **REG-06**: Each pair card shows both-network addresses, symbol/name/decimals, and valid/revoked status
+- [x] **REG-01**: App reads the **onchain** Sepolia Wrappers Registry (`0x2f0750Bbb0A246059d80e94c454586a7F27a128e`) as source of truth (never hardcoded pairs)
+- [x] **REG-02**: Revoked pairs are filtered client-side via `isValid`
+- [x] **REG-03**: Token metadata (symbol, decimals, name) is resolved from the token contracts (multicall) since the registry stores only addresses + isValid
+- [x] **REG-04**: All 7 official cTokenMocks (cUSDC, cUSDT, cWETH, cBRON, cZAMA, ctGBP, cXAUt) surface in the UI
+- [x] **REG-05**: Hybrid sourcing — a local config (`registry/pairs.config.ts`) overlays custom/dev pairs, deduped by confidential-token address (onchain wins on conflict)
+- [x] **REG-06**: Each pair card shows both-network addresses, symbol/name/decimals, and valid/revoked status
 - [ ] **REG-07**: README documents the add-a-pair process with a concrete example (local config mechanism)
 
 ### User-Decryption (EIP-712)
@@ -97,12 +97,12 @@ Explicitly excluded to prevent scope creep.
 | FND-02      | Phase 1 | Complete |
 | FND-03      | Phase 1 | Complete |
 | FND-04      | Phase 1 | Complete |
-| REG-01      | Phase 2 | Pending  |
-| REG-02      | Phase 2 | Pending  |
-| REG-03      | Phase 2 | Pending  |
-| REG-04      | Phase 2 | Pending  |
-| REG-05      | Phase 2 | Pending  |
-| REG-06      | Phase 2 | Pending  |
+| REG-01      | Phase 2 | Complete |
+| REG-02      | Phase 2 | Complete |
+| REG-03      | Phase 2 | Complete |
+| REG-04      | Phase 2 | Complete |
+| REG-05      | Phase 2 | Complete |
+| REG-06      | Phase 2 | Complete |
 | REG-07      | Phase 2 | Pending  |
 | DEC-01      | Phase 3 | Pending  |
 | DEC-02      | Phase 3 | Pending  |
