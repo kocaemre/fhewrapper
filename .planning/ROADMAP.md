@@ -14,7 +14,7 @@ The journey is deliberately correctness- and deploy-risk-front-loaded. First we 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation + Deploy Spike** - Live Sepolia dApp shell, cross-origin-isolated FHE runtime, wallet + chain guard, proven on a real Vercel URL (completed 2026-07-07)
-- [ ] **Phase 2: Registry Browse** - Every official ERC-20 ↔ ERC-7984 pair surfaced from the onchain registry with real token metadata (no SDK dependency)
+- [x] **Phase 2: Registry Browse** - Every official ERC-20 ↔ ERC-7984 pair surfaced from the onchain registry with real token metadata (no SDK dependency) (completed 2026-07-07)
 - [ ] **Phase 3: User-Decryption (EIP-712)** - Decrypt any ERC-7984 balance via a correct EIP-712 flow — the tool that verifies every other flow
 - [ ] **Phase 4: Faucet + Wrap** - Claim test tokens, then approve → wrap → confirm with an onchain-accurate preview
 - [ ] **Phase 5: Unwrap (async finalize)** - ERC-7984 → ERC-20 with the two-step pending→finalized flow modeled honestly; closes the core loop
@@ -55,12 +55,12 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. Each pair card shows both-network addresses, symbol / name / decimals, and a valid/revoked badge.
 4. A pair added to `registry/pairs.config.ts` appears in the UI, deduped by confidential-token address (onchain wins on conflict), and the README documents the add-a-pair flow with a concrete example.
 
-**Plans**: 3/4 plans executed
+**Plans**: 4/4 plans complete
 
 - [x] 02-01-PLAN.md — Tested data engine: onchain registry read + multicall metadata + hybrid merge + minimal live render (Wave 1)
 - [x] 02-02-PLAN.md — Cellar Registry look: fonts/themes, self-hosted optimized icons, full engraving pair cards + hero (Wave 2)
 - [x] 02-04-PLAN.md — README add-a-pair (hybrid config, onchain-wins) (Wave 2)
-- [ ] 02-03-PLAN.md — Search + valid/revoked filter, loading/empty/error states, visual sign-off (Wave 3)
+- [x] 02-03-PLAN.md — Search + valid/revoked filter, loading/empty/error states, visual sign-off (Wave 3)
 
 **UI hint**: yes
 
@@ -148,7 +148,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase                              | Plans Complete | Status      | Completed |
 | ---------------------------------- | -------------- | ----------- | --------- |
 | 1. Foundation + Deploy Spike       | 3/3 | Complete    | 2026-07-07 |
-| 2. Registry Browse                 | 3/4 | In Progress|  |
+| 2. Registry Browse                 | 4/4 | Complete   | 2026-07-07 |
 | 3. User-Decryption (EIP-712)       | 0/TBD          | Not started | -         |
 | 4. Faucet + Wrap                   | 0/TBD          | Not started | -         |
 | 5. Unwrap (async finalize)         | 0/TBD          | Not started | -         |

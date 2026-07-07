@@ -6,15 +6,15 @@ current_phase: 2
 current_phase_name: Registry Browse
 status: executing
 stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-07-07T16:42:03.071Z"
+last_updated: "2026-07-07T17:19:26.644Z"
 last_activity: 2026-07-07
 last_activity_desc: Completed 02-01 registry data engine + minimal live render
 progress:
   total_phases: 7
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 7
-  completed_plans: 6
-  percent: 14
+  completed_plans: 7
+  percent: 29
 ---
 
 # Project State
@@ -61,6 +61,7 @@ _Updated after each plan completion_
 | Phase 02 P01 | 11min | 3 tasks | 15 files |
 | Phase 02 P02 | 19min | 3 tasks | 17 files |
 | Phase 02 P04 | 1min | 1 tasks | 1 files |
+| Phase 02 P03 | 33min | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,8 @@ Recent decisions affecting current work:
 - [02-01]: Registry data engine = useReadContract (enumerate) -> useReadContracts multicall (enrich, allowFailure) -> regroupMeta -> mergePairs(localPairs); multicall mandatory (keyless public RPC rate-limits). Render full onchain array (9 live pairs), never hardcode 7.
 - [Phase 02]: 02-02: Fonts via next/font (self-hosted) not a cross-origin Google Fonts <link> — COEP require-corp would block the CDN (T-02-05)
 - [Phase 02]: 02-02: next-themes value-map light->parchment / dark->cellar keeps RainbowKit resolvedTheme keys intact (layout.tsx only)
+- [Phase ?]: 02-03: client-side search matches raw+normalized symbol, name, and both addresses; ALL/VALID/REVOKED chip AND-combines with search (pure filterPairs, 10 vitest units)
+- [Phase ?]: 02-03: data states branch on useRegistryPairs — 6-card skeleton (reduced-motion-safe) / RegistryError(refetch) / RegistryEmpty echoing query / PairGrid
 
 ### Pending Todos
 
@@ -107,6 +110,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-07T16:41:54.918Z
+Last session: 2026-07-07T17:19:00.715Z
 Stopped at: Completed 02-02-PLAN.md
 Resume file: None
