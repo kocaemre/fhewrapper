@@ -5,10 +5,10 @@ milestone_name: milestone
 current_phase: 3
 current_phase_name: EIP-712
 status: executing
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-07-07T19:43:42.034Z"
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-07-07T20:11:33.111Z"
 last_activity: 2026-07-07
-last_activity_desc: 03-01 complete — shared useUserDecrypt engine + per-card blur→reveal decrypt
+last_activity_desc: 03-02 complete
 progress:
   total_phases: 7
   completed_phases: 2
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 3 — User-Decryption (EIP-712)
-Plan: 03-01 complete (shared decrypt engine + per-card blur→reveal); 03-02 next
-Status: Executing — decrypt pure-logic test-locked, useUserDecrypt engine + PairCardDecrypt shipped
-Last activity: 2026-07-07 — 03-01 complete
+Plan: 03-02 complete (paste-an-address /decrypt panel under ChainGuard); 03-03 next
+Status: Executing — validateDecryptTarget test-locked, DecryptPanel + /decrypt route shipped (paste→ERC-165→decrypt)
+Last activity: 2026-07-07 — 03-02 complete
 
-Progress: [█████████░] 90% (phase 03: 1/3 plans)
+Progress: [█████████░] 90% (phase 03: 2/3 plans)
 
 ## Performance Metrics
 
@@ -64,6 +64,7 @@ _Updated after each plan completion_
 | Phase 02 P04 | 1min | 1 tasks | 1 files |
 | Phase 02 P03 | 33min | 3 tasks | 8 files |
 | Phase 03 P01 | 10 | 2 tasks | 8 files |
+| Phase 03 P02 | 24 | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -115,6 +116,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-07T19:43:07.313Z
+Last session: 2026-07-07T20:11:01.943Z
 Stopped at: Completed 02-02-PLAN.md
 Resume file: None
