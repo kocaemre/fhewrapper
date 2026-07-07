@@ -90,21 +90,13 @@
 
   body {
     min-height: 100vh;
-    font-family:
-      "Telegraf",
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      Segoe UI,
-      Roboto,
-      Ubuntu,
-      Cantarell,
-      Noto Sans,
-      Helvetica Neue,
-      Arial,
-      "Apple Color Emoji",
-      "Segoe UI Emoji",
-      "Segoe UI Symbol";
+    /* Cellar Registry engraving type: Gelasio serif (self-hosted via next/font),
+       JetBrains Mono for labels/addresses/numbers. 15.5px / 1.55 per 02-UI-SPEC. */
+    font-family: var(--font-gelasio), Georgia, serif;
+    font-size: 15.5px;
+    line-height: 1.55;
+    background: var(--bg);
+    color: var(--ink);
   }
 
   h1,
@@ -116,9 +108,89 @@
   }
 }
 
+/* ============================================================================
+   Cellar Registry engraving theme tokens (02-UI-SPEC / .dc.html source of truth).
+   Transcribed verbatim from the design head. next-themes writes
+   data-theme="parchment" (light, default) | data-theme="cellar" (dark).
+   ========================================================================== */
+[data-theme="parchment"] {
+  --bg: #e9e0c7;
+  --bg2: #f2ebd7;
+  --panel: #f4eedc;
+  --panel2: #eae1c9;
+  --ink: #2b2416;
+  --muted: #6f6349;
+  --faint: #998b6c;
+  --line: #2b2416;
+  --line-soft: rgba(43, 36, 22, 0.28);
+  --line-faint: rgba(43, 36, 22, 0.14);
+  --red: #8a2a1b;
+  --red-dim: rgba(138, 42, 27, 0.09);
+  --blue: #2f62b0;
+  --blue-dim: rgba(47, 98, 176, 0.09);
+  --blue-line: rgba(47, 98, 176, 0.45);
+  --green: #4a6b33;
+  --green-dim: rgba(74, 107, 51, 0.1);
+  --block: #332a1a;
+  --block-fg: #f2ebd7;
+  --shadow: 4px 4px 0 rgba(43, 36, 22, 0.18);
+}
+
+[data-theme="cellar"] {
+  --bg: #1b150b;
+  --bg2: #241c0f;
+  --panel: #251e10;
+  --panel2: #2f2614;
+  --ink: #ede2c4;
+  --muted: #a89877;
+  --faint: #7a6c51;
+  --line: #ede2c4;
+  --line-soft: rgba(237, 226, 196, 0.3);
+  --line-faint: rgba(237, 226, 196, 0.14);
+  --red: #d97c5a;
+  --red-dim: rgba(217, 124, 90, 0.1);
+  --blue: #7fa9e0;
+  --blue-dim: rgba(127, 169, 224, 0.1);
+  --blue-line: rgba(127, 169, 224, 0.45);
+  --green: #9dbb7e;
+  --green-dim: rgba(157, 187, 126, 0.12);
+  --block: #ede2c4;
+  --block-fg: #241c0f;
+  --shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes inkPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Engraving focus ring (02-UI-SPEC): 2px --red outline, offset 2px. */
+[data-theme] button:focus-visible,
+[data-theme] input:focus-visible,
+[data-theme] a:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
 :root,
 [data-theme] {
-  background: var(--color-base-200);
+  background: var(--bg, var(--color-base-200));
 }
 
 .btn {
