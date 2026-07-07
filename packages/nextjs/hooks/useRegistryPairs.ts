@@ -14,9 +14,20 @@ import type { LocalPair, RegistryPair } from "~~/registry/types";
 
 const METADATA_CALLS = ["symbol", "name", "decimals"] as const;
 
-/** Build the 3 metadata reads for one token address. */
+/**
+ * Build the 3 metadata reads for one token address, each pinned to Sepolia so
+ * the multicall resolves off the public Sepolia RPC regardless of whether a
+ * wallet is connected or which network it sits on (REG-01 SC1: fresh/incognito
+ * wallet must populate the list). Matches the `chainId: sepolia.id` pin on the
+ * enumerate read below.
+ */
 function metadataReads(address: `0x${string}`) {
-  return METADATA_CALLS.map(functionName => ({ address, abi: erc20MetadataAbi, functionName }));
+  return METADATA_CALLS.map(functionName => ({
+    address,
+    abi: erc20MetadataAbi,
+    functionName,
+    chainId: sepolia.id,
+  }));
 }
 
 /**

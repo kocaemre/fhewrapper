@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChainGuard } from "~~/components/ChainGuard";
 import { PairCardSkeleton } from "~~/components/registry/PairCardSkeleton";
 import { PairGrid } from "~~/components/registry/PairGrid";
 import { RegistryEmpty } from "~~/components/registry/RegistryEmpty";
@@ -15,9 +14,12 @@ import { type RegistryFilter, filterPairs } from "~~/lib/filterPairs";
  * Registry browse — Cellar Registry engraving UI (02-02) + search/filter/states (02-03).
  *
  * The client-only FHE provider tree (app/layout.tsx -> DappWrapperWithProviders)
- * and `ChainGuard` (connect + Sepolia gate) are inherited from Phase 1, untouched.
- * `RegistryBody` mounts only once ChainGuard passes, so `useRegistryPairs` runs
- * under a connected Sepolia wallet.
+ * is inherited from Phase 1, untouched. The browse is READ-ONLY and renders for
+ * EVERYONE — connected or not (REG-01 SC1: a fresh/incognito wallet must see the
+ * pair list). `useRegistryPairs` reads the public Sepolia RPC and needs no
+ * connected account, so the registry is NOT wrapped in `ChainGuard`. The connect
+ * button lives in the global Header; `ChainGuard` stays available for future
+ * write actions (wrap ships Phase 4).
  *
  * State branching (02-03 Task 2):
  *   isLoading            -> a grid of 6 PairCardSkeletons
@@ -74,9 +76,7 @@ function RegistryBody() {
 export default function Home() {
   return (
     <main style={{ position: "relative", maxWidth: 1180, margin: "0 auto", padding: "40px 30px 120px", width: "100%" }}>
-      <ChainGuard>
-        <RegistryBody />
-      </ChainGuard>
+      <RegistryBody />
     </main>
   );
 }
