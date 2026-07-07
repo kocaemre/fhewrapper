@@ -83,9 +83,13 @@ function RegistryBody() {
 
 export default function Home() {
   return (
-    <>
-      {/* Decorative engraving strips flanking the centered content (fixed, behind
-          everything, hidden < 1280px — see SideMotifs / .side-motif). */}
+    // position:relative establishes the full-page-height containing block for the
+    // absolutely-positioned SideMotifs (top:0; bottom:0) so they scroll with the
+    // page and flank the content top-to-bottom. overflowX:clip guards against any
+    // gutter strip ever nudging horizontal scroll.
+    <div style={{ position: "relative", overflowX: "clip" }}>
+      {/* Decorative engraving strips flanking the centered content (absolute, full
+          page height, behind everything, hidden < 1280px — see SideMotifs). */}
       <SideMotifs />
       <main
         style={{
@@ -99,6 +103,6 @@ export default function Home() {
       >
         <RegistryBody />
       </main>
-    </>
+    </div>
   );
 }

@@ -65,8 +65,8 @@ export function RegistryHero({ pairCount }: { pairCount: number }) {
           flexDirection: "column",
           justifyContent: "center",
           boxSizing: "border-box",
-          // Subtle cream halo keeps the dark ink crisp where the scrim thins out.
-          textShadow: "0 1px 2px rgba(244, 238, 220, 0.6)",
+          // Cream halo keeps the dark ink crisp where the scrim thins out over the art.
+          textShadow: "0 0 6px rgba(244, 238, 220, 0.85), 0 1px 2px rgba(244, 238, 220, 0.7)",
         }}
       >
         <div
@@ -97,7 +97,7 @@ export function RegistryHero({ pairCount }: { pairCount: number }) {
         </h1>
         <p
           style={{
-            color: "#6F6349",
+            color: "#463C24",
             margin: "0 0 18px",
             fontSize: "clamp(11px, 1.2vw, 16px)",
             maxWidth: 430,

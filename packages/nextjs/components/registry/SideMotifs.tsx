@@ -3,23 +3,27 @@
  *
  * A matched flanking pair of copperplate vine-and-bottle strips that fill the
  * empty parchment gutters left/right of the centered 1180px content. Purely
- * DECORATIVE — `aria-hidden`, `pointer-events:none`, fixed BEHIND the content
- * (`z-index:0`, see `.side-motif` in globals.css). They are hidden below 1280px
- * so they never crowd the cards/hero/toolbar or introduce horizontal scroll.
+ * DECORATIVE — `aria-hidden`, `pointer-events:none`, positioned BEHIND the
+ * content (`z-index:0`, see `.side-motif` in globals.css).
+ *
+ * They SCROLL WITH THE PAGE and span the FULL document height: each strip is
+ * `position:absolute; top:0; bottom:0` inside the page's `position:relative`
+ * root (see app/page.tsx), so it flanks the content top-to-bottom no matter how
+ * tall the card grid grows. The vine ornament is a `repeat-y` background so it
+ * tiles continuously down the whole page instead of stretching one image.
  *
  * Assets are self-hosted WebP under `/public/motifs/` (same-origin — COEP
- * `require-corp`, no cross-origin media). `side-left.png`'s ornament is weighted
- * to its inner (right) edge and `side-right.png`'s to its inner (left) edge;
- * `object-position` pins that ornamented edge toward the content so the vines
- * frame the page, while the plain cream fades outward into the parchment ground.
+ * `require-corp`, no cross-origin media). Rendered as background-image `<div>`s
+ * (not `<img>`) so `repeat-y` + `background-size` control the vertical tiling.
+ * They are hidden below 1280px so they never crowd the content or introduce
+ * horizontal scroll; a top/bottom + outer-edge mask fades hard tile seams and
+ * the page edges into the parchment ground.
  */
 export function SideMotifs() {
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/motifs/side-left.webp" alt="" aria-hidden="true" className="side-motif side-motif--left" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/motifs/side-right.webp" alt="" aria-hidden="true" className="side-motif side-motif--right" />
+      <div aria-hidden="true" className="side-motif side-motif--left" />
+      <div aria-hidden="true" className="side-motif side-motif--right" />
     </>
   );
 }

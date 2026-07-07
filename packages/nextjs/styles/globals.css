@@ -238,11 +238,12 @@
 .hero-scrim {
   background: linear-gradient(
     90deg,
-    rgba(239, 230, 204, 0.96) 0%,
-    rgba(239, 230, 204, 0.9) 30%,
-    rgba(239, 230, 204, 0.58) 50%,
-    rgba(239, 230, 204, 0.16) 68%,
-    rgba(239, 230, 204, 0) 82%
+    rgba(239, 230, 204, 0.99) 0%,
+    rgba(239, 230, 204, 0.98) 44%,
+    rgba(239, 230, 204, 0.9) 54%,
+    rgba(239, 230, 204, 0.5) 67%,
+    rgba(239, 230, 204, 0.14) 81%,
+    rgba(239, 230, 204, 0) 91%
   );
 }
 
@@ -252,7 +253,7 @@
 
 @media (max-width: 760px) {
   .hero-scrim {
-    background: linear-gradient(180deg, rgba(239, 230, 204, 0.93) 0%, rgba(239, 230, 204, 0.88) 100%);
+    background: linear-gradient(180deg, rgba(239, 230, 204, 0.97) 0%, rgba(239, 230, 204, 0.93) 100%);
   }
   .hero-overlay {
     padding: 30px 24px;
@@ -261,23 +262,28 @@
 
 /* ============================================================================
    Decorative side-gutter engraving motifs (02 visual polish). Self-hosted WebP
-   (same-origin — COEP require-corp). Fixed to the viewport gutters flanking the
-   1180px centered content, BEHIND everything (z-index:0), purely decorative
-   (aria-hidden, pointer-events:none). Shown only when there is real gutter room
-   (>= 1280px) so they never crowd content or cause horizontal scroll. object-fit
-   cover with the ornamented (inner) edge pinned toward the content; masked at
-   top/bottom/inner edge so the fixed strip fades into the parchment rather than
-   hard-cutting.
+   (same-origin — COEP require-corp). ABSOLUTELY positioned inside the page's
+   position:relative root (app/page.tsx), so they SCROLL WITH THE PAGE and span
+   the FULL document height (top:0; bottom:0) — flanking the 1180px centered
+   content top-to-bottom however tall the card grid grows. BEHIND everything
+   (z-index:0), purely decorative (aria-hidden, pointer-events:none). The vine
+   ornament is a `repeat-y` background (background-size: 100% auto) so it tiles
+   continuously down the whole page instead of stretching a single image. Shown
+   only when there is real gutter room (>= 1280px) so they never crowd content
+   or cause horizontal scroll. Masked at top/bottom + outer edge so the strip
+   fades into the parchment and the vertical tile seams read as a continuous
+   engraved margin rather than an obvious loop.
    ========================================================================== */
 .side-motif {
-  position: fixed;
+  position: absolute;
   top: 0;
-  height: 100vh;
+  bottom: 0;
   width: clamp(120px, 13vw, 230px);
   z-index: 0;
   opacity: 0.55;
   pointer-events: none;
-  object-fit: cover;
+  background-repeat: repeat-y;
+  background-size: 100% auto;
   display: none;
   -webkit-user-select: none;
   user-select: none;
@@ -285,12 +291,13 @@
 
 .side-motif--left {
   left: 0;
-  object-position: right center;
+  background-image: url(/motifs/side-left.webp);
+  background-position: right top;
   -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
     linear-gradient(to left, transparent 0%, #000 14%);
   mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
     linear-gradient(to left, transparent 0%, #000 14%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
@@ -298,12 +305,13 @@
 
 .side-motif--right {
   right: 0;
-  object-position: left center;
+  background-image: url(/motifs/side-right.webp);
+  background-position: left top;
   -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
     linear-gradient(to right, transparent 0%, #000 14%);
   mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
     linear-gradient(to right, transparent 0%, #000 14%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
