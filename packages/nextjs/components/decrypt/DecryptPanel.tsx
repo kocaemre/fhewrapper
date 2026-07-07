@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useIsConfidential, useMetadata } from "@zama-fhe/react-sdk";
-import { zeroAddress } from "viem";
+import { type Address, zeroAddress } from "viem";
 import { useAccount } from "wagmi";
 import { DecryptAddressInput } from "~~/components/decrypt/DecryptAddressInput";
 import { DecryptCTA } from "~~/components/decrypt/DecryptCTA";
+import { DecryptQuickPicks } from "~~/components/decrypt/DecryptQuickPicks";
 import { DecryptStateBox } from "~~/components/decrypt/DecryptStateBox";
+import { PermitIndicator } from "~~/components/decrypt/PermitIndicator";
 import { useUserDecrypt } from "~~/hooks/useUserDecrypt";
 import { validateDecryptTarget } from "~~/lib/decryptValidate";
 
@@ -72,6 +74,13 @@ export function DecryptPanel() {
         }
       : reveal;
 
+  // A registry quick-pick sets the target address and returns the panel to idle
+  // (clearing any prior reveal/error) so the freshly-picked token starts clean.
+  const onPick = (picked: Address) => {
+    reset();
+    setRaw(picked);
+  };
+
   return (
     <section style={{ maxWidth: 880, margin: "0 auto", width: "100%" }}>
       {/* Header */}
@@ -104,15 +113,24 @@ export function DecryptPanel() {
           background: "var(--panel)",
         }}
       >
-        {/* Left — engraving illustration placeholder (hero art added in 03-03). */}
+        {/* Left — self-hosted engraving illustration (same-origin under COEP
+            require-corp; DIF-02 pattern from Phase 2). Decorative. */}
         <div
           aria-hidden
           style={{
             borderRight: "2px solid var(--line)",
             background: "var(--panel2)",
             minHeight: 420,
+            overflow: "hidden",
           }}
-        />
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/02-bottle-hero.png"
+            alt="Engraved bottle, wax-sealed, with a scroll inside"
+            style={{ display: "block", width: "100%", height: "100%", minHeight: 420, objectFit: "cover" }}
+          />
+        </div>
 
         {/* Right — the form column */}
         <div
@@ -126,11 +144,21 @@ export function DecryptPanel() {
         >
           <DecryptAddressInput value={raw} onChange={setRaw} reason={inputReason} />
 
+          {/* Registry entry point (DEC-02): one-click confidential targets from the
+              connected wallet's registry pairs, alongside the paste input above. */}
+          <DecryptQuickPicks onPick={onPick} selected={validAddr} />
+
           {checking && (
             <span style={{ fontSize: 12, color: "var(--faint)", fontStyle: "italic" }}>Checking token on-chain…</span>
           )}
 
           <DecryptStateBox stage={stage} value={value} error={error} decimals={decimals} symbol={symbol} />
+
+          {/* Cached-permit status (DEC-03) — sits just above the CTA, which is
+              full-width; shown only once a permit covers the resolved token. */}
+          <div style={{ display: "flex", justifyContent: "flex-end", minHeight: 14 }}>
+            <PermitIndicator address={decryptAddr} />
+          </div>
 
           <DecryptCTA
             stage={stage}
