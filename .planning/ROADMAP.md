@@ -13,7 +13,7 @@ The journey is deliberately correctness- and deploy-risk-front-loaded. First we 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation + Deploy Spike** - Live Sepolia dApp shell, cross-origin-isolated FHE runtime, wallet + chain guard, proven on a real Vercel URL
+- [x] **Phase 1: Foundation + Deploy Spike** - Live Sepolia dApp shell, cross-origin-isolated FHE runtime, wallet + chain guard, proven on a real Vercel URL (completed 2026-07-07)
 - [ ] **Phase 2: Registry Browse** - Every official ERC-20 ↔ ERC-7984 pair surfaced from the onchain registry with real token metadata (no SDK dependency)
 - [ ] **Phase 3: User-Decryption (EIP-712)** - Decrypt any ERC-7984 balance via a correct EIP-712 flow — the tool that verifies every other flow
 - [ ] **Phase 4: Faucet + Wrap** - Claim test tokens, then approve → wrap → confirm with an onchain-accurate preview
@@ -36,11 +36,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. `next build` completes clean and the deployed route renders without a 500 — the FHE SDK initializes client-only via a single memoized provider (no module-scope / SSR init).
 4. `package.json` pins `@zama-fhe/sdk` / `@zama-fhe/react-sdk` at an exact 3.2.0 version (no `^`), and a fresh `npm ci` + redeploy still boots the app.
 
-**Plans**: 2/3 plans executed
+**Plans**: 3/3 plans complete
 
 - [x] 01-01-PLAN.md — Scaffold from fhevm-react-template + exact-pin 3.2.0 + COOP/COEP headers (Wave 1)
 - [x] 01-02-PLAN.md — Runtime-ready shell + Sepolia chain guard (Wave 2)
-- [ ] 01-03-PLAN.md — Live Vercel deploy + on-URL isolation/wallet verification (Wave 3)
+- [x] 01-03-PLAN.md — Live Vercel deploy + on-URL isolation/wallet verification (Wave 3)
 
 ### Phase 2: Registry Browse
 
@@ -141,7 +141,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase                              | Plans Complete | Status      | Completed |
 | ---------------------------------- | -------------- | ----------- | --------- |
-| 1. Foundation + Deploy Spike       | 2/3            | In Progress |           |
+| 1. Foundation + Deploy Spike       | 3/3 | Complete   | 2026-07-07 |
 | 2. Registry Browse                 | 0/TBD          | Not started | -         |
 | 3. User-Decryption (EIP-712)       | 0/TBD          | Not started | -         |
 | 4. Faucet + Wrap                   | 0/TBD          | Not started | -         |
