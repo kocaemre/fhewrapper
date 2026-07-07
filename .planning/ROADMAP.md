@@ -36,10 +36,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. `next build` completes clean and the deployed route renders without a 500 — the FHE SDK initializes client-only via a single memoized provider (no module-scope / SSR init).
 4. `package.json` pins `@zama-fhe/sdk` / `@zama-fhe/react-sdk` at an exact 3.2.0 version (no `^`), and a fresh `npm ci` + redeploy still boots the app.
 
-**Plans**: 1/3 plans executed
+**Plans**: 2/3 plans executed
 
 - [x] 01-01-PLAN.md — Scaffold from fhevm-react-template + exact-pin 3.2.0 + COOP/COEP headers (Wave 1)
-- [ ] 01-02-PLAN.md — Runtime-ready shell + Sepolia chain guard (Wave 2)
+- [x] 01-02-PLAN.md — Runtime-ready shell + Sepolia chain guard (Wave 2)
 - [ ] 01-03-PLAN.md — Live Vercel deploy + on-URL isolation/wallet verification (Wave 3)
 
 ### Phase 2: Registry Browse
@@ -141,7 +141,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase                              | Plans Complete | Status      | Completed |
 | ---------------------------------- | -------------- | ----------- | --------- |
-| 1. Foundation + Deploy Spike       | 1/3            | In Progress |           |
+| 1. Foundation + Deploy Spike       | 2/3            | In Progress |           |
 | 2. Registry Browse                 | 0/TBD          | Not started | -         |
 | 3. User-Decryption (EIP-712)       | 0/TBD          | Not started | -         |
 | 4. Faucet + Wrap                   | 0/TBD          | Not started | -         |

@@ -10,7 +10,7 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 ### Foundation & Deploy
 
 - [x] **FND-01**: App boots from the official `fhevm-react-template` (Next.js App Router, wagmi/viem, RainbowKit) pinned to `@zama-fhe/sdk`/`@zama-fhe/react-sdk` ^3.2.0
-- [ ] **FND-02**: User can connect an injected wallet (MetaMask) and the app detects/prompts a switch to Sepolia (chain-id guard)
+- [x] **FND-02**: User can connect an injected wallet (MetaMask) and the app detects/prompts a switch to Sepolia (chain-id guard)
 - [x] **FND-03**: FHE SDK is initialized client-only (`initSDK()` → `createInstance`/`ZamaProvider`) behind a memoized provider — no SSR/module-scope init
 - [x] **FND-04**: A publicly accessible live deployment exists where `crossOriginIsolated === true` (COOP/COEP headers set) — verified on the real URL, not localhost
 
@@ -94,7 +94,7 @@ Explicitly excluded to prevent scope creep.
 | Requirement | Phase   | Status   |
 | ----------- | ------- | -------- |
 | FND-01      | Phase 1 | Complete |
-| FND-02      | Phase 1 | Pending  |
+| FND-02      | Phase 1 | Complete |
 | FND-03      | Phase 1 | Complete |
 | FND-04      | Phase 1 | Complete |
 | REG-01      | Phase 2 | Pending  |

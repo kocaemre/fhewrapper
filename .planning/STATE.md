@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 01
 current_phase_name: foundation-deploy-spike
 status: executing
-stopped_at: Roadmap + STATE created; REQUIREMENTS.md traceability confirmed (34/34 mapped)
-last_updated: "2026-07-07T10:51:59.258Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-07-07T10:59:15.893Z"
 last_activity: 2026-07-07
 last_activity_desc: Phase 01 execution started
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 01 (foundation-deploy-spike) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-07-07 — Phase 01 execution started
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 
 _Updated after each plan completion_
 | Phase 01 P01 | 21 | 3 tasks | 71 files |
+| Phase 01 P02 | 2min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,8 @@ Recent decisions affecting current work:
 - [Roadmap]: User-decryption (Phase 3) built before wrap/unwrap so it can verify every other flow's result.
 - [Roadmap]: Animation differentiator deferred to Phase 7, gated on a verified core loop; all media self-hosted (COEP `require-corp` blocks cross-origin assets).
 - [Phase ?]: FND-01 version corrected 3.2.0 -> 3.0.0 (human-approved): template locks 3.0.0; 3.2.0 breaking changes incompatible with preserved provider (FND-03). Exact-pin intent preserved.
+- [Phase ?]: ChainGuard owns connect + wrong-network + on-Sepolia states; page.tsx composes by wrapping guarded content only (01-02)
+- [Phase ?]: crossOriginIsolated read post-mount (useEffect) to show live value without SSR hydration mismatch (01-02)
 
 ### Pending Todos
 
@@ -96,6 +99,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-07T10:51:59.254Z
-Stopped at: Roadmap + STATE created; REQUIREMENTS.md traceability confirmed (34/34 mapped)
+Last session: 2026-07-07T10:59:15.888Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
