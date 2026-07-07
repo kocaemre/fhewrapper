@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PairCardSkeleton } from "~~/components/registry/PairCardSkeleton";
 import { PairGrid } from "~~/components/registry/PairGrid";
 import { RegistryEmpty } from "~~/components/registry/RegistryEmpty";
@@ -9,6 +9,7 @@ import { RegistryHero } from "~~/components/registry/RegistryHero";
 import { RegistryToolbar } from "~~/components/registry/RegistryToolbar";
 import { useRegistryPairs } from "~~/hooks/useRegistryPairs";
 import { type RegistryFilter, filterPairs } from "~~/lib/filterPairs";
+import { signalRegistrySettled } from "~~/lib/preloadSignals";
 
 /**
  * Registry browse — Cellar Registry engraving UI (02-02) + search/filter/states (02-03).
@@ -54,6 +55,12 @@ function RegistryBody() {
   const [filter, setFilter] = useState<RegistryFilter>("all");
 
   const visible = useMemo(() => filterPairs(pairs, search, filter), [pairs, search, filter]);
+
+  // Tell the site-wide Preloader the registry's first load has settled (data OR
+  // error) so it can lift the cover onto a fully-populated grid. Idempotent.
+  useEffect(() => {
+    if (!isLoading) signalRegistrySettled();
+  }, [isLoading]);
 
   return (
     <>

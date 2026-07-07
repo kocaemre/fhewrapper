@@ -1,6 +1,7 @@
 import { Gelasio, JetBrains_Mono } from "next/font/google";
 import "@rainbow-me/rainbowkit/styles.css";
 import { DappWrapperWithProviders } from "~~/components/DappWrapperWithProviders";
+import { Preloader } from "~~/components/Preloader";
 import { ThemeProvider } from "~~/components/ThemeProvider";
 import "~~/styles/globals.css";
 import { getMetadata } from "~~/utils/helper/getMetadata";
@@ -43,7 +44,13 @@ const DappWrapper = ({ children }: { children: React.ReactNode }) => {
           value={{ light: "parchment", dark: "cellar" }}
           enableSystem
         >
-          <DappWrapperWithProviders>{children}</DappWrapperWithProviders>
+          {/* Preloader is a pure visual cover wrapped OUTSIDE the FHE providers
+              (it must not touch the provider tree / crossOriginIsolated). It
+              renders the app underneath so everything fetches behind the cover,
+              then lifts once critical assets decode + the registry first-settles. */}
+          <Preloader>
+            <DappWrapperWithProviders>{children}</DappWrapperWithProviders>
+          </Preloader>
         </ThemeProvider>
       </body>
     </html>
