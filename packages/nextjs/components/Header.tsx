@@ -11,6 +11,7 @@ const SERIF = "var(--font-gelasio), Georgia, serif";
 /** Cellar-idiom nav links (engraving typeface, active route → --red underline). */
 const NAV_LINKS: { href: string; label: string }[] = [
   { href: "/", label: "Registry" },
+  { href: "/faucet", label: "Faucet" },
   { href: "/decrypt", label: "Decrypt" },
 ];
 
