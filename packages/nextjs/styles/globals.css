@@ -159,6 +159,45 @@
   --shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
 }
 
+/* ============================================================================
+   Wallet dropdown menu (connected address + wrong-network) — themed to the
+   Cellar Registry palette so EVERY item is legible in BOTH parchment and
+   cellar. The stock daisyUI menu inherited `bg-base-200` + base-content, which
+   are keyed to daisyUI's own light/dark themes and DO NOT track next-themes'
+   parchment/cellar `data-theme`. That mismatch rendered "Switch Network" as
+   dark ink on a dark panel. We pin the panel + item foreground to the design
+   vars (--panel / --ink / --line / --panel2) so the menu flips correctly per
+   theme and stays readable, including hover/focus. Scoped to the wallet
+   dropdown only (does not touch side motifs or page chrome).
+   ========================================================================== */
+.cellar-menu {
+  background: var(--panel);
+  border: 1.5px solid var(--line-soft);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+.cellar-menu .cellar-menu-item {
+  color: var(--ink);
+  background: transparent;
+}
+.cellar-menu .cellar-menu-item:hover,
+.cellar-menu .cellar-menu-item:focus-visible {
+  background: var(--panel2);
+  color: var(--ink);
+}
+.cellar-menu .cellar-menu-item svg {
+  color: inherit;
+}
+/* Disconnect keeps its red treatment, still legible against the hover fill. */
+.cellar-menu .cellar-menu-item--danger {
+  color: var(--red);
+}
+.cellar-menu .cellar-menu-item--danger:hover,
+.cellar-menu .cellar-menu-item--danger:focus-visible {
+  background: var(--red-dim);
+  color: var(--red);
+}
+
 @keyframes toastIn {
   from {
     opacity: 0;
