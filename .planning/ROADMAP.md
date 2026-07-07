@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation + Deploy Spike** - Live Sepolia dApp shell, cross-origin-isolated FHE runtime, wallet + chain guard, proven on a real Vercel URL (completed 2026-07-07)
 - [x] **Phase 2: Registry Browse** - Every official ERC-20 ↔ ERC-7984 pair surfaced from the onchain registry with real token metadata (no SDK dependency) (completed 2026-07-07)
-- [ ] **Phase 3: User-Decryption (EIP-712)** - Decrypt any ERC-7984 balance via a correct EIP-712 flow — the tool that verifies every other flow
+- [x] **Phase 3: User-Decryption (EIP-712)** - Decrypt any ERC-7984 balance via a correct EIP-712 flow — the tool that verifies every other flow (completed 2026-07-07)
 - [ ] **Phase 4: Faucet + Wrap** - Claim test tokens, then approve → wrap → confirm with an onchain-accurate preview
 - [ ] **Phase 5: Unwrap (async finalize)** - ERC-7984 → ERC-20 with the two-step pending→finalized flow modeled honestly; closes the core loop
 - [ ] **Phase 6: Error Handling + Status System** - Typed human-readable errors, toasts, tx stages, explorer links, and a production-grade async-wait state
@@ -77,11 +77,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. The EIP-712 payload signs only `UserDecryptRequestVerification` with a single reused timestamp/duration and a `0x`-stripped signature, and the signature is cached and reused within its validity window (no repeat prompt per decrypt).
 4. A token the wallet has no ACL access to shows a graceful "no decryption access" message, not an infinite spinner.
 
-**Plans**: 2/3 plans executed
+**Plans**: 3/3 plans complete
 
 - [x] 03-01-PLAN.md — Tested decrypt engine (useUserDecrypt) + error/decimals pure-logic + per-card blur→reveal registry decrypt (Wave 1)
 - [x] 03-02-PLAN.md — Paste-an-address decrypt panel: validated input + state atoms + /decrypt route under ChainGuard (Wave 2)
-- [ ] 03-03-PLAN.md — Quick-picks + permit indicator + self-hosted hero + Decrypt nav + live-URL verification gate (Wave 3)
+- [x] 03-03-PLAN.md — Quick-picks + permit indicator + self-hosted hero + Decrypt nav + live-URL verification gate (Wave 3)
 
 ### Phase 4: Faucet + Wrap
 
@@ -153,7 +153,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | ---------------------------------- | -------------- | ----------- | --------- |
 | 1. Foundation + Deploy Spike       | 3/3 | Complete    | 2026-07-07 |
 | 2. Registry Browse                 | 4/4 | Complete    | 2026-07-07 |
-| 3. User-Decryption (EIP-712)       | 2/3 | In Progress|  |
+| 3. User-Decryption (EIP-712)       | 3/3 | Complete   | 2026-07-07 |
 | 4. Faucet + Wrap                   | 0/TBD          | Not started | -         |
 | 5. Unwrap (async finalize)         | 0/TBD          | Not started | -         |
 | 6. Error Handling + Status System  | 0/TBD          | Not started | -         |

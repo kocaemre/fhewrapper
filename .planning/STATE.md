@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 3
 current_phase_name: EIP-712
 status: executing
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-07-07T20:11:33.111Z"
+stopped_at: Completed 03-03-PLAN.md (live-URL UAT deferred to 03-UAT.md)
+last_updated: "2026-07-07T23:20:00.000Z"
 last_activity: 2026-07-07
-last_activity_desc: 03-02 complete
+last_activity_desc: 03-03 complete (Phase 3 code done; live-URL decrypt UAT deferred)
 progress:
   total_phases: 7
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 10
-  completed_plans: 9
-  percent: 90
+  completed_plans: 10
+  percent: 43
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 3 — User-Decryption (EIP-712)
-Plan: 03-02 complete (paste-an-address /decrypt panel under ChainGuard); 03-03 next
-Status: Executing — validateDecryptTarget test-locked, DecryptPanel + /decrypt route shipped (paste→ERC-165→decrypt)
-Last activity: 2026-07-07 — 03-02 complete
+Plan: 03-03 complete (registry quick-picks + VIEWING KEY ACTIVE indicator + self-hosted decrypt hero + Header Decrypt nav). Phase 3 code done — live-URL decrypt UAT deferred to 03-UAT.md.
+Status: Executing — Phase 3 all 3 plans shipped; gates green (check-types/lint/vitest 55/vitest build). Live-URL decrypt proof (DEC-01…DEC-04 + no-ACL error class) deferred to end-of-project manual session.
+Last activity: 2026-07-07 — 03-03 complete
 
-Progress: [█████████░] 90% (phase 03: 2/3 plans)
+Progress: [██████████] 100% (phase 03: 3/3 plans)
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ _Updated after each plan completion_
 | Phase 02 P03 | 33min | 3 tasks | 8 files |
 | Phase 03 P01 | 10 | 2 tasks | 8 files |
 | Phase 03 P02 | 24 | 3 tasks | 7 files |
+| Phase 03 P03 | 22 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,9 @@ Recent decisions affecting current work:
 - [03-01]: Installed EXACT 3.0.0 @zama-fhe/react-sdk uses useAllow/useIsAllowed/useConfidentialBalance — NOT useGrantPermit/useHasPermit/useDecryptValues (those don't exist in 3.0.0 and fail to compile). Single reusable non-token-specific EIP-712 permit via useAllow; useConfidentialBalance returns the decrypted cleartext bigint directly (DEC-01/03).
 - [03-01]: useIsAllowed config is a NON-EMPTY [Address,...Address[]] tuple — pass [tokenAddress ?? zeroAddress] (never []); the real decrypt is gated by the enabled flag so the placeholder is a cheap local permit read only.
 - [03-01]: Decrypt error taxonomy is instanceof + matchAclRevert (never string-match revert messages); NoCiphertext/zero-handle renders 0, never an error (DEC-04). Cleartext formatted by the token's own decimals via formatUnits (Pitfall 5).
+- [03-03]: DecryptQuickPicks sources chips from the SAME Phase-2 useRegistryPairs (valid only, deduped by confidential address) — the registry entry point (DEC-02) alongside paste-an-address; PermitIndicator uses verified 3.0.0 useIsAllowed for the VIEWING KEY ACTIVE badge (DEC-03), zeroAddress placeholder + real-address gate for W2.
+- [03-03]: Decrypt hero shipped as optimized PNG (295x440, 277KB) NOT WebP — the plan's files_modified + automated verify (test -f public/02-bottle-hero.png) + <img src="/02-bottle-hero.png"> pin the .png filename; no lossy PNG compressor (pngquant/oxipng) installed, so 277KB is the practical PNG floor (cwebp would be ~104KB if the filename constraint relaxes).
+- [03-03]: Live-URL decrypt phase gate DEFERRED (time-box directive) to a single end-of-project manual session — see 03-UAT.md (DEC-01…DEC-04 + record concrete no-ACL error class → resolves RESEARCH Open Q1). Code + automated gates green now.
 
 ### Pending Todos
 
@@ -116,6 +120,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-07T20:11:01.943Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-07-07T23:20:00.000Z
+Stopped at: Completed 03-03-PLAN.md (live-URL decrypt UAT deferred to 03-UAT.md)
 Resume file: None
