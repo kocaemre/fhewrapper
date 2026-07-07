@@ -78,3 +78,24 @@ export const erc20MetadataAbi = [
   { type: "function", name: "name", stateMutability: "view", inputs: [], outputs: [{ type: "string" }] },
   { type: "function", name: "decimals", stateMutability: "view", inputs: [], outputs: [{ type: "uint8" }] },
 ] as const;
+
+/**
+ * cTokenMock underlying ERC-20 public `mint(to, amount)` fragment — the faucet
+ * write (FCT-01). VERIFIED LIVE on Sepolia 2026-07-07: selector `0x40c10f19`,
+ * simulate-from-random-EOA succeeds (no owner()/hasRole/MINTER_ROLE), 1,000,000
+ * whole-token per-call cap; tGBP is the one restricted exception that reverts.
+ * Transcribed verbatim from 04-RESEARCH Pattern 1. This is a plain ERC-20 write
+ * — NOT an FHE/SDK call. Do NOT invent selectors.
+ */
+export const erc20MintAbi = [
+  {
+    type: "function",
+    name: "mint",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "to", type: "address" },
+      { name: "amount", type: "uint256" },
+    ],
+    outputs: [],
+  },
+] as const;
