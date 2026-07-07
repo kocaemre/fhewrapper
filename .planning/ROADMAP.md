@@ -77,7 +77,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. The EIP-712 payload signs only `UserDecryptRequestVerification` with a single reused timestamp/duration and a `0x`-stripped signature, and the signature is cached and reused within its validity window (no repeat prompt per decrypt).
 4. A token the wallet has no ACL access to shows a graceful "no decryption access" message, not an infinite spinner.
 
-**Plans**: TBD
+**Plans**: 3 plans
+
+- [ ] 03-01-PLAN.md — Tested decrypt engine (useUserDecrypt) + error/decimals pure-logic + per-card blur→reveal registry decrypt (Wave 1)
+- [ ] 03-02-PLAN.md — Paste-an-address decrypt panel: validated input + state atoms + /decrypt route under ChainGuard (Wave 2)
+- [ ] 03-03-PLAN.md — Quick-picks + permit indicator + self-hosted hero + Decrypt nav + live-URL verification gate (Wave 3)
 
 ### Phase 4: Faucet + Wrap
 
@@ -149,7 +153,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | ---------------------------------- | -------------- | ----------- | --------- |
 | 1. Foundation + Deploy Spike       | 3/3 | Complete    | 2026-07-07 |
 | 2. Registry Browse                 | 4/4 | Complete    | 2026-07-07 |
-| 3. User-Decryption (EIP-712)       | 0/TBD          | Not started | -         |
+| 3. User-Decryption (EIP-712)       | 0/3            | Not started | -         |
 | 4. Faucet + Wrap                   | 0/TBD          | Not started | -         |
 | 5. Unwrap (async finalize)         | 0/TBD          | Not started | -         |
 | 6. Error Handling + Status System  | 0/TBD          | Not started | -         |
