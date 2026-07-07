@@ -305,13 +305,29 @@
    position:relative root (app/page.tsx), so they SCROLL WITH THE PAGE and span
    the FULL document height (top:0; bottom:0) — flanking the 1180px centered
    content top-to-bottom however tall the card grid grows. BEHIND everything
-   (z-index:0), purely decorative (aria-hidden, pointer-events:none). The vine
-   ornament is a `repeat-y` background (background-size: 100% auto) so it tiles
-   continuously down the whole page instead of stretching a single image. Shown
-   only when there is real gutter room (>= 1280px) so they never crowd content
-   or cause horizontal scroll. Masked at top/bottom + outer edge so the strip
-   fades into the parchment and the vertical tile seams read as a continuous
-   engraved margin rather than an obvious loop.
+   (z-index:0), purely decorative (aria-hidden, pointer-events:none). Shown only
+   when there is real gutter room (>= 1280px) so they never crowd content or
+   cause horizontal scroll.
+
+   SYMMETRY: BOTH gutters draw ONE source tile (/motifs/vine-tile.webp) so the
+   left and right margins are exact mirror images. The tile's ornate grapevine
+   detail sits on its RIGHT edge (its left ~35% is flat cream), so:
+     - LEFT gutter uses the tile as-is with `background-position: right` → the
+       detail edge lands on the gutter's INNER (right) side, facing content.
+     - RIGHT gutter re-uses the SAME tile but `transform: scaleX(-1)` mirrors it,
+       moving the detail to the gutter's INNER (left) side — a perfect mirror of
+       the left. The mirror also flips the outer-edge mask to the correct side.
+
+   SEAMLESS INFINITE REPEAT: the tile is authored with NO top/bottom end-cap (the
+   vine flows off both edges), tiled with `background-repeat: repeat-y`. A FIXED
+   `background-size: auto 480px` gives every tile a constant 480px on-screen
+   height regardless of viewport, so the repeat boundaries land at exact 480px
+   multiples. That lets a `repeating-linear-gradient` seam-feather mask (period
+   480px, anchored to element top like the tiles) gently dip the motif's opacity
+   right at each boundary — softening the slight stem jog at the tile seam into
+   the uniform cream ground (cream-on-cream, so no banding). Combined with a
+   page top/bottom fade and an outer-edge fade, the strip reads as a continuous
+   engraved margin with no visible gaps or hard repeat line.
    ========================================================================== */
 .side-motif {
   position: absolute;
@@ -321,8 +337,25 @@
   z-index: 0;
   opacity: 0.55;
   pointer-events: none;
+  background-image: url(/motifs/vine-tile.webp);
   background-repeat: repeat-y;
-  background-size: 100% auto;
+  /* Fixed 480px tile height → constant, viewport-independent seam spacing so the
+     seam-feather mask below stays locked to every repeat boundary. Natural aspect
+     (auto width ≈ 268px) always exceeds the gutter, so no cream gap appears. */
+  background-size: auto 480px;
+  background-position: right top;
+  /* Three intersected mask layers: (1) page top/bottom fade, (2) outer-edge fade,
+     (3) seam feather that dips opacity at every 480px tile boundary. */
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
+    linear-gradient(to left, transparent 0%, #000 14%),
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0px, #000 46px, #000 434px, rgba(0, 0, 0, 0.6) 480px);
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
+    linear-gradient(to left, transparent 0%, #000 14%),
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0px, #000 46px, #000 434px, rgba(0, 0, 0, 0.6) 480px);
+  -webkit-mask-composite: source-in, source-in;
+  mask-composite: intersect;
   display: none;
   -webkit-user-select: none;
   user-select: none;
@@ -330,30 +363,13 @@
 
 .side-motif--left {
   left: 0;
-  background-image: url(/motifs/side-left.webp);
-  background-position: right top;
-  -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
-    linear-gradient(to left, transparent 0%, #000 14%);
-  mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
-    linear-gradient(to left, transparent 0%, #000 14%);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
 }
 
 .side-motif--right {
   right: 0;
-  background-image: url(/motifs/side-right.webp);
-  background-position: left top;
-  -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
-    linear-gradient(to right, transparent 0%, #000 14%);
-  mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%),
-    linear-gradient(to right, transparent 0%, #000 14%);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
+  /* Mirror the shared tile so the right margin is an exact reflection of the
+     left: detail swings to the INNER edge and the outer-edge mask flips too. */
+  transform: scaleX(-1);
 }
 
 @media (min-width: 1280px) {
