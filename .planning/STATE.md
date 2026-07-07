@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 3
 current_phase_name: EIP-712
 status: executing
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-07-07T18:46:19.688Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-07-07T19:43:42.034Z"
 last_activity: 2026-07-07
-last_activity_desc: Phase 02 complete, transitioned to Phase 3
+last_activity_desc: 03-01 complete — shared useUserDecrypt engine + per-card blur→reveal decrypt
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
-  percent: 29
+  total_plans: 10
+  completed_plans: 9
+  percent: 90
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 3 — User-Decryption (EIP-712)
-Plan: Not started
-Status: Executing — data engine + minimal live render shipped
-Last activity: 2026-07-07 — Phase 02 complete, transitioned to Phase 3
+Plan: 03-01 complete (shared decrypt engine + per-card blur→reveal); 03-02 next
+Status: Executing — decrypt pure-logic test-locked, useUserDecrypt engine + PairCardDecrypt shipped
+Last activity: 2026-07-07 — 03-01 complete
 
-Progress: [██░░░░░░░░] 25% (phase 02: 1/4 plans)
+Progress: [█████████░] 90% (phase 03: 1/3 plans)
 
 ## Performance Metrics
 
@@ -63,6 +63,7 @@ _Updated after each plan completion_
 | Phase 02 P02 | 19min | 3 tasks | 17 files |
 | Phase 02 P04 | 1min | 1 tasks | 1 files |
 | Phase 02 P03 | 33min | 3 tasks | 8 files |
+| Phase 03 P01 | 10 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,9 @@ Recent decisions affecting current work:
 - [Phase 02]: 02-02: next-themes value-map light->parchment / dark->cellar keeps RainbowKit resolvedTheme keys intact (layout.tsx only)
 - [Phase ?]: 02-03: client-side search matches raw+normalized symbol, name, and both addresses; ALL/VALID/REVOKED chip AND-combines with search (pure filterPairs, 10 vitest units)
 - [Phase ?]: 02-03: data states branch on useRegistryPairs — 6-card skeleton (reduced-motion-safe) / RegistryError(refetch) / RegistryEmpty echoing query / PairGrid
+- [03-01]: Installed EXACT 3.0.0 @zama-fhe/react-sdk uses useAllow/useIsAllowed/useConfidentialBalance — NOT useGrantPermit/useHasPermit/useDecryptValues (those don't exist in 3.0.0 and fail to compile). Single reusable non-token-specific EIP-712 permit via useAllow; useConfidentialBalance returns the decrypted cleartext bigint directly (DEC-01/03).
+- [03-01]: useIsAllowed config is a NON-EMPTY [Address,...Address[]] tuple — pass [tokenAddress ?? zeroAddress] (never []); the real decrypt is gated by the enabled flag so the placeholder is a cheap local permit read only.
+- [03-01]: Decrypt error taxonomy is instanceof + matchAclRevert (never string-match revert messages); NoCiphertext/zero-handle renders 0, never an error (DEC-04). Cleartext formatted by the token's own decimals via formatUnits (Pitfall 5).
 
 ### Pending Todos
 
@@ -111,6 +115,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-07T17:19:00.715Z
+Last session: 2026-07-07T19:43:07.313Z
 Stopped at: Completed 02-02-PLAN.md
 Resume file: None

@@ -26,10 +26,10 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 ### User-Decryption (EIP-712)
 
-- [ ] **DEC-01**: User can decrypt the connected wallet's balance for any ERC-7984 token via the EIP-712 user-decryption flow
+- [x] **DEC-01**: User can decrypt the connected wallet's balance for any ERC-7984 token via the EIP-712 user-decryption flow
 - [ ] **DEC-02**: Decryption works for tokens **outside** the registry (paste-an-address and/or auto-detect)
-- [ ] **DEC-03**: EIP-712 payload is assembled correctly (sign only `UserDecryptRequestVerification`, consistent timestamp/duration), signature cached for its validity window
-- [ ] **DEC-04**: The "no ACL access" case is detected and messaged gracefully (some arbitrary tokens are undecryptable by design)
+- [x] **DEC-03**: EIP-712 payload is assembled correctly (sign only `UserDecryptRequestVerification`, consistent timestamp/duration), signature cached for its validity window
+- [x] **DEC-04**: The "no ACL access" case is detected and messaged gracefully (some arbitrary tokens are undecryptable by design)
 
 ### Faucet (Sepolia)
 
@@ -104,10 +104,10 @@ Explicitly excluded to prevent scope creep.
 | REG-05      | Phase 2 | Complete |
 | REG-06      | Phase 2 | Complete |
 | REG-07      | Phase 2 | Complete |
-| DEC-01      | Phase 3 | Pending  |
+| DEC-01      | Phase 3 | Complete |
 | DEC-02      | Phase 3 | Pending  |
-| DEC-03      | Phase 3 | Pending  |
-| DEC-04      | Phase 3 | Pending  |
+| DEC-03      | Phase 3 | Complete |
+| DEC-04      | Phase 3 | Complete |
 | FCT-01      | Phase 4 | Pending  |
 | FCT-02      | Phase 4 | Pending  |
 | WRP-01      | Phase 4 | Pending  |
