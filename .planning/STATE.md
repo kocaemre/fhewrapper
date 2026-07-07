@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 3
-current_phase_name: EIP-712
+current_phase: 4
+current_phase_name: Faucet + Wrap
 status: executing
-stopped_at: Completed 03-03-PLAN.md (live-URL UAT deferred to 03-UAT.md)
-last_updated: "2026-07-07T23:20:00.000Z"
+stopped_at: Completed 03-03-PLAN.md (live-URL decrypt UAT deferred to 03-UAT.md)
+last_updated: "2026-07-07T20:34:48.556Z"
 last_activity: 2026-07-07
-last_activity_desc: 03-03 complete (Phase 3 code done; live-URL decrypt UAT deferred)
+last_activity_desc: Phase 03 complete, transitioned to Phase 4
 progress:
   total_phases: 7
   completed_phases: 3
@@ -28,10 +28,10 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 
 ## Current Position
 
-Phase: 3 — User-Decryption (EIP-712)
-Plan: 03-03 complete (registry quick-picks + VIEWING KEY ACTIVE indicator + self-hosted decrypt hero + Header Decrypt nav). Phase 3 code done — live-URL decrypt UAT deferred to 03-UAT.md.
+Phase: 4 — Faucet + Wrap
+Plan: Not started
 Status: Executing — Phase 3 all 3 plans shipped; gates green (check-types/lint/vitest 55/vitest build). Live-URL decrypt proof (DEC-01…DEC-04 + no-ACL error class) deferred to end-of-project manual session.
-Last activity: 2026-07-07 — 03-03 complete
+Last activity: 2026-07-07 — Phase 03 complete, transitioned to Phase 4
 
 Progress: [██████████] 100% (phase 03: 3/3 plans)
 
@@ -39,7 +39,7 @@ Progress: [██████████] 100% (phase 03: 3/3 plans)
 
 **Velocity:**
 
-- Total plans completed: 7
+- Total plans completed: 10
 - Average duration: — min
 - Total execution time: 0.0 hours
 
@@ -49,6 +49,7 @@ Progress: [██████████] 100% (phase 03: 3/3 plans)
 | ----- | ----- | ----- | -------- |
 | 01 | 3 | - | - |
 | 02 | 4 | - | - |
+| 03 | 3 | - | - |
 
 **Recent Trend:**
 
