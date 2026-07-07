@@ -129,10 +129,12 @@ Explicitly excluded to prevent scope creep.
 | SUB-05 | Phase 7 | Pending |
 
 **Coverage:**
-- v1 requirements: 33 total
-- Mapped to phases: 33
+- v1 requirements: 34 total
+- Mapped to phases: 34
 - Unmapped: 0 ✓
+
+> Note: an earlier coverage summary stated "33 total" — recounted at roadmap creation, the distinct v1 requirement IDs number 34 (FND×4, REG×7, DEC×4, FCT×2, WRP×2, UNW×2, UX×3, DIF×5, SUB×5). All 34 are mapped to exactly one phase; the corrected count is 34/34.
 
 ---
 *Requirements defined: 2026-07-07*
-*Last updated: 2026-07-07 after initial definition*
+*Last updated: 2026-07-07 after roadmap creation (traceability confirmed, coverage recount 33 → 34)*
