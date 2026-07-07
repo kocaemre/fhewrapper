@@ -141,7 +141,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase                              | Plans Complete | Status      | Completed |
 | ---------------------------------- | -------------- | ----------- | --------- |
-| 1. Foundation + Deploy Spike       | 3/3 | Complete   | 2026-07-07 |
+| 1. Foundation + Deploy Spike       | 3/3 | Complete    | 2026-07-07 |
 | 2. Registry Browse                 | 0/TBD          | Not started | -         |
 | 3. User-Decryption (EIP-712)       | 0/TBD          | Not started | -         |
 | 4. Faucet + Wrap                   | 0/TBD          | Not started | -         |
