@@ -62,11 +62,11 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 ### Submission Deliverables
 
-- [ ] **SUB-01**: Public, open-source GitHub repository with full source code
+- [x] **SUB-01**: Public, open-source GitHub repository with full source code
 - [x] **SUB-02**: README covers live URL, supported networks, how the registry is sourced, how to add a new pair, and deployment scripts
 - [x] **SUB-03**: Publicly accessible live deployment where judges can use every feature on Sepolia
-- [ ] **SUB-04**: 3-minute real-person pitch video (no AI-generated video/voice) showing browse → faucet → wrap → decrypt → unwrap → decrypt an arbitrary out-of-registry ERC-7984, plus how a new pair is added
-- [ ] **SUB-05**: A thread or article published on X introducing the project
+- [x] **SUB-04**: 3-minute real-person pitch video (no AI-generated video/voice) showing browse → faucet → wrap → decrypt → unwrap → decrypt an arbitrary out-of-registry ERC-7984, plus how a new pair is added
+- [x] **SUB-05**: A thread or article published on X introducing the project
 
 ## v2 Requirements
 
@@ -122,11 +122,11 @@ Explicitly excluded to prevent scope creep.
 | DIF-03      | Phase 7 | Complete |
 | DIF-04      | Phase 7 | Complete |
 | DIF-05      | Phase 7 | Complete |
-| SUB-01      | Phase 7 | Pending  |
+| SUB-01      | Phase 7 | Complete |
 | SUB-02      | Phase 7 | Complete |
 | SUB-03      | Phase 1 | Complete |
-| SUB-04      | Phase 7 | Pending  |
-| SUB-05      | Phase 7 | Pending  |
+| SUB-04      | Phase 7 | Complete |
+| SUB-05      | Phase 7 | Complete |
 
 **Coverage:**
 
