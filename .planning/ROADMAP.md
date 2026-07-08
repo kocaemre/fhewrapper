@@ -114,9 +114,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. Unwrap grants the wrapper ACL / allowance correctly (via the `inputProof` variant or operator) and does not revert.
 4. On the live URL, the full wrap → decrypt → unwrap loop completes end-to-end for a token the judge just wrapped.
 
-**Plans**: 2 plans
+**Plans**: 1/2 plans executed
 
-- [ ] 05-01-PLAN.md — Honest unwrap engine: tested stage machine + amount/error logic + pending persistence + `useUnwrap` (`useUnshield`) (Wave 1)
+- [x] 05-01-PLAN.md — Honest unwrap engine: tested stage machine + amount/error logic + pending persistence + `useUnwrap` (`useUnshield`) (Wave 1)
 - [ ] 05-02-PLAN.md — `/unwrap` screen + Unwrap-all + honest finalized-only end-state proof + resume + Wrap/Unwrap loop closure (Wave 2)
 
 ### Phase 6: Error Handling + Status System
@@ -161,6 +161,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Registry Browse                 | 4/4 | Complete    | 2026-07-07 |
 | 3. User-Decryption (EIP-712)       | 3/3 | Complete    | 2026-07-07 |
 | 4. Faucet + Wrap                   | 2/2 | Complete    | 2026-07-08 |
-| 5. Unwrap (async finalize)         | 0/2            | Not started | -         |
+| 5. Unwrap (async finalize)         | 1/2 | In Progress|  |
 | 6. Error Handling + Status System  | 0/TBD          | Not started | -         |
 | 7. Polish + Animation + Submission | 0/TBD          | Not started | -         |

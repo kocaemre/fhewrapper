@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 5
 current_phase_name: async finalize
 status: executing
-stopped_at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md). Phase 04 complete.
-last_updated: "2026-07-08T05:52:38.665Z"
+stopped_at: Completed 05-01-PLAN.md (honest unwrap engine — stages/amount/errors/pending + useUnwrap; live two-tx unwrap→finalize proof deferred to 05-UAT.md).
+last_updated: "2026-07-08T06:20:02.949Z"
 last_activity: 2026-07-08
-last_activity_desc: Phase 04 complete, transitioned to Phase 5
+last_activity_desc: Completed 05-01 (honest unwrap engine); 05-02 next
 progress:
   total_phases: 7
   completed_phases: 4
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 14
+  completed_plans: 13
   percent: 57
 ---
 
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 5 — Unwrap (async finalize)
-Plan: Not started
-Status: Executing — 04-02 shipped: previewWrap pure math (RED→GREEN, 6-dp & 18-dp "1 whole → 1.0"), toWrapError map, useWrap (useShield 4-stage + onchain rate()), /wrap screen under ChainGuard with From/To preview + below-one-unit disable + on-done decrypt==preview proof, PairCard Wrap → CTA wired. Gates green (check-types / build with /wrap emitted / vitest 75). Live wrap + decrypt==preview proof (WRP-01/02) deferred to 04-UAT.md end-of-project session.
-Last activity: 2026-07-08 — Phase 04 complete, transitioned to Phase 5
+Plan: 05-01 complete; 05-02 next
+Status: Executing — 05-01 shipped the honest unwrap engine: nextUnwrapStage reducer + isUnwrapSuccess (success ONLY at finalized; UNW-02, RED→GREEN), parseUnwrapAmount (decimals-driven 6-dp & 18-dp, never throws; UNW-01), toUnwrapError map, browserPendingStorage pending-unshield shim (never-strand-funds, RED→GREEN), and useUnwrap wrapping useUnshield/useUnshieldAll + useResumeUnshield with no operator step. Gates green (check-types / next build / vitest 98). Live two-tx unwrap→finalize→ERC-20-arrives proof (UNW-01/02) deferred to 05-UAT.md.
+Last activity: 2026-07-08 — Completed 05-01 (honest unwrap engine)
 
-Progress: [██████████] 100% (phase 04: 2/2 plans)
+Progress: [█████░░░░░] 50% (phase 05: 1/2 plans)
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [██████████] 100% (phase 04: 2/2 plans)
 | 02 | 4 | - | - |
 | 03 | 3 | - | - |
 | 04 | 2 | - | - |
+| 05 | 1 | 6min | 6min |
 
 **Recent Trend:**
 
@@ -126,6 +127,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-08T05:48:03Z
+Last session: 2026-07-08T06:20:02.944Z
 Stopped at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md). Phase 04 complete.
 Resume file: None

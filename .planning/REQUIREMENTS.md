@@ -43,8 +43,8 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 ### Unwrap
 
-- [ ] **UNW-01**: User can unwrap an ERC-7984 back to its ERC-20 (encrypted input → unwrap) with correct wrapper ACL / allowance setup
-- [ ] **UNW-02**: The two-step async flow is modeled — an explicit pending→finalized state; success shown only when the ERC-20 actually arrives (`finalizeUnwrap` completion)
+- [x] **UNW-01**: User can unwrap an ERC-7984 back to its ERC-20 (encrypted input → unwrap) with correct wrapper ACL / allowance setup
+- [x] **UNW-02**: The two-step async flow is modeled — an explicit pending→finalized state; success shown only when the ERC-20 actually arrives (`finalizeUnwrap` completion)
 
 ### UX & Error Handling
 
@@ -112,8 +112,8 @@ Explicitly excluded to prevent scope creep.
 | FCT-02      | Phase 4 | Complete |
 | WRP-01      | Phase 4 | Complete |
 | WRP-02      | Phase 4 | Complete |
-| UNW-01      | Phase 5 | Pending  |
-| UNW-02      | Phase 5 | Pending  |
+| UNW-01      | Phase 5 | Complete |
+| UNW-02      | Phase 5 | Complete |
 | UX-01       | Phase 6 | Pending  |
 | UX-02       | Phase 6 | Pending  |
 | UX-03       | Phase 6 | Pending  |
