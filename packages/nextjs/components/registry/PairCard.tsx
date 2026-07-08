@@ -163,25 +163,44 @@ export function PairCard({ pair }: { pair: RegistryPair }) {
         </span>
         <div style={{ flex: 1 }} />
         {isValid ? (
-          // Functional in Phase 4: navigate to the wrap screen for this pair,
-          // keyed by the ERC-7984 confidential (= wrapper) address from the
-          // trusted registry (WRP-01, T-04-09).
-          <Link
-            href={`/wrap?token=${confidential.address}`}
-            style={{
-              border: "2px solid var(--line)",
-              background: "var(--block)",
-              color: "var(--block-fg)",
-              padding: "8px 18px",
-              fontWeight: 600,
-              fontSize: 14,
-              fontFamily: "var(--font-gelasio), Georgia, serif",
-              cursor: "pointer",
-              textDecoration: "none",
-            }}
-          >
-            Wrap →
-          </Link>
+          // Functional in Phase 4/5: navigate to the wrap OR unwrap screen for
+          // this pair, keyed by the ERC-7984 confidential (= wrapper) address
+          // from the trusted registry (WRP-01 / UNW-01, T-04-09 / T-05-05). The
+          // Unwrap → link closes the wrap → decrypt → unwrap loop (SC4).
+          <div style={{ display: "flex", gap: 8 }}>
+            <Link
+              href={`/unwrap?token=${confidential.address}`}
+              style={{
+                border: "2px solid var(--line)",
+                background: "transparent",
+                color: "var(--ink)",
+                padding: "8px 18px",
+                fontWeight: 600,
+                fontSize: 14,
+                fontFamily: "var(--font-gelasio), Georgia, serif",
+                cursor: "pointer",
+                textDecoration: "none",
+              }}
+            >
+              Unwrap →
+            </Link>
+            <Link
+              href={`/wrap?token=${confidential.address}`}
+              style={{
+                border: "2px solid var(--line)",
+                background: "var(--block)",
+                color: "var(--block-fg)",
+                padding: "8px 18px",
+                fontWeight: 600,
+                fontSize: 14,
+                fontFamily: "var(--font-gelasio), Georgia, serif",
+                cursor: "pointer",
+                textDecoration: "none",
+              }}
+            >
+              Wrap →
+            </Link>
+          </div>
         ) : (
           <button
             type="button"

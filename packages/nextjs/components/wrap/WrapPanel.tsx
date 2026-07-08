@@ -18,8 +18,9 @@ const MONO = "var(--font-jetbrains-mono), monospace";
 const SERIF = "var(--font-gelasio), Georgia, serif";
 
 /**
- * Wrap panel (WRP-01 / WRP-02) — the design's Wrap/Unwrap panel, Wrap direction
- * ONLY (unwrap is Phase 5, rendered as a disabled affordance).
+ * Wrap panel (WRP-01 / WRP-02) — the design's Wrap/Unwrap panel, Wrap direction.
+ * The Unwrap tab is a functional `next/link` to `/unwrap?token=` (Phase 5, SC4
+ * loop continuity).
  *
  * Left "From · Public ERC-20": an amount input in the underlying token + its
  * live ERC-20 balance with a Max affordance. Right "To · Confidential ERC-7984":
@@ -115,7 +116,7 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
           </div>
         </div>
         <div style={{ flex: 1 }} />
-        {/* Wrap active; Unwrap is Phase 5 (disabled affordance). */}
+        {/* Wrap ⇄ Unwrap toggle — Wrap active here, Unwrap links to /unwrap (SC4 loop). */}
         <div style={{ display: "flex", border: "2px solid var(--line)" }}>
           <span
             style={{
@@ -129,20 +130,20 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
           >
             Wrap
           </span>
-          <span
-            title="Unwrap ships in Phase 5"
+          <Link
+            href={`/unwrap?token=${confidential.address}`}
             style={{
               padding: "10px 22px",
               fontSize: 14.5,
               fontWeight: 700,
               fontFamily: SERIF,
               borderLeft: "2px solid var(--line)",
-              color: "var(--faint)",
-              cursor: "not-allowed",
+              color: "var(--ink)",
+              textDecoration: "none",
             }}
           >
             Unwrap
-          </span>
+          </Link>
         </div>
       </div>
 
