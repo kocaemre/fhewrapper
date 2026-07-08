@@ -6,15 +6,15 @@ current_phase: 6
 current_phase_name: Error Handling + Status System
 status: executing
 stopped_at: Completed 06-01-PLAN.md (unified toAppError + status primitives, proven on the faucet flow; live check deferred to 06-UAT.md).
-last_updated: "2026-07-08T06:58:00.000Z"
+last_updated: "2026-07-08T07:07:33.861Z"
 last_activity: 2026-07-08
-last_activity_desc: 06-01 complete (unified error model + status primitives)
+last_activity_desc: 06-01 complete
 progress:
   total_phases: 7
-  completed_phases: 5
-  total_plans: 17
+  completed_phases: 6
+  total_plans: 16
   completed_plans: 16
-  percent: 76
+  percent: 86
 ---
 
 # Project State
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 6 — Error Handling + Status System
-Plan: 1 of 2 complete (06-01 done; 06-02 next)
+Plan: 2 of 2 complete (06-01 done; 06-02 next)
 Status: Executing — 06-01 systematized error/status handling: ONE unified toAppError classifier (lib/appError.ts) returning {chip,body,recoverable} for every faucet/wrap/unwrap/decrypt failure (never a raw revert); the four per-flow maps now delegate with signatures intact (98 pre-existing tests unchanged + 14 new = 112 green). Added host-pinned Sepolia explorer helpers (lib/explorer.ts), themed react-hot-toast wrappers (components/status/txToast.tsx) + ExplorerTxLink, and a Submit→Confirm→Done FaucetStageIndicator. Proved the primitives end-to-end on the faucet claim: pending→success/error toast (success carries a working sepolia.etherscan.io/tx link), stage view, and typed error body (UX-01/UX-02). check-types + next build (/faucet emitted) clean. Live "each error surfaces" check deferred to 06-UAT.md.
 Last activity: 2026-07-08 — 06-01 complete
 
@@ -73,6 +73,7 @@ _Updated after each plan completion_
 | Phase 04 P02 | 9min | 3 tasks | 10 files |
 | Phase 05 P02 | 6min | 3 tasks | 6 files |
 | Phase 06 P01 | 11min | 3 tasks | 12 files |
+| Phase 06 P02 | 12m | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,8 @@ Recent decisions affecting current work:
 - [03-03]: Live-URL decrypt phase gate DEFERRED (time-box directive) to a single end-of-project manual session — see 03-UAT.md (DEC-01…DEC-04 + record concrete no-ACL error class → resolves RESEARCH Open Q1). Code + automated gates green now.
 - [04-01]: Faucet is a plain wagmi public mint(address,uint256) on the cTokenMock UNDERLYING ERC-20 (verified selector 0x40c10f19, no access control, 1,000,000/call cap) — NO SDK/FHE, NO cooldown (a cooldown UI would be fiction). Success = receipt, not submit. Amount clamped then parseUnits by the token's own decimals (never 18). tGBP detected by symbol and disabled up-front with restricted copy; every failure mapped to readable copy (no raw revert). Live faucet proof (FCT-01/FCT-02) deferred to 04-UAT.md.
 - [04-02]: WRAP = ONE useShield({ tokenAddress, wrapperAddress }) — both = confidential addr (ERC7984ERC20Wrapper IS the confidential token; installed 3.0.0, NOT docs' { address }). approve+wrap auto-orchestrated; onApprovalSubmitted/onShieldSubmitted + mutation receipt drive the 4-stage indicator (never hand-roll approve+wrap). previewWrap is PURE bigint floor(underlyingRaw/rate) with rate() + per-side decimals read onchain via rateContract (never hardcode 18); belowOneUnit disables Wrap. toWrapError = instanceof ZamaError subclasses → copy (no raw revert). Decrypt==preview proof reuses Phase-3 PairCardDecrypt on stage=done. approvalStrategy default 'max'. /wrap resolves the pair from trusted useRegistryPairs (?token=) under ChainGuard + Suspense. Live wrap + decrypt==preview proof (WRP-01/02, amount-scale Open Q1/A2) deferred to 04-UAT.md.
+- [Phase ?]: 06-02: unwrap success toast gated to stage===finalized effect (no optimistic success; T-06-06/UNW-02 preserved)
+- [Phase ?]: 06-02: write hooks expose additive txHash for explorer links + real-tx success toasts without touching the SDK stage machine
 
 ### Pending Todos
 
@@ -129,6 +132,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-08T06:58:00.000Z
+Last session: 2026-07-08T07:06:58.136Z
 Stopped at: Completed 06-01-PLAN.md (unified toAppError + status primitives, proven on the faucet flow; live "each error surfaces" check deferred to 06-UAT.md).
 Resume file: None
