@@ -2,7 +2,9 @@
 
 **Browse every official ERC-20 ↔ ERC-7984 wrapper pair on Sepolia, wrap/unwrap, decrypt any confidential balance via EIP-712, and claim faucet test tokens — from one app.**
 
-**▶ Live app: https://fhewrapper-nextjs.vercel.app/**
+**▶ Live app: https://zama.0xemrek.dev/**
+
+**▶ Demo video: _(add link once recorded)_**
 
 Built for the **Zama Developer Program — Mainnet Season 3 Bounty Track**. The Cellar Registry turns the Zama **Wrappers Registry** into a usable product: it reads the official registry live onchain, makes "use the official registry" the path of least resistance, and wraps the whole confidential-token loop (wrap → decrypt → unwrap) in a signature cinematic.
 
@@ -15,7 +17,7 @@ FHEVM (Fully Homomorphic Encryption Virtual Machine) lets smart contracts comput
 ## What it does
 
 - **Browse the registry** — reads the **onchain** Sepolia Wrappers Registry (`0x2f0750Bbb0A246059d80e94c454586a7F27a128e`) as the source of truth; resolves both sides' symbol/name/decimals in one Multicall3 batch; flags revoked pairs via the registry's `isValid` bit. Search, valid/revoked filter chips, and address-copy affordances included.
-- **Faucet** — claim the official cTokenMock underlying ERC-20 test tokens (cUSDC, cUSDT, cWETH, cBRON, cZAMA, ctGBP, cXAUt) straight from the app, with cooldown / low-gas / wrong-network handling.
+- **Faucet** — claim the official cTokenMock underlying ERC-20 test tokens (cUSDC, cUSDT, cWETH, cBRON, cZAMA, ctGBP, cXAUt) straight from the app, with low-gas / over-cap / wrong-network handling.
 - **Wrap** — approve + wrap a registry ERC-20 into its ERC-7984 equivalent; reads `rate()` + `decimals()` per pair onchain and previews the resulting amount (never hardcodes 18 decimals).
 - **Unwrap** — the honest two-tx async flow (burn → gateway public-decrypt → finalize); success is shown only when the ERC-20 actually arrives (`finalizeUnwrap` receipt), with a resumable pending state.
 - **Decrypt any ERC-7984 balance** — one reusable EIP-712 permit user-decrypts the connected wallet's balance for **any** ERC-7984 token, including tokens **outside** the registry (paste-an-address); the "no ACL access" case is detected and messaged, not left spinning.
@@ -126,7 +128,7 @@ The live app deploys via **GitHub → Vercel dashboard import** (no Vercel CLI n
 4. Leave **`NEXT_PUBLIC_IPFS_BUILD` unset** so `next.config.ts` `headers()` emit the COOP/COEP headers (see above) instead of a static export.
 5. No env vars are required to boot — with no `NEXT_PUBLIC_ALCHEMY_API_KEY` the app falls back to public Sepolia RPCs. Set `NEXT_PUBLIC_ALCHEMY_API_KEY` (name only — never commit the value) for a dedicated RPC.
 
-After import, the deploy is a hybrid build (`.next`, no `out/`) at a public URL — confirmed at https://fhewrapper-nextjs.vercel.app/.
+After import, the deploy is a hybrid build (`.next`, no `out/`) at a public URL — confirmed at https://zama.0xemrek.dev/.
 
 ### Local development
 

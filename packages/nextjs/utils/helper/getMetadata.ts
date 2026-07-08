@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 
-const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : `http://localhost:${process.env.PORT || 3000}`;
-const titleTemplate = "%s | helper 2";
+// Canonical production domain (custom domain on Vercel). `VERCEL_PROJECT_PRODUCTION_URL`
+// resolves to the *.vercel.app subdomain even when a custom domain is attached, so we
+// prefer the explicit production URL for OG/Twitter cards and canonical links.
+const baseUrl =
+  process.env.NODE_ENV === "production" ? "https://zama.0xemrek.dev" : `http://localhost:${process.env.PORT || 3000}`;
+const titleTemplate = "%s · The Cellar Registry";
 
 export const getMetadata = ({
   title,
