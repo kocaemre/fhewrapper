@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { createPortal } from "react-dom";
 import type { WrapStage } from "~~/hooks/useWrap";
 import { BEAT_MEDIA, BEAT_SUB, BEAT_TITLES, type BeatId, beatsForStage } from "~~/lib/cinematicBeats";
 
@@ -37,6 +38,21 @@ export function WrapCinematic({ stage, onSkip }: { stage: WrapStage; onSkip: () 
   const [idx, setIdx] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Portal the overlay into <body> so its stacking context is the document root,
+  // not the deep page `<section>` it is mounted in. Without this the overlay's
+  // high z-index is trapped inside the page-content stacking context and cannot
+  // rise above the sticky site Header (z-20) — so the Skip control (top-right)
+  // visually tangles with the header's wallet cluster (audio toggle / balance /
+  // address pill, also top-right). A body portal + a z-index above the header
+  // makes the overlay a true full-viewport layer that covers the top bar, so the
+  // wallet cluster is neither visible nor clickable underneath during the
+  // cinematic and the Skip control sits on a clean dark scrim with nothing to
+  // collide with. Guarded by `mounted` so the portal only runs client-side.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Each stage plays its own ordered beat list from the top.
   useEffect(() => {
     setIdx(0);
@@ -62,6 +78,9 @@ export function WrapCinematic({ stage, onSkip }: { stage: WrapStage; onSkip: () 
   // and error row beneath are the source of truth.
   if (beats.length === 0) return null;
 
+  // Portal target is only available on the client after mount.
+  if (!mounted) return null;
+
   const beat = beats[Math.min(idx, beats.length - 1)];
   const media = BEAT_MEDIA[beat];
   // The `age` beat loops for the (variable) block-confirmation wait; multi-beat
@@ -83,7 +102,7 @@ export function WrapCinematic({ stage, onSkip }: { stage: WrapStage; onSkip: () 
     }
   }
 
-  return (
+  return createPortal(
     <motion.div
       role="dialog"
       aria-modal="true"
@@ -206,6 +225,7 @@ export function WrapCinematic({ stage, onSkip }: { stage: WrapStage; onSkip: () 
           );
         })}
       </div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }

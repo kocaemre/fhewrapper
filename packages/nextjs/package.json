@@ -45,6 +45,7 @@
     "@types/howler": "2.2.13",
     "@types/node": "~18.19.50",
     "@types/react": "~19.0.7",
+    "@types/react-dom": "~19.0.0",
     "@vitest/coverage-v8": "4.1.10",
     "abitype": "1.0.6",
     "autoprefixer": "~10.4.20",
