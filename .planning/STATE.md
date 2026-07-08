@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 7
 current_phase_name: Polish + Animation Differentiator + Submission
 status: executing
-stopped_at: Completed 06-01-PLAN.md (unified toAppError + status primitives, proven on the faucet flow; live "each error surfaces" check deferred to 06-UAT.md).
-last_updated: "2026-07-08T07:08:47.079Z"
+stopped_at: Completed 07-01-PLAN.md (signature wrap cinematic — honest reveal-gated engine + ffmpeg-compressed self-hosted beats + skippable tx-driven overlay; vitest 130/130, build clean; live proofs deferred to 07-UAT.md).
+last_updated: "2026-07-08T07:40:00.000Z"
 last_activity: 2026-07-08
-last_activity_desc: Phase 06 complete, transitioned to Phase 7
+last_activity_desc: 07-01 wrap cinematic complete (DIF-01/DIF-02)
 progress:
   total_phases: 7
   completed_phases: 6
-  total_plans: 16
-  completed_plans: 16
-  percent: 86
+  total_plans: 20
+  completed_plans: 17
+  percent: 85
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 7 — Polish + Animation Differentiator + Submission
-Plan: Not started
-Status: Executing — 06-01 systematized error/status handling: ONE unified toAppError classifier (lib/appError.ts) returning {chip,body,recoverable} for every faucet/wrap/unwrap/decrypt failure (never a raw revert); the four per-flow maps now delegate with signatures intact (98 pre-existing tests unchanged + 14 new = 112 green). Added host-pinned Sepolia explorer helpers (lib/explorer.ts), themed react-hot-toast wrappers (components/status/txToast.tsx) + ExplorerTxLink, and a Submit→Confirm→Done FaucetStageIndicator. Proved the primitives end-to-end on the faucet claim: pending→success/error toast (success carries a working sepolia.etherscan.io/tx link), stage view, and typed error body (UX-01/UX-02). check-types + next build (/faucet emitted) clean. Live "each error surfaces" check deferred to 06-UAT.md.
-Last activity: 2026-07-08 — Phase 06 complete, transitioned to Phase 7
+Plan: 07-01 complete (1/4)
+Status: Executing — 07-01 shipped the signature wrap cinematic (DIF-01/DIF-02). lib/cinematicBeats.ts is a PURE, unit-locked (RED→GREEN) engine mapping the real useWrap stage → six engraving beats; the reveal beats (pop/token) are structurally unreachable until stage==="done" (the mined receipt), so the overlay cannot lie about the tx (threat T-07-01, top honesty axis). The six RAW Kling beats were ffmpeg-8.0.1-compressed to 720p H.264 (crf28 +faststart, audio stripped) at 0.29–0.86MB each and self-hosted under public/cinematic (same-origin → COEP require-corp / crossOriginIsolated preserved, DIF-02); six storyboard PNG posters alongside. components/wrap/WrapCinematic.tsx is a full-screen, skippable (Skip + Esc), reduced-motion-suppressed overlay that plays the current beat, loops age while confirming, and auto-dismisses after the token reveal. WrapPanel opens it on wrap submit (motion-gated) while the honest WrapStageIndicator + error row + on-done decrypt proof keep rendering beneath; skipping never touches the useWrap mutation. Preloader gained a video branch warming only the first beat. vitest 130/130 (112 + 18 new), check-types + next build (/wrap emitted) clean. Live "cinematic plays on a real wrap / reveal only at mined tx / crossOriginIsolated preserved" deferred to 07-UAT.md.
+Last activity: 2026-07-08 — 07-01 wrap cinematic complete
 
-Progress: [█████░░░░░] 50% (phase 06: 1/2 plans)
+Progress: [█████████░] 85% (phase 07: 1/4 plans)
 
 ## Performance Metrics
 
@@ -75,6 +75,7 @@ _Updated after each plan completion_
 | Phase 05 P02 | 6min | 3 tasks | 6 files |
 | Phase 06 P01 | 11min | 3 tasks | 12 files |
 | Phase 06 P02 | 12m | 2 tasks | 5 files |
+| Phase 07 P01 | 6min | 3 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,7 @@ Recent decisions affecting current work:
 - [04-02]: WRAP = ONE useShield({ tokenAddress, wrapperAddress }) — both = confidential addr (ERC7984ERC20Wrapper IS the confidential token; installed 3.0.0, NOT docs' { address }). approve+wrap auto-orchestrated; onApprovalSubmitted/onShieldSubmitted + mutation receipt drive the 4-stage indicator (never hand-roll approve+wrap). previewWrap is PURE bigint floor(underlyingRaw/rate) with rate() + per-side decimals read onchain via rateContract (never hardcode 18); belowOneUnit disables Wrap. toWrapError = instanceof ZamaError subclasses → copy (no raw revert). Decrypt==preview proof reuses Phase-3 PairCardDecrypt on stage=done. approvalStrategy default 'max'. /wrap resolves the pair from trusted useRegistryPairs (?token=) under ChainGuard + Suspense. Live wrap + decrypt==preview proof (WRP-01/02, amount-scale Open Q1/A2) deferred to 04-UAT.md.
 - [Phase ?]: 06-02: unwrap success toast gated to stage===finalized effect (no optimistic success; T-06-06/UNW-02 preserved)
 - [Phase ?]: 06-02: write hooks expose additive txHash for explorer links + real-tx success toasts without touching the SDK stage machine
+- [07-01]: Wrap cinematic HONESTY is structural, not conventional — lib/cinematicBeats.ts encodes the reveal beats (pop/token) ONLY on stage==="done" in a per-stage Record, unit-locked by 18 RED→GREEN vitest cases; the WrapCinematic overlay consumes it, so it cannot show success before the mined receipt (T-07-01). Overlay reflects stage, never drives it; onSkip (Skip button + Esc) closes ONLY the overlay, never the useWrap mutation; prefers-reduced-motion suppresses it (plain WrapStageIndicator carries the flow). Six beats ffmpeg-compressed 720p H.264 crf28 +faststart -an to 0.29–0.86MB each, self-hosted under public/cinematic (same-origin → crossOriginIsolated intact, DIF-02); audio stripped (07-02 owns ambient). Preloader video branch warms only the first beat. Live proofs deferred to 07-UAT.md.
 
 ### Pending Todos
 
@@ -133,6 +135,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-08T07:06:58.136Z
-Stopped at: Completed 06-01-PLAN.md (unified toAppError + status primitives, proven on the faucet flow; live "each error surfaces" check deferred to 06-UAT.md).
+Last session: 2026-07-08T07:36:37.505Z
+Stopped at: Completed 07-01-PLAN.md (signature wrap cinematic — honest reveal-gated engine + ffmpeg-compressed self-hosted beats + skippable tx-driven overlay; vitest 130/130, build clean; live proofs deferred to 07-UAT.md).
 Resume file: None
