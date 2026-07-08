@@ -56,6 +56,36 @@ export function FaucetPanel() {
         </p>
       </div>
 
+      <div
+        role="note"
+        aria-label='What "(Mock)" means'
+        style={{
+          display: "flex",
+          gap: 11,
+          alignItems: "flex-start",
+          border: "1px solid var(--line)",
+          borderLeftWidth: 3,
+          background: "var(--panel2)",
+          padding: "12px 16px",
+          marginBottom: 18,
+          fontSize: 13.5,
+          lineHeight: 1.5,
+          color: "var(--muted)",
+        }}
+      >
+        <span
+          aria-hidden="true"
+          style={{ color: "var(--faint)", fontWeight: 700, fontSize: 15, fontFamily: SERIF, lineHeight: 1.3 }}
+        >
+          ⓘ
+        </span>
+        <span style={{ textWrap: "pretty" }}>
+          <strong style={{ color: "var(--ink)" }}>“Mock” = official Zama test tokens on Sepolia</strong> — freely
+          mintable, zero real value. These buttons fire real onchain transactions, so you can try the wrap → decrypt →
+          unwrap flow risk-free.
+        </span>
+      </div>
+
       {ethLow && (
         <div
           role="alert"
