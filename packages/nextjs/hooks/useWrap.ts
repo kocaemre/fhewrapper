@@ -54,6 +54,12 @@ export interface UseWrapResult {
   preview: (whole: string, underlyingDecimals: number, wrapperDecimals: number) => WrapPreview | undefined;
   /** Whether the wrap receipt has been mined (belt-and-suspenders over the mutation resolve; Pitfall 6). */
   confirmed: boolean;
+  /**
+   * The submitted wrap tx hash (set on `onShieldSubmitted`), so the UI can render
+   * a live explorer link and carry the real tx into the success toast. Additive
+   * over the existing `shieldHash` state — no change to the machine or SDK config.
+   */
+  txHash: Hex | undefined;
 }
 
 export function useWrap(confidentialAddr: Address): UseWrapResult {
@@ -116,5 +122,5 @@ export function useWrap(confidentialAddr: Address): UseWrapResult {
     [rate],
   );
 
-  return { stage, wrap, isPending, rate: rate as bigint | undefined, preview, confirmed };
+  return { stage, wrap, isPending, rate: rate as bigint | undefined, preview, confirmed, txHash: shieldHash };
 }

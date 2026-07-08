@@ -4,14 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { PairCardDecrypt } from "../decrypt/PairCardDecrypt";
 import { TokenIcon } from "../registry/TokenIcon";
+import { ExplorerTxLink } from "../status/ExplorerTxLink";
+import { notifyError, notifyPending, notifySuccess } from "../status/txToast";
 import { WrapStageIndicator } from "./WrapStageIndicator";
 import { erc20Abi, formatUnits, parseUnits } from "viem";
 import { sepolia } from "viem/chains";
 import { useAccount, useReadContract } from "wagmi";
 import { useWrap } from "~~/hooks/useWrap";
+import { toAppError } from "~~/lib/appError";
 import { formatConfidentialAmount } from "~~/lib/formatConfidential";
 import { normalizeSymbol } from "~~/lib/tokenSymbol";
-import { toWrapError } from "~~/lib/wrapErrors";
 import type { RegistryPair } from "~~/registry/types";
 
 const MONO = "var(--font-jetbrains-mono), monospace";
@@ -43,7 +45,7 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState<unknown>(null);
 
-  const { stage, wrap, rate, preview } = useWrap(confidential.address);
+  const { stage, wrap, rate, preview, txHash } = useWrap(confidential.address);
 
   // Live underlying ERC-20 balance (Sepolia-pinned; enabled once connected).
   const { data: balanceRaw } = useReadContract({
@@ -80,11 +82,20 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
   async function onWrap() {
     if (!p || p.belowOneUnit) return;
     setError(null);
+    // Pending toast on submit; its id is reused so success/error replace it in place.
+    const id = notifyPending(`Wrapping ${uSymbol}`, "Approve, then wrap on Sepolia.");
     try {
       const underlyingRaw = parseUnits(amount.trim(), underlying.decimals);
-      await wrap(underlyingRaw); // approvalStrategy defaults to "max" (smoother repeat demo)
+      const hash = await wrap(underlyingRaw); // resolves only at stage === "done"
+      notifySuccess({
+        id,
+        title: `Wrapped ${uSymbol}`,
+        desc: `Confidential ${cSymbol} minted — now ciphertext on-chain.`,
+        hash,
+      });
     } catch (e) {
       setError(e);
+      notifyError({ id, title: "Wrap failed", desc: toAppError(e, { flow: "wrap" }).body });
     }
   }
 
@@ -335,7 +346,14 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
       {/* Stage indicator */}
       <WrapStageIndicator stage={stage} />
 
-      {/* Error row (no raw revert) */}
+      {/* Inline explorer link — follow the wrap tx even before the toast resolves. */}
+      {txHash && (busy || done) && (
+        <div style={{ margin: "-6px 0 10px" }}>
+          <ExplorerTxLink hash={txHash} />
+        </div>
+      )}
+
+      {/* Error row (no raw revert) — unified toAppError chip + body */}
       {error != null && stage === "error" && (
         <div
           role="alert"
@@ -366,7 +384,21 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
           >
             !
           </span>
-          <span>{toWrapError(error)}</span>
+          <span style={{ minWidth: 0 }}>
+            {(() => {
+              const appErr = toAppError(error, { flow: "wrap" });
+              return (
+                <>
+                  {appErr.chip ? (
+                    <strong style={{ display: "block", fontFamily: MONO, fontSize: 11.5, color: "var(--red)" }}>
+                      {appErr.chip}
+                    </strong>
+                  ) : null}
+                  {appErr.body}
+                </>
+              );
+            })()}
+          </span>
           <button
             type="button"
             onClick={() => setError(null)}
