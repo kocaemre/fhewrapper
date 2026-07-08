@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AmbientAudio } from "~~/components/audio/AmbientAudio";
 import { RainbowKitCustomConnectButton } from "~~/components/helper";
 import { useOutsideClick } from "~~/hooks/helper";
 
@@ -71,7 +72,11 @@ export const Header = () => {
           responsive gutter (~24px mobile → ~40px desktop) so the connect button /
           address pill / balance block breathes. Padding on the navbar (not a wide
           margin) keeps it inside the layout and avoids horizontal scroll. */}
-      <div className="navbar-end grow pr-1 sm:pr-3 lg:pr-4">
+      <div className="navbar-end grow flex items-center gap-3 sm:gap-4 pr-1 sm:pr-3 lg:pr-4">
+        {/* Opt-in, default-muted ambient audio toggle (DIF-02). Site-wide via the
+            header; never autoplays. Placed left of the connect cluster so the
+            connect button / address pill stay pinned right with their gutter. */}
+        <AmbientAudio />
         <RainbowKitCustomConnectButton />
       </div>
     </div>
