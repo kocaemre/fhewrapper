@@ -56,9 +56,9 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 - [x] **DIF-01**: Signature "wrap" animation (contract → folded into bottle → aged → opened as ERC-7984), driven by real tx lifecycle, skippable
 - [x] **DIF-02**: Animation/audio assets (fal.ai video, ElevenLabs ambient audio) are **self-hosted in `/public`** (COEP `require-corp` blocks cross-origin media)
-- [ ] **DIF-03**: Decrypt-any-token reveal micro-interaction (blurred → decrypts in place)
-- [ ] **DIF-04**: Registry browser polish — search/filter, valid/revoked badges, copy buttons
-- [ ] **DIF-05**: Clean, well-typed, reusable hooks (`useRegistry`, `useWrap`, `useUnwrap`, `useUserDecrypt`) — a code-quality judging axis
+- [x] **DIF-03**: Decrypt-any-token reveal micro-interaction (blurred → decrypts in place)
+- [x] **DIF-04**: Registry browser polish — search/filter, valid/revoked badges, copy buttons
+- [x] **DIF-05**: Clean, well-typed, reusable hooks (`useRegistry`, `useWrap`, `useUnwrap`, `useUserDecrypt`) — a code-quality judging axis
 
 ### Submission Deliverables
 
@@ -119,9 +119,9 @@ Explicitly excluded to prevent scope creep.
 | UX-03       | Phase 6 | Complete |
 | DIF-01      | Phase 7 | Complete |
 | DIF-02      | Phase 7 | Complete |
-| DIF-03      | Phase 7 | Pending  |
-| DIF-04      | Phase 7 | Pending  |
-| DIF-05      | Phase 7 | Pending  |
+| DIF-03      | Phase 7 | Complete |
+| DIF-04      | Phase 7 | Complete |
+| DIF-05      | Phase 7 | Complete |
 | SUB-01      | Phase 7 | Pending  |
 | SUB-02      | Phase 7 | Pending  |
 | SUB-03      | Phase 1 | Complete |

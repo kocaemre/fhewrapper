@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 7
 current_phase_name: Polish + Animation Differentiator + Submission
 status: executing
-stopped_at: Completed 07-02-PLAN.md
-last_updated: "2026-07-08T07:45:42.859Z"
+stopped_at: Completed 07-03-PLAN.md
+last_updated: "2026-07-08T00:00:00.000Z"
 last_activity: 2026-07-08
-last_activity_desc: 07-02 ambient cellar audio complete
+last_activity_desc: 07-03 public hooks barrel + decrypt/registry polish verify complete
 progress:
   total_phases: 7
   completed_phases: 6
   total_plans: 20
-  completed_plans: 18
-  percent: 90
+  completed_plans: 19
+  percent: 95
 ---
 
 # Project State
@@ -29,11 +29,13 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 7 — Polish + Animation Differentiator + Submission
-Plan: 07-02 complete (2/4)
-Status: Executing — 07-02 shipped the ambient cellar audio (DIF-02). howler 2.2.4 (the CLAUDE.md-mandated audio lib) is exact-pinned alongside @types/howler 2.2.13; the 45s cellar-ambient.mp3 loop is self-hosted same-origin under public/audio (a cross-origin src would silently drop crossOriginIsolated under COEP require-corp, so hotlinking is forbidden). components/audio/AmbientAudio.tsx is a "use client" control that lazily builds a Howl (loop+html5) in a ref — never at module scope, SSR-safe — defaults to a respectful MUTED state (no autoplay), primes the audio context on the first pointerdown/keydown gesture (browser autoplay policy) without producing sound, and on unmute starts/resumes the loop; the glyph + aria-pressed reflect true state, and the Howl + listeners tear down on unmount. The toggle mounts in Header.tsx left of the RainbowKit connect cluster (present on every route, never in the Preloader → cannot autoplay). vitest 130/130, check-types + next build clean; crossOriginIsolated preserved (same-origin audio), cinematic/wrap untouched. Live "audio unlocks on gesture / loops / mute works / crossOriginIsolated preserved" deferred to 07-UAT.md.
-Last activity: 2026-07-08 — 07-02 ambient cellar audio complete
+Plan: 07-03 complete (3/4)
+Status: Executing — 07-03 shipped the typed public hooks barrel (DIF-05) at packages/nextjs/hooks/index.ts, re-exporting useRegistry (alias of useRegistryPairs), useWrap, useUnwrap, useUserDecrypt, useFaucet + their result/stage types (WrapStage, ApprovalStrategy, UnwrapStage, DecryptStage, UseUserDecryptOptions) as a re-export barrel only — no signature changes, check-types resolves every symbol (T-07-07). DIF-03 (decrypt blur-to-reveal on DecryptStateBox + PairCardDecrypt with prefers-reduced-motion fallback) and DIF-04 (registry search/filter, valid/revoked PairBadge, AddressCopyButton wired into PairCard + RegistryToolbar) were verified already present and polished from Phases 2-3 — verify-only, no rework, nothing to commit for Task 2. vitest 130/130, check-types + next build (exit 0) clean; no new @zama-fhe SDK; cinematic/audio/prior phases untouched. Live visual polish deferred to 07-UAT.md.
 
-Progress: [█████████░] 90% (phase 07: 2/4 plans)
+Prior: 07-02 shipped the ambient cellar audio (DIF-02). howler 2.2.4 (the CLAUDE.md-mandated audio lib) is exact-pinned alongside @types/howler 2.2.13; the 45s cellar-ambient.mp3 loop is self-hosted same-origin under public/audio (a cross-origin src would silently drop crossOriginIsolated under COEP require-corp, so hotlinking is forbidden). components/audio/AmbientAudio.tsx is a "use client" control that lazily builds a Howl (loop+html5) in a ref — never at module scope, SSR-safe — defaults to a respectful MUTED state (no autoplay), primes the audio context on the first pointerdown/keydown gesture (browser autoplay policy) without producing sound, and on unmute starts/resumes the loop; the glyph + aria-pressed reflect true state, and the Howl + listeners tear down on unmount. The toggle mounts in Header.tsx left of the RainbowKit connect cluster (present on every route, never in the Preloader → cannot autoplay). vitest 130/130, check-types + next build clean; crossOriginIsolated preserved (same-origin audio), cinematic/wrap untouched. Live "audio unlocks on gesture / loops / mute works / crossOriginIsolated preserved" deferred to 07-UAT.md.
+Last activity: 2026-07-08 — 07-03 public hooks barrel + decrypt/registry polish verify complete
+
+Progress: [█████████▌] 95% (phase 07: 3/4 plans)
 
 ## Performance Metrics
 
@@ -137,6 +139,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-08T07:45:20.435Z
+Last session: 2026-07-08T07:50:58.833Z
 Stopped at: Completed 07-02-PLAN.md
 Resume file: None
