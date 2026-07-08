@@ -1,9 +1,58 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { type Address, type Hex, useResumeUnshield, useUnshield, useUnshieldAll } from "@zama-fhe/react-sdk";
+import {
+  type Address,
+  DecryptionFailedError,
+  type Hex,
+  RelayerRequestFailedError,
+  TransactionRevertedError,
+  useResumeUnshield,
+  useUnshield,
+  useUnshieldAll,
+} from "@zama-fhe/react-sdk";
 import { forgetPendingUnwrap, readPendingUnwrap, rememberPendingUnwrap } from "~~/lib/pendingUnshield";
 import { type UnwrapStage, nextUnwrapStage } from "~~/lib/unwrapStages";
+
+/**
+ * Oracle-wait backoff (UNW-01 root-cause fix — the finalize-too-early revert).
+ *
+ * The confidential `unwrap` burn (tx #1) requests a PUBLIC decryption of the
+ * burn handle from the Zama KMS. That decryption is ASYNCHRONOUS on Sepolia
+ * (seconds → a couple of minutes). The app-submitted `finalize` (tx #2) needs
+ * the cleartext + the KMS decryption proof; if it is simulated/submitted BEFORE
+ * the KMS has signed the now-publicly-decryptable handle it reverts IMMEDIATELY
+ * — a wagmi/viem `estimateGas` simulation revert (no gas spent, no tx mined),
+ * which is exactly the "reverts direkt, no wait" symptom.
+ *
+ * The burn is idempotent and already persisted, so the safe fix is to POLL:
+ * re-run the finalize via `useResumeUnshield` (which reuses the existing burn
+ * tx — it NEVER re-burns) with exponential backoff until the oracle result is
+ * ready and the finalize succeeds. We only retry transient not-ready failures;
+ * everything else fails fast. If the whole window elapses we surface the real
+ * error — success is NEVER faked (UNW-02).
+ */
+const FINALIZE_MAX_ATTEMPTS = 15;
+const FINALIZE_BASE_DELAY_MS = 2_500;
+const FINALIZE_MAX_DELAY_MS = 15_000;
+
+const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * A finalize failure that means "the KMS public decryption of the burn handle
+ * is not ready yet" — transient and retryable. The pre-oracle finalize reverts
+ * on simulation (`TransactionRevertedError`) or the relayer reports the handle
+ * as not-yet-decryptable (`DecryptionFailedError` / `RelayerRequestFailedError`).
+ * A user rejection, insufficient-balance, config, etc. are NOT here — those must
+ * fail fast rather than spin for minutes.
+ */
+function isFinalizeNotReady(e: unknown): boolean {
+  return (
+    e instanceof TransactionRevertedError ||
+    e instanceof DecryptionFailedError ||
+    e instanceof RelayerRequestFailedError
+  );
+}
 
 /**
  * Honest unwrap engine (UNW-01 / UNW-02).
@@ -98,6 +147,35 @@ export function useUnwrap(confidentialAddr: Address): UseUnwrapResult {
     [apply, confidentialAddr],
   );
 
+  /**
+   * Finalize an already-burned unwrap, polling through the async oracle wait.
+   *
+   * Re-runs `useResumeUnshield` (reuses the existing burn tx — NEVER re-burns)
+   * with exponential backoff, retrying ONLY the transient "oracle not ready"
+   * finalize reverts. Stays in the `decrypting` stage across the wait so the
+   * indicator reflects the real KMS decryption. Resolves only on the finalize
+   * receipt; rethrows the real error if the window elapses (no faked success).
+   */
+  const finalizeWithBackoff = useCallback(
+    async (unwrapTxHash: Hex): Promise<void> => {
+      let lastError: unknown;
+      for (let attempt = 0; attempt < FINALIZE_MAX_ATTEMPTS; attempt++) {
+        try {
+          apply("finalizing"); // → `decrypting` (honest oracle-wait state)
+          await resume.mutateAsync({ unwrapTxHash, ...callbacks() });
+          return; // finalize-tx receipt — the ONLY success point
+        } catch (e) {
+          lastError = e;
+          if (!isFinalizeNotReady(e)) throw e; // fail fast on non-transient errors
+          const delay = Math.min(FINALIZE_BASE_DELAY_MS * 2 ** attempt, FINALIZE_MAX_DELAY_MS);
+          await sleep(delay); // oracle not ready yet — back off and re-poll
+        }
+      }
+      throw lastError; // window elapsed — surface the real revert, never fake success
+    },
+    [apply, callbacks, resume],
+  );
+
   const unwrap = useCallback(
     async (amount: bigint): Promise<void> => {
       try {
@@ -107,12 +185,27 @@ export function useUnwrap(confidentialAddr: Address): UseUnwrapResult {
         apply("resolved");
         await forgetPendingUnwrap(confidentialAddr);
       } catch (e) {
+        // If the burn already landed (persisted tx hash) and finalize only
+        // failed because the oracle wasn't ready, don't strand the funds —
+        // poll the finalize via resume until the KMS decryption is ready.
+        const pending = await readPendingUnwrap(confidentialAddr);
+        if (pending && isFinalizeNotReady(e)) {
+          try {
+            await finalizeWithBackoff(pending);
+            apply("resolved");
+            await forgetPendingUnwrap(confidentialAddr);
+            return;
+          } catch (resumeErr) {
+            apply("error");
+            throw resumeErr;
+          }
+        }
         // Keep the pending record so the interrupted unwrap can resume.
         apply("error");
         throw e; // classify via toUnwrapError at the UI layer
       }
     },
-    [apply, callbacks, confidentialAddr, unshield],
+    [apply, callbacks, confidentialAddr, finalizeWithBackoff, unshield],
   );
 
   const unwrapAll = useCallback(async (): Promise<void> => {
@@ -122,25 +215,37 @@ export function useUnwrap(confidentialAddr: Address): UseUnwrapResult {
       apply("resolved");
       await forgetPendingUnwrap(confidentialAddr);
     } catch (e) {
+      const pending = await readPendingUnwrap(confidentialAddr);
+      if (pending && isFinalizeNotReady(e)) {
+        try {
+          await finalizeWithBackoff(pending);
+          apply("resolved");
+          await forgetPendingUnwrap(confidentialAddr);
+          return;
+        } catch (resumeErr) {
+          apply("error");
+          throw resumeErr;
+        }
+      }
       apply("error");
       throw e;
     }
-  }, [apply, callbacks, confidentialAddr, unshieldAll]);
+  }, [apply, callbacks, confidentialAddr, finalizeWithBackoff, unshieldAll]);
 
   const resumePending = useCallback(async (): Promise<void> => {
     const unwrapTxHash = await readPendingUnwrap(confidentialAddr);
     if (!unwrapTxHash) return; // nothing to resume
     try {
       setTxHash(unwrapTxHash); // surface the persisted burn tx for the explorer link
-      apply("finalizing"); // burn already done — jump to the oracle-wait state
-      await resume.mutateAsync({ unwrapTxHash, ...callbacks() });
+      // burn already done — poll the finalize through the async oracle wait.
+      await finalizeWithBackoff(unwrapTxHash);
       apply("resolved");
       await forgetPendingUnwrap(confidentialAddr);
     } catch (e) {
       apply("error");
       throw e;
     }
-  }, [apply, callbacks, confidentialAddr, resume]);
+  }, [apply, confidentialAddr, finalizeWithBackoff]);
 
   const reset = useCallback(() => setStage("idle"), []);
 
