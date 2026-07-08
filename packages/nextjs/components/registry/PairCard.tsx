@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { PairCardDecrypt } from "../decrypt/PairCardDecrypt";
 import { AddressCopyButton } from "./AddressCopyButton";
 import { PairBadge } from "./PairBadge";
@@ -17,8 +18,8 @@ import type { RegistryPair } from "~~/registry/types";
  *   3. dashed divider → decimals + Wrap CTA
  *
  * Revoked pairs render at opacity 0.6 with a disabled `Unavailable` CTA. The
- * `Wrap →` CTA is INERT this phase (wrap ships Phase 4) but stays visible per
- * the locked design. Each side's own decimals are shown separately (Pitfall 4).
+ * `Wrap →` CTA is FUNCTIONAL as of Phase 4 — it links to `/wrap?token=<confidential
+ * address>`. Each side's own decimals are shown separately (Pitfall 4).
  *
  * Onchain `name`/`symbol` are untrusted strings rendered through React/JSX
  * escaping only — never dangerouslySetInnerHTML (T-02-01).
@@ -161,25 +162,45 @@ export function PairCard({ pair }: { pair: RegistryPair }) {
           )}
         </span>
         <div style={{ flex: 1 }} />
-        <button
-          type="button"
-          disabled={!isValid}
-          aria-disabled={!isValid}
-          // Inert this phase — wrap ships Phase 4. CTA stays visible per the locked design.
-          onClick={undefined}
-          style={{
-            border: `2px solid ${isValid ? "var(--line)" : "var(--line-soft)"}`,
-            background: isValid ? "var(--block)" : "transparent",
-            color: isValid ? "var(--block-fg)" : "var(--faint)",
-            padding: "8px 18px",
-            fontWeight: 600,
-            fontSize: 14,
-            fontFamily: "var(--font-gelasio), Georgia, serif",
-            cursor: isValid ? "pointer" : "not-allowed",
-          }}
-        >
-          {isValid ? "Wrap →" : "Unavailable"}
-        </button>
+        {isValid ? (
+          // Functional in Phase 4: navigate to the wrap screen for this pair,
+          // keyed by the ERC-7984 confidential (= wrapper) address from the
+          // trusted registry (WRP-01, T-04-09).
+          <Link
+            href={`/wrap?token=${confidential.address}`}
+            style={{
+              border: "2px solid var(--line)",
+              background: "var(--block)",
+              color: "var(--block-fg)",
+              padding: "8px 18px",
+              fontWeight: 600,
+              fontSize: 14,
+              fontFamily: "var(--font-gelasio), Georgia, serif",
+              cursor: "pointer",
+              textDecoration: "none",
+            }}
+          >
+            Wrap →
+          </Link>
+        ) : (
+          <button
+            type="button"
+            disabled
+            aria-disabled
+            style={{
+              border: "2px solid var(--line-soft)",
+              background: "transparent",
+              color: "var(--faint)",
+              padding: "8px 18px",
+              fontWeight: 600,
+              fontSize: 14,
+              fontFamily: "var(--font-gelasio), Georgia, serif",
+              cursor: "not-allowed",
+            }}
+          >
+            Unavailable
+          </button>
+        )}
       </div>
 
       {/* Section 4 — per-card confidential-balance decrypt (03-01, DEC-01/03/04).
