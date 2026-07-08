@@ -1,10 +1,29 @@
-# The Cellar Registry — Confidential Wrapper Registry
+<div align="center">
 
-**Browse every official ERC-20 ↔ ERC-7984 wrapper pair on Sepolia, wrap/unwrap, decrypt any confidential balance via EIP-712, and claim faucet test tokens — from one app.**
+<img src=".github/assets/banner.jpg" alt="The Cellar Registry" width="100%" />
 
-**▶ Live app: https://zama.0xemrek.dev/**
+<h1>The Cellar Registry</h1>
 
-**▶ Demo video: https://youtu.be/C9kkgs5QxJU**
+<p><em>Browse, wrap, unwrap &amp; decrypt every official ERC-20 ↔ ERC-7984 confidential wrapper pair on Sepolia — one app over the Zama Wrappers Registry.</em></p>
+
+<p>
+  <a href="https://zama.0xemrek.dev/"><img src="https://img.shields.io/badge/▶_Live_app-zama.0xemrek.dev-8B2635?style=flat-square" alt="Live app" /></a>
+  <a href="https://youtu.be/C9kkgs5QxJU"><img src="https://img.shields.io/badge/▶_Demo-YouTube-b31217?style=flat-square&logo=youtube&logoColor=white" alt="Demo video" /></a>
+  <img src="https://img.shields.io/badge/network-Sepolia-627EEA?style=flat-square&logo=ethereum&logoColor=white" alt="Sepolia" />
+  <img src="https://img.shields.io/badge/license-BSD--3--Clause--Clear-8B2635?style=flat-square" alt="License" />
+</p>
+
+<p>
+  <img src="https://img.shields.io/badge/Next.js-15-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 15" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/wagmi-2-1B1B1B?style=flat-square" alt="wagmi 2" />
+  <img src="https://img.shields.io/badge/FHEVM-@zama--fhe%2Fsdk_3.0.0-FFD208?style=flat-square&labelColor=1a1a1a" alt="Zama FHEVM SDK 3.0.0" />
+  <img src="https://img.shields.io/badge/Zama_Developer_Program-Season_3-6E29C4?style=flat-square" alt="Zama Developer Program Season 3" />
+</p>
+
+</div>
+
+---
 
 Built for the **Zama Developer Program — Mainnet Season 3 Bounty Track**. The Cellar Registry turns the Zama **Wrappers Registry** into a usable product: it reads the official registry live onchain, makes "use the official registry" the path of least resistance, and wraps the whole confidential-token loop (wrap → decrypt → unwrap) in a signature cinematic.
 
