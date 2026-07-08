@@ -161,6 +161,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Registry Browse                 | 4/4 | Complete    | 2026-07-07 |
 | 3. User-Decryption (EIP-712)       | 3/3 | Complete    | 2026-07-07 |
 | 4. Faucet + Wrap                   | 2/2 | Complete    | 2026-07-08 |
-| 5. Unwrap (async finalize)         | 2/2 | Complete   | 2026-07-08 |
+| 5. Unwrap (async finalize)         | 2/2 | Complete    | 2026-07-08 |
 | 6. Error Handling + Status System  | 0/TBD          | Not started | -         |
 | 7. Polish + Animation + Submission | 0/TBD          | Not started | -         |
