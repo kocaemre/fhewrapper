@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import {
   type Address,
+  ApprovalFailedError,
   type Hex,
   rateContract,
   useApproveUnderlying,
@@ -133,23 +134,55 @@ export function useWrap(confidentialAddr: Address): UseWrapResult {
         if (approvalStrategy !== "skip") {
           // Read fresh allowance; only approve when it is actually insufficient
           // (a prior wrap or a "max" grant may already cover this amount).
-          let current = allowance;
-          try {
-            const { data } = await refetchAllowance();
-            if (typeof data === "bigint") current = data;
-          } catch {
-            // Non-fatal: fall back to the last cached allowance value.
-          }
+          const readAllowance = async (): Promise<bigint | undefined> => {
+            try {
+              const { data } = await refetchAllowance();
+              return typeof data === "bigint" ? data : undefined;
+            } catch {
+              // Non-fatal: fall back to the last cached allowance value.
+              return allowance;
+            }
+          };
+
+          let current = await readAllowance();
           if (current === undefined || current < underlyingRaw) {
             setStage("approving");
             // "max" → undefined amount (SDK approves max uint256); "exact" → this wrap's amount.
             // This RESOLVES ONLY after the approve tx is mined → allowance is live on-chain.
             await approveUnderlying(approvalStrategy === "exact" ? { amount: underlyingRaw } : {});
+
+            // ── Close the cross-provider allowance-propagation race ────────────
+            // `approveUnderlying` awaits the approve RECEIPT, but only on the
+            // app's RPC (Alchemy). MetaMask runs the wrap's `eth_estimateGas`
+            // against ITS OWN node (Infura), which may not yet have indexed the
+            // freshly-mined allowance — so the wrap's `transferFrom` estimates
+            // against a stale 0 allowance and reverts with
+            // `ERC20InsufficientAllowance` (0xfb8f41b2). This is invisible for a
+            // token approved in a PRIOR session (USDC in testing) but bites the
+            // FIRST wrap of any token (e.g. BRON) where approve→wrap are
+            // back-to-back. Poll the on-chain allowance until it reflects the
+            // approval before submitting the wrap. Token-agnostic — helps every
+            // registry pair, not just BRON.
+            const APPROVE_VISIBILITY_TRIES = 12;
+            const APPROVE_VISIBILITY_DELAY_MS = 600;
+            for (let i = 0; i < APPROVE_VISIBILITY_TRIES; i++) {
+              current = await readAllowance();
+              if (current !== undefined && current >= underlyingRaw) break;
+              await new Promise(resolve => setTimeout(resolve, APPROVE_VISIBILITY_DELAY_MS));
+            }
+            if (current === undefined || current < underlyingRaw) {
+              // Never let the wrap revert opaquely — surface a typed, classifiable
+              // error (toWrapError maps ApprovalFailedError → readable copy).
+              throw new ApprovalFailedError(
+                "Approval was mined but is not yet visible to the network — please retry the wrap.",
+              );
+            }
           }
         }
 
-        // Allowance is now confirmed on-chain, so the wrap's gas estimation
-        // succeeds. "skip" makes shield go straight to the wrap tx.
+        // Allowance is now confirmed on-chain AND visible to the network, so the
+        // wrap's gas estimation succeeds. "skip" makes shield go straight to the
+        // wrap tx.
         setStage("wrapping");
         const { txHash } = await shield({
           amount: underlyingRaw,
