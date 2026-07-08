@@ -4,7 +4,7 @@
 
 **▶ Live app: https://zama.0xemrek.dev/**
 
-**▶ Demo video: _(add link once recorded)_**
+**▶ Demo video: https://youtu.be/C9kkgs5QxJU**
 
 Built for the **Zama Developer Program — Mainnet Season 3 Bounty Track**. The Cellar Registry turns the Zama **Wrappers Registry** into a usable product: it reads the official registry live onchain, makes "use the official registry" the path of least resistance, and wraps the whole confidential-token loop (wrap → decrypt → unwrap) in a signature cinematic.
 
