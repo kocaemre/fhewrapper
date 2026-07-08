@@ -67,3 +67,16 @@ _Record finalize latency, any resume events, and the partial-amount scale (Open 
 `useUnshield` amount unwrap the exact confidential units entered?) here:_
 
 _______________________________________________
+
+---
+
+## 05-02 readiness (surface now built — ready to run this UAT)
+
+Plan 05-02 shipped the full reachable unwrap surface; every checklist item above now has a concrete screen to exercise:
+
+- **Enter unwrap:** `/unwrap?token=<confidential>` — reachable from the registry `PairCard` **Unwrap →** link and the `WrapPanel` **Unwrap** toggle (SC4 loop closure). Pair is resolved from the trusted `useRegistryPairs` (T-05-05); screen is under `ChainGuard` (T-05-03).
+- **Amount (UNW-01):** **Reveal max** decrypts the confidential balance (Phase-3 `useUserDecrypt`) → **Max** fills the input; `parseUnwrapAmount` caps + validates. **Unwrap all** runs the no-decrypt handle path.
+- **Honest indicator (UNW-02):** `UnwrapStageIndicator` renders Request → Decrypting → Finalize → Done; **Done + the "ERC-20 arrived" block render ONLY at `stage === "finalized"`** — on finalize the ERC-20 `balanceOf` is refetched and `PairCardDecrypt` shows the confidential drop.
+- **Resume (never-strand-funds):** a persisted pending unwrap surfaces the **Resume interrupted unwrap** banner → `resumePending()` (wraps `useResumeUnshield`).
+
+Automated gates green at 05-02 close: `check-types` exit 0, `next build` emits `/unwrap` (static), full vitest **98/98**. The live two-tx / relayer / ERC-20-arrival checks above remain wallet-owned — run this session before final submission.

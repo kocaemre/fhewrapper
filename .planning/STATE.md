@@ -6,15 +6,15 @@ current_phase: 5
 current_phase_name: async finalize
 status: executing
 stopped_at: Completed 05-01-PLAN.md (honest unwrap engine — stages/amount/errors/pending + useUnwrap; live two-tx unwrap→finalize proof deferred to 05-UAT.md).
-last_updated: "2026-07-08T06:20:02.949Z"
+last_updated: "2026-07-08T06:31:26.487Z"
 last_activity: 2026-07-08
-last_activity_desc: Completed 05-01 (honest unwrap engine); 05-02 next
+last_activity_desc: Completed 05-01 (honest unwrap engine)
 progress:
   total_phases: 7
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 14
-  completed_plans: 13
-  percent: 57
+  completed_plans: 14
+  percent: 71
 ---
 
 # Project State
@@ -28,12 +28,12 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 
 ## Current Position
 
-Phase: 5 — Unwrap (async finalize)
-Plan: 05-01 complete; 05-02 next
-Status: Executing — 05-01 shipped the honest unwrap engine: nextUnwrapStage reducer + isUnwrapSuccess (success ONLY at finalized; UNW-02, RED→GREEN), parseUnwrapAmount (decimals-driven 6-dp & 18-dp, never throws; UNW-01), toUnwrapError map, browserPendingStorage pending-unshield shim (never-strand-funds, RED→GREEN), and useUnwrap wrapping useUnshield/useUnshieldAll + useResumeUnshield with no operator step. Gates green (check-types / next build / vitest 98). Live two-tx unwrap→finalize→ERC-20-arrives proof (UNW-01/02) deferred to 05-UAT.md.
-Last activity: 2026-07-08 — Completed 05-01 (honest unwrap engine)
+Phase: 5 — Unwrap (async finalize) — COMPLETE (2/2 plans)
+Plan: 05-01 + 05-02 complete
+Status: Executing — 05-02 shipped the reachable honest unwrap surface: /unwrap screen (mirror of /wrap, reversed) with amount-from-decrypted-balance (useUserDecrypt Reveal max + parseUnwrapAmount cap), Unwrap-all (no decrypt), the honest 4-stage UnwrapStageIndicator (Request → Decrypting → Finalize → Done), a finalized-only end-state that refetches the ERC-20 balanceOf (increased) + PairCardDecrypt (dropped) — no optimistic success (UNW-02), a Resume banner via resumePending() (never-strand-funds), all under ChainGuard with trusted-registry ?token= resolution. Loop closed (SC4): WrapPanel Unwrap toggle + PairCard Unwrap → link both navigate to /unwrap. Gates green (check-types / next build with /unwrap emitted / vitest 98). Live full wrap → decrypt → unwrap loop proof deferred to 05-UAT.md.
+Last activity: 2026-07-08 — Completed 05-02 (reachable unwrap surface + loop closure)
 
-Progress: [█████░░░░░] 50% (phase 05: 1/2 plans)
+Progress: [██████████] 100% (phase 05: 2/2 plans)
 
 ## Performance Metrics
 
@@ -51,7 +51,7 @@ Progress: [█████░░░░░] 50% (phase 05: 1/2 plans)
 | 02 | 4 | - | - |
 | 03 | 3 | - | - |
 | 04 | 2 | - | - |
-| 05 | 1 | 6min | 6min |
+| 05 | 2 | 12min | 6min |
 
 **Recent Trend:**
 
@@ -71,6 +71,7 @@ _Updated after each plan completion_
 | Phase 03 P03 | 22 | 2 tasks | 5 files |
 | Phase 04 P01 | 4min | 3 tasks | 8 files |
 | Phase 04 P02 | 9min | 3 tasks | 10 files |
+| Phase 05 P02 | 6min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -127,6 +128,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-08T06:20:02.944Z
+Last session: 2026-07-08T06:31:01.021Z
 Stopped at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md). Phase 04 complete.
 Resume file: None
