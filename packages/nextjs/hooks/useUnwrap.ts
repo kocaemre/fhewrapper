@@ -58,10 +58,18 @@ export interface UseUnwrapResult {
   isPending: boolean;
   /** Reset the machine back to `idle`. */
   reset: () => void;
+  /**
+   * The submitted burn tx hash (set on `onUnwrapSubmitted`, and on `resumePending`
+   * from the persisted record), so the UI can render a live explorer link and
+   * carry the real tx into the finalized success toast. Additive field only — the
+   * honest stage machine and pending-persistence are unchanged.
+   */
+  txHash: Hex | undefined;
 }
 
 export function useUnwrap(confidentialAddr: Address): UseUnwrapResult {
   const [stage, setStage] = useState<UnwrapStage>("idle");
+  const [txHash, setTxHash] = useState<Hex | undefined>();
 
   const config = { tokenAddress: confidentialAddr, wrapperAddress: confidentialAddr };
 
@@ -81,6 +89,7 @@ export function useUnwrap(confidentialAddr: Address): UseUnwrapResult {
         // Persist BEFORE advancing: the burn is live but the tokens have not
         // arrived — a tab close here must be recoverable (Pitfall 3).
         void rememberPendingUnwrap(confidentialAddr, txHash);
+        setTxHash(txHash); // surface the burn tx for the explorer link / success toast
         apply("unwrap-submitted"); // stays `requesting` — NOT success
       },
       onFinalizing: () => apply("finalizing"), // → `decrypting` (oracle wait)
@@ -122,6 +131,7 @@ export function useUnwrap(confidentialAddr: Address): UseUnwrapResult {
     const unwrapTxHash = await readPendingUnwrap(confidentialAddr);
     if (!unwrapTxHash) return; // nothing to resume
     try {
+      setTxHash(unwrapTxHash); // surface the persisted burn tx for the explorer link
       apply("finalizing"); // burn already done — jump to the oracle-wait state
       await resume.mutateAsync({ unwrapTxHash, ...callbacks() });
       apply("resolved");
@@ -136,5 +146,5 @@ export function useUnwrap(confidentialAddr: Address): UseUnwrapResult {
 
   const isPending = unshield.isPending || unshieldAll.isPending || resume.isPending;
 
-  return { stage, unwrap, unwrapAll, resumePending, isPending, reset };
+  return { stage, unwrap, unwrapAll, resumePending, isPending, reset, txHash };
 }

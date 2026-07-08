@@ -1,20 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PairCardDecrypt } from "../decrypt/PairCardDecrypt";
 import { TokenIcon } from "../registry/TokenIcon";
+import { ExplorerTxLink } from "../status/ExplorerTxLink";
+import { notifyError, notifyPending, notifySuccess } from "../status/txToast";
 import { UnwrapStageIndicator } from "./UnwrapStageIndicator";
 import { type Hex, erc20Abi, formatUnits } from "viem";
 import { sepolia } from "viem/chains";
 import { useAccount, useReadContract } from "wagmi";
 import { useUnwrap } from "~~/hooks/useUnwrap";
 import { useUserDecrypt } from "~~/hooks/useUserDecrypt";
+import { toAppError } from "~~/lib/appError";
 import { formatConfidentialAmount } from "~~/lib/formatConfidential";
 import { readPendingUnwrap } from "~~/lib/pendingUnshield";
 import { normalizeSymbol } from "~~/lib/tokenSymbol";
 import { parseUnwrapAmount } from "~~/lib/unwrapAmount";
-import { toUnwrapError } from "~~/lib/unwrapErrors";
 import type { RegistryPair } from "~~/registry/types";
 
 const MONO = "var(--font-jetbrains-mono), monospace";
@@ -50,8 +52,11 @@ export function UnwrapPanel({ pair }: { pair: RegistryPair }) {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState<unknown>(null);
   const [pendingHash, setPendingHash] = useState<Hex | null>(null);
+  // The pending toast id, reused so success/error replaces it in place. Held in a
+  // ref so the finalized effect (the ONLY honest success point) can resolve it.
+  const toastIdRef = useRef<string | null>(null);
 
-  const { stage, unwrap, unwrapAll, resumePending } = useUnwrap(confidential.address);
+  const { stage, unwrap, unwrapAll, resumePending, txHash } = useUnwrap(confidential.address);
 
   // Phase-3 decrypt provides the confidential balance ceiling (UNW-01).
   const {
@@ -85,9 +90,22 @@ export function UnwrapPanel({ pair }: { pair: RegistryPair }) {
   }, [confidential.address]);
 
   // Honest proof: refetch the ERC-20 balance the moment the finalize resolves.
+  // The success toast fires ONLY here (stage === "finalized") — never optimistically
+  // at burn/decrypt/finalize (T-06-06, UNW-02). The pending toast id is reused so
+  // it replaces the "this can take a moment" toast in place, carrying the burn tx.
   useEffect(() => {
-    if (stage === "finalized") void refetchErc20();
-  }, [stage, refetchErc20]);
+    if (stage !== "finalized") return;
+    void refetchErc20();
+    if (toastIdRef.current) {
+      notifySuccess({
+        id: toastIdRef.current,
+        title: `Unwrapped ${cSymbol}`,
+        desc: `Gateway decryption complete — ${uSymbol} released to your wallet.`,
+        hash: txHash,
+      });
+      toastIdRef.current = null;
+    }
+  }, [stage, refetchErc20, cSymbol, uSymbol, txHash]);
 
   const p = parseUnwrapAmount(amount, confidential.decimals, decryptedValue);
   const revealed = decryptStage === "revealed" && decryptedValue !== undefined;
@@ -106,32 +124,51 @@ export function UnwrapPanel({ pair }: { pair: RegistryPair }) {
       ? "✓ Unwrapped"
       : `Unwrap ${cSymbol}`;
 
+  // Open the reassuring pending toast; success fires later in the finalized effect.
+  function startPendingToast() {
+    toastIdRef.current = notifyPending(
+      `Unwrapping ${cSymbol}`,
+      "Burn, gateway decryption, then finalize — this can take a moment.",
+    );
+  }
+
+  function failToast(e: unknown) {
+    setError(e);
+    if (toastIdRef.current) {
+      notifyError({ id: toastIdRef.current, title: "Unwrap failed", desc: toAppError(e, { flow: "unwrap" }).body });
+      toastIdRef.current = null;
+    }
+  }
+
   async function onUnwrap() {
     if (!p.valid) return;
     setError(null);
+    startPendingToast();
     try {
       await unwrap(p.raw);
     } catch (e) {
-      setError(e);
+      failToast(e);
     }
   }
 
   async function onUnwrapAll() {
     setError(null);
+    startPendingToast();
     try {
       await unwrapAll();
     } catch (e) {
-      setError(e);
+      failToast(e);
     }
   }
 
   async function onResume() {
     setError(null);
+    startPendingToast();
     try {
       await resumePending();
       setPendingHash(null); // cleared on finalize resolve
     } catch (e) {
-      setError(e);
+      failToast(e);
     }
   }
 
@@ -461,7 +498,14 @@ export function UnwrapPanel({ pair }: { pair: RegistryPair }) {
       {/* Stage indicator */}
       <UnwrapStageIndicator stage={stage} />
 
-      {/* Error row (no raw revert) */}
+      {/* Inline explorer link — follow the burn/finalize tx; shown once a tx exists. */}
+      {txHash && (busy || finalized) && (
+        <div style={{ margin: "-6px 0 10px" }}>
+          <ExplorerTxLink hash={txHash} />
+        </div>
+      )}
+
+      {/* Error row (no raw revert) — unified toAppError chip + body */}
       {error != null && stage === "error" && (
         <div
           role="alert"
@@ -492,7 +536,21 @@ export function UnwrapPanel({ pair }: { pair: RegistryPair }) {
           >
             !
           </span>
-          <span>{toUnwrapError(error)}</span>
+          <span style={{ minWidth: 0 }}>
+            {(() => {
+              const appErr = toAppError(error, { flow: "unwrap" });
+              return (
+                <>
+                  {appErr.chip ? (
+                    <strong style={{ display: "block", fontFamily: MONO, fontSize: 11.5, color: "var(--red)" }}>
+                      {appErr.chip}
+                    </strong>
+                  ) : null}
+                  {appErr.body}
+                </>
+              );
+            })()}
+          </span>
           <button
             type="button"
             onClick={() => setError(null)}
