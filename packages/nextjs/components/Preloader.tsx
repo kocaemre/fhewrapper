@@ -62,6 +62,9 @@ const TOKEN_ICONS = ["cbron", "ctgbp", "cusdc", "cusdt", "cweth", "cxaut", "czam
 const CRITICAL_ASSETS: PreloadAsset[] = [
   { kind: "image", src: "/01-hero.png" }, // RegistryHero engraving (same-origin, COEP require-corp)
   ...TOKEN_ICONS.map(name => ({ kind: "image" as const, src: `/icons/${name}.png` })),
+  // Phase 7: warm ONLY the first wrap-cinematic beat so the opening plays
+  // instantly on a real wrap — without gating the cover on all six videos.
+  { kind: "video", src: "/cinematic/01-fold.mp4" },
 ];
 
 /**
@@ -82,12 +85,33 @@ function preloadImage(src: string): Promise<void> {
   });
 }
 
-/** Preload one asset. Only images are decoded today; Phase 7 extends this. */
+/**
+ * Warm a video's first frames so it can paint without a stall. Loads metadata +
+ * enough data to play through, resolving on `canplaythrough` OR `error` — it
+ * NEVER rejects, so a missing/slow beat can't trap the cover (mirrors
+ * `preloadImage`). Same-origin `/cinematic` media keeps COEP require-corp intact.
+ */
+function preloadVideo(src: string): Promise<void> {
+  return new Promise<void>(resolve => {
+    const video = document.createElement("video");
+    video.preload = "auto";
+    video.muted = true;
+    video.playsInline = true; // honoured by iOS Safari for inline preload
+    const done = () => resolve();
+    video.oncanplaythrough = done;
+    video.onerror = done;
+    video.src = src;
+    video.load();
+  });
+}
+
+/** Preload one asset. Images decode; the first cinematic beat warms via <video>. */
 function preloadAsset(asset: PreloadAsset): Promise<void> {
   switch (asset.kind) {
     case "image":
       return preloadImage(asset.src);
-    // case "video": return preloadVideo(asset.src);   // Phase 7
+    case "video":
+      return preloadVideo(asset.src);
     // case "audio": return prefetch(asset.src);        // Phase 7 (no autoplay)
     default:
       return Promise.resolve();

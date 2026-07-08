@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PairCardDecrypt } from "../decrypt/PairCardDecrypt";
 import { TokenIcon } from "../registry/TokenIcon";
 import { ExplorerTxLink } from "../status/ExplorerTxLink";
 import { notifyError, notifyPending, notifySuccess } from "../status/txToast";
+import { WrapCinematic } from "./WrapCinematic";
 import { WrapStageIndicator } from "./WrapStageIndicator";
+import { AnimatePresence, useReducedMotion } from "motion/react";
 import { erc20Abi, formatUnits, parseUnits } from "viem";
 import { sepolia } from "viem/chains";
 import { useAccount, useReadContract } from "wagmi";
@@ -47,6 +49,19 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
 
   const { stage, wrap, rate, preview, txHash } = useWrap(confidential.address);
 
+  // DIF-01 wrap cinematic: a tx-driven overlay that plays over the honest flow.
+  // It OVERLAYS the WrapStageIndicator/error/decrypt-proof below — never replaces
+  // them — and is suppressed entirely under prefers-reduced-motion (the plain
+  // stage indicator then carries the flow). The overlay reflects `stage`; it
+  // never drives it, and closing it never touches the real useWrap mutation.
+  const reduceMotion = useReducedMotion();
+  const [cinematicOpen, setCinematicOpen] = useState(false);
+
+  // On error, close the overlay so the typed error row below is visible.
+  useEffect(() => {
+    if (stage === "error") setCinematicOpen(false);
+  }, [stage]);
+
   // Live underlying ERC-20 balance (Sepolia-pinned; enabled once connected).
   const { data: balanceRaw } = useReadContract({
     address: underlying.address,
@@ -82,6 +97,9 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
   async function onWrap() {
     if (!p || p.belowOneUnit) return;
     setError(null);
+    // Open the cinematic only when motion is allowed (reduced-motion users get the
+    // plain WrapStageIndicator). This never gates or alters the tx below.
+    if (!reduceMotion) setCinematicOpen(true);
     // Pending toast on submit; its id is reused so success/error replace it in place.
     const id = notifyPending(`Wrapping ${uSymbol}`, "Approve, then wrap on Sepolia.");
     try {
@@ -110,6 +128,13 @@ export function WrapPanel({ pair }: { pair: RegistryPair }) {
 
   return (
     <section style={{ maxWidth: 900, margin: "0 auto", textAlign: "left" }}>
+      {/* DIF-01 wrap cinematic overlay — driven by the REAL useWrap.stage, skippable
+          (Skip + Esc), auto-dismisses after the token reveal. Overlays the honest
+          flow below; onSkip closes ONLY the overlay, never the wrap tx. */}
+      <AnimatePresence>
+        {cinematicOpen && <WrapCinematic stage={stage} onSkip={() => setCinematicOpen(false)} />}
+      </AnimatePresence>
+
       <Link
         href="/"
         style={{ color: "var(--muted)", fontSize: 14.5, fontWeight: 600, fontFamily: SERIF, textDecoration: "none" }}
