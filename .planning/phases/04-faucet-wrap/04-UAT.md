@@ -30,6 +30,8 @@ Run every check on the LIVE deployed URL, **not** localhost — the real relayer
 
 ## Checks
 
+> **04-01 readiness (2026-07-08):** the faucet surface these checks exercise is now live in-repo — `/faucet` route under ChainGuard, Header Faucet nav, per-pair claim rows (`useFaucet` public mint), the low-Sepolia-ETH banner, and the tGBP restricted-copy disable. All automated gates green (vitest 64/64, check-types, build). The checks below remain **pending** the end-of-project live-URL session.
+
 ### FCT-01 — Claim underlying ERC-20 (balance arrives)
 - [ ] Open `/faucet` (Faucet nav link). Click **Claim** on a freely-mintable pair (e.g. USDCMock).
 - [ ] After the receipt, the underlying ERC-20 balance increases (check MetaMask assets or the wrap From-balance).

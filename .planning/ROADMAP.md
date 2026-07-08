@@ -96,9 +96,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. Wrapping runs approve → wrap → confirmation, and the wrapped result — verified via Phase 3 decrypt — equals the previewed amount.
 4. The wrap preview reads `rate()` + `decimals()` per pair onchain, rounds down, and warns when the entered amount is below one confidential unit (never hardcodes 18 decimals).
 
-**Plans**: 2 plans (1 wave — parallel; file-disjoint slices)
+**Plans**: 1/2 plans executed
 
-- [ ] 04-01-PLAN.md — Faucet slice: public `mint` claim engine + The test-token cask screen + edge-case copy (FCT-01/02) (Wave 1)
+- [x] 04-01-PLAN.md — Faucet slice: public `mint` claim engine + The test-token cask screen + edge-case copy (FCT-01/02) (Wave 1)
 - [ ] 04-02-PLAN.md — Wrap slice: tested previewWrap/rate math + `useShield` 4-stage + decrypt==preview proof (WRP-01/02) (Wave 1)
 
 ### Phase 5: Unwrap (async finalize)
@@ -157,7 +157,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 1. Foundation + Deploy Spike       | 3/3 | Complete    | 2026-07-07 |
 | 2. Registry Browse                 | 4/4 | Complete    | 2026-07-07 |
 | 3. User-Decryption (EIP-712)       | 3/3 | Complete    | 2026-07-07 |
-| 4. Faucet + Wrap                   | 0/2            | Not started | -         |
+| 4. Faucet + Wrap                   | 1/2 | In Progress|  |
 | 5. Unwrap (async finalize)         | 0/TBD          | Not started | -         |
 | 6. Error Handling + Status System  | 0/TBD          | Not started | -         |
 | 7. Polish + Animation + Submission | 0/TBD          | Not started | -         |

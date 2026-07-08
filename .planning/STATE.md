@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 4
 current_phase_name: Faucet + Wrap
 status: executing
-stopped_at: Completed 03-03-PLAN.md (live-URL decrypt UAT deferred to 03-UAT.md)
-last_updated: "2026-07-07T20:34:48.556Z"
-last_activity: 2026-07-07
-last_activity_desc: Phase 03 complete, transitioned to Phase 4
+stopped_at: Completed 04-01-PLAN.md (faucet slice; live faucet proof deferred to 04-UAT.md)
+last_updated: "2026-07-08T05:35:07.018Z"
+last_activity: 2026-07-08
+last_activity_desc: Phase 04 Plan 01 (faucet slice) complete
 progress:
   total_phases: 7
   completed_phases: 3
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 12
+  completed_plans: 11
   percent: 43
 ---
 
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 4 — Faucet + Wrap
-Plan: Not started
-Status: Executing — Phase 3 all 3 plans shipped; gates green (check-types/lint/vitest 55/vitest build). Live-URL decrypt proof (DEC-01…DEC-04 + no-ACL error class) deferred to end-of-project manual session.
-Last activity: 2026-07-07 — Phase 03 complete, transitioned to Phase 4
+Plan: 04-01 complete (faucet slice); 04-02 (wrap) next
+Status: Executing — 04-01 shipped: faucetErrors map + amount clamp (≤1e6), useFaucet public-mint engine, /faucet cask screen under ChainGuard, Header Faucet nav. Gates green (check-types / build / vitest 64). Live faucet proof (FCT-01/FCT-02) deferred to 04-UAT.md end-of-project session.
+Last activity: 2026-07-08 — Phase 04 Plan 01 (faucet slice) complete
 
-Progress: [██████████] 100% (phase 03: 3/3 plans)
+Progress: [█████░░░░░] 50% (phase 04: 1/2 plans)
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Progress: [██████████] 100% (phase 03: 3/3 plans)
 | 01 | 3 | - | - |
 | 02 | 4 | - | - |
 | 03 | 3 | - | - |
+| 04 | 1 | - | - |
 
 **Recent Trend:**
 
@@ -67,6 +68,7 @@ _Updated after each plan completion_
 | Phase 03 P01 | 10 | 2 tasks | 8 files |
 | Phase 03 P02 | 24 | 3 tasks | 7 files |
 | Phase 03 P03 | 22 | 2 tasks | 5 files |
+| Phase 04 P01 | 4min | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -94,6 +96,7 @@ Recent decisions affecting current work:
 - [03-03]: DecryptQuickPicks sources chips from the SAME Phase-2 useRegistryPairs (valid only, deduped by confidential address) — the registry entry point (DEC-02) alongside paste-an-address; PermitIndicator uses verified 3.0.0 useIsAllowed for the VIEWING KEY ACTIVE badge (DEC-03), zeroAddress placeholder + real-address gate for W2.
 - [03-03]: Decrypt hero shipped as optimized PNG (295x440, 277KB) NOT WebP — the plan's files_modified + automated verify (test -f public/02-bottle-hero.png) + <img src="/02-bottle-hero.png"> pin the .png filename; no lossy PNG compressor (pngquant/oxipng) installed, so 277KB is the practical PNG floor (cwebp would be ~104KB if the filename constraint relaxes).
 - [03-03]: Live-URL decrypt phase gate DEFERRED (time-box directive) to a single end-of-project manual session — see 03-UAT.md (DEC-01…DEC-04 + record concrete no-ACL error class → resolves RESEARCH Open Q1). Code + automated gates green now.
+- [04-01]: Faucet is a plain wagmi public mint(address,uint256) on the cTokenMock UNDERLYING ERC-20 (verified selector 0x40c10f19, no access control, 1,000,000/call cap) — NO SDK/FHE, NO cooldown (a cooldown UI would be fiction). Success = receipt, not submit. Amount clamped then parseUnits by the token's own decimals (never 18). tGBP detected by symbol and disabled up-front with restricted copy; every failure mapped to readable copy (no raw revert). Live faucet proof (FCT-01/FCT-02) deferred to 04-UAT.md.
 
 ### Pending Todos
 
@@ -121,6 +124,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-07T23:20:00.000Z
-Stopped at: Completed 03-03-PLAN.md (live-URL decrypt UAT deferred to 03-UAT.md)
+Last session: 2026-07-08T05:35:07.018Z
+Stopped at: Completed 04-01-PLAN.md (faucet slice; live faucet proof deferred to 04-UAT.md)
 Resume file: None

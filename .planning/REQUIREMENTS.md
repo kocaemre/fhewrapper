@@ -33,8 +33,8 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 ### Faucet (Sepolia)
 
-- [ ] **FCT-01**: User can claim the official cTokenMock underlying ERC-20 test tokens from the app
-- [ ] **FCT-02**: Faucet handles cooldown, insufficient-ETH, and wrong-network cases gracefully
+- [x] **FCT-01**: User can claim the official cTokenMock underlying ERC-20 test tokens from the app
+- [x] **FCT-02**: Faucet handles cooldown, insufficient-ETH, and wrong-network cases gracefully
 
 ### Wrap
 
@@ -108,8 +108,8 @@ Explicitly excluded to prevent scope creep.
 | DEC-02      | Phase 3 | Complete |
 | DEC-03      | Phase 3 | Complete |
 | DEC-04      | Phase 3 | Complete |
-| FCT-01      | Phase 4 | Pending  |
-| FCT-02      | Phase 4 | Pending  |
+| FCT-01      | Phase 4 | Complete |
+| FCT-02      | Phase 4 | Complete |
 | WRP-01      | Phase 4 | Pending  |
 | WRP-02      | Phase 4 | Pending  |
 | UNW-01      | Phase 5 | Pending  |
