@@ -231,8 +231,10 @@ export function UnwrapPanel({ pair }: { pair: RegistryPair }) {
         </div>
       </div>
 
-      {/* Resume banner (Pitfall 3) — a burned-but-unfinalized unwrap is recoverable. */}
-      {pendingHash && stage === "idle" && (
+      {/* Resume banner (Pitfall 3) — a burned-but-unfinalized unwrap is recoverable.
+          Shown at idle AND after an error (e.g. the oracle-wait timeout) so Resume
+          can ALWAYS be retried until the KMS decryption lands — never strand funds. */}
+      {pendingHash && (stage === "idle" || stage === "error") && (
         <div
           role="alert"
           style={{

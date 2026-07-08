@@ -1,3 +1,4 @@
+import { FinalizeStillPendingError } from "./finalizeTimeout";
 import {
   ApprovalFailedError,
   ConfigurationError,
@@ -87,6 +88,17 @@ export function toAppError(e: unknown, opts?: { flow?: Flow; restricted?: boolea
       chip: "RESTRICTED",
       body: "This token's faucet is restricted — claim it from the official testnet faucet.",
       recoverable: false,
+    };
+  }
+
+  // (1b) honest oracle-wait timeout — the unwrap burn is confirmed and safe, the
+  // KMS just hasn't published the decryption yet. NOT a revert, NOT lost funds:
+  // tell the user their tokens are safe and Resume can be pressed again.
+  if (e instanceof FinalizeStillPendingError) {
+    return {
+      chip: "STILL FINALIZING",
+      body: "Your tokens are safe — the burn confirmed, but the Zama oracle hasn't published the decryption yet. This can take a few minutes on Sepolia. Press “Resume interrupted unwrap” again shortly to finish.",
+      recoverable: true,
     };
   }
 

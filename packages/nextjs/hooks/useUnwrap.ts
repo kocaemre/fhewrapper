@@ -11,6 +11,7 @@ import {
   useUnshield,
   useUnshieldAll,
 } from "@zama-fhe/react-sdk";
+import { FinalizeStillPendingError } from "~~/lib/finalizeTimeout";
 import { forgetPendingUnwrap, readPendingUnwrap, rememberPendingUnwrap } from "~~/lib/pendingUnshield";
 import { type UnwrapStage, nextUnwrapStage } from "~~/lib/unwrapStages";
 
@@ -29,10 +30,17 @@ import { type UnwrapStage, nextUnwrapStage } from "~~/lib/unwrapStages";
  * re-run the finalize via `useResumeUnshield` (which reuses the existing burn
  * tx — it NEVER re-burns) with exponential backoff until the oracle result is
  * ready and the finalize succeeds. We only retry transient not-ready failures;
- * everything else fails fast. If the whole window elapses we surface the real
- * error — success is NEVER faked (UNW-02).
+ * everything else fails fast. If the whole window elapses we surface an HONEST
+ * "still finalizing" error (never a scary revert, never a faked success — the
+ * funds are safe and the unwrap stays resumable; UNW-02).
+ *
+ * Window sizing: Sepolia KMS public-decryption latency is variable and can run
+ * well past a couple of minutes under load. A premature give-up surfaces as a
+ * false failure, so the poll window is generous (~10 min of backoff) with a
+ * gentle 15s cap. The pending record is kept on timeout, so "Resume" can always
+ * be pressed again to finish once the oracle catches up.
  */
-const FINALIZE_MAX_ATTEMPTS = 15;
+const FINALIZE_MAX_ATTEMPTS = 40;
 const FINALIZE_BASE_DELAY_MS = 2_500;
 const FINALIZE_MAX_DELAY_MS = 15_000;
 
@@ -171,7 +179,10 @@ export function useUnwrap(confidentialAddr: Address): UseUnwrapResult {
           await sleep(delay); // oracle not ready yet — back off and re-poll
         }
       }
-      throw lastError; // window elapsed — surface the real revert, never fake success
+      // Window elapsed with only transient "oracle not ready" failures: the burn
+      // is safe and resumable. Surface an HONEST still-finalizing error (never a
+      // scary revert, never a faked success) so the user can retry Resume.
+      throw new FinalizeStillPendingError(unwrapTxHash, lastError);
     },
     [apply, callbacks, resume],
   );
