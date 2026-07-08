@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 6
-current_phase_name: Error Handling + Status System
+current_phase: 7
+current_phase_name: Polish + Animation Differentiator + Submission
 status: executing
-stopped_at: Completed 06-01-PLAN.md (unified toAppError + status primitives, proven on the faucet flow; live check deferred to 06-UAT.md).
-last_updated: "2026-07-08T07:07:33.861Z"
+stopped_at: Completed 06-01-PLAN.md (unified toAppError + status primitives, proven on the faucet flow; live "each error surfaces" check deferred to 06-UAT.md).
+last_updated: "2026-07-08T07:08:47.079Z"
 last_activity: 2026-07-08
-last_activity_desc: 06-01 complete
+last_activity_desc: Phase 06 complete, transitioned to Phase 7
 progress:
   total_phases: 7
   completed_phases: 6
@@ -28,10 +28,10 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 
 ## Current Position
 
-Phase: 6 — Error Handling + Status System
-Plan: 2 of 2 complete (06-01 done; 06-02 next)
+Phase: 7 — Polish + Animation Differentiator + Submission
+Plan: Not started
 Status: Executing — 06-01 systematized error/status handling: ONE unified toAppError classifier (lib/appError.ts) returning {chip,body,recoverable} for every faucet/wrap/unwrap/decrypt failure (never a raw revert); the four per-flow maps now delegate with signatures intact (98 pre-existing tests unchanged + 14 new = 112 green). Added host-pinned Sepolia explorer helpers (lib/explorer.ts), themed react-hot-toast wrappers (components/status/txToast.tsx) + ExplorerTxLink, and a Submit→Confirm→Done FaucetStageIndicator. Proved the primitives end-to-end on the faucet claim: pending→success/error toast (success carries a working sepolia.etherscan.io/tx link), stage view, and typed error body (UX-01/UX-02). check-types + next build (/faucet emitted) clean. Live "each error surfaces" check deferred to 06-UAT.md.
-Last activity: 2026-07-08 — 06-01 complete
+Last activity: 2026-07-08 — Phase 06 complete, transitioned to Phase 7
 
 Progress: [█████░░░░░] 50% (phase 06: 1/2 plans)
 
@@ -39,7 +39,7 @@ Progress: [█████░░░░░] 50% (phase 06: 1/2 plans)
 
 **Velocity:**
 
-- Total plans completed: 14
+- Total plans completed: 16
 - Average duration: — min
 - Total execution time: 0.0 hours
 
@@ -52,6 +52,7 @@ Progress: [█████░░░░░] 50% (phase 06: 1/2 plans)
 | 03 | 3 | - | - |
 | 04 | 2 | - | - |
 | 05 | 2 | - | - |
+| 06 | 2 | - | - |
 
 **Recent Trend:**
 
