@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 7
 current_phase_name: Polish + Animation Differentiator + Submission
 status: executing
-stopped_at: Completed 07-01-PLAN.md (signature wrap cinematic — honest reveal-gated engine + ffmpeg-compressed self-hosted beats + skippable tx-driven overlay; vitest 130/130, build clean; live proofs deferred to 07-UAT.md).
-last_updated: "2026-07-08T07:40:00.000Z"
+stopped_at: Completed 07-02-PLAN.md
+last_updated: "2026-07-08T07:45:42.859Z"
 last_activity: 2026-07-08
-last_activity_desc: 07-01 wrap cinematic complete (DIF-01/DIF-02)
+last_activity_desc: 07-02 ambient cellar audio complete
 progress:
   total_phases: 7
   completed_phases: 6
   total_plans: 20
-  completed_plans: 17
-  percent: 85
+  completed_plans: 18
+  percent: 90
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 7 — Polish + Animation Differentiator + Submission
-Plan: 07-01 complete (1/4)
-Status: Executing — 07-01 shipped the signature wrap cinematic (DIF-01/DIF-02). lib/cinematicBeats.ts is a PURE, unit-locked (RED→GREEN) engine mapping the real useWrap stage → six engraving beats; the reveal beats (pop/token) are structurally unreachable until stage==="done" (the mined receipt), so the overlay cannot lie about the tx (threat T-07-01, top honesty axis). The six RAW Kling beats were ffmpeg-8.0.1-compressed to 720p H.264 (crf28 +faststart, audio stripped) at 0.29–0.86MB each and self-hosted under public/cinematic (same-origin → COEP require-corp / crossOriginIsolated preserved, DIF-02); six storyboard PNG posters alongside. components/wrap/WrapCinematic.tsx is a full-screen, skippable (Skip + Esc), reduced-motion-suppressed overlay that plays the current beat, loops age while confirming, and auto-dismisses after the token reveal. WrapPanel opens it on wrap submit (motion-gated) while the honest WrapStageIndicator + error row + on-done decrypt proof keep rendering beneath; skipping never touches the useWrap mutation. Preloader gained a video branch warming only the first beat. vitest 130/130 (112 + 18 new), check-types + next build (/wrap emitted) clean. Live "cinematic plays on a real wrap / reveal only at mined tx / crossOriginIsolated preserved" deferred to 07-UAT.md.
-Last activity: 2026-07-08 — 07-01 wrap cinematic complete
+Plan: 07-02 complete (2/4)
+Status: Executing — 07-02 shipped the ambient cellar audio (DIF-02). howler 2.2.4 (the CLAUDE.md-mandated audio lib) is exact-pinned alongside @types/howler 2.2.13; the 45s cellar-ambient.mp3 loop is self-hosted same-origin under public/audio (a cross-origin src would silently drop crossOriginIsolated under COEP require-corp, so hotlinking is forbidden). components/audio/AmbientAudio.tsx is a "use client" control that lazily builds a Howl (loop+html5) in a ref — never at module scope, SSR-safe — defaults to a respectful MUTED state (no autoplay), primes the audio context on the first pointerdown/keydown gesture (browser autoplay policy) without producing sound, and on unmute starts/resumes the loop; the glyph + aria-pressed reflect true state, and the Howl + listeners tear down on unmount. The toggle mounts in Header.tsx left of the RainbowKit connect cluster (present on every route, never in the Preloader → cannot autoplay). vitest 130/130, check-types + next build clean; crossOriginIsolated preserved (same-origin audio), cinematic/wrap untouched. Live "audio unlocks on gesture / loops / mute works / crossOriginIsolated preserved" deferred to 07-UAT.md.
+Last activity: 2026-07-08 — 07-02 ambient cellar audio complete
 
-Progress: [█████████░] 85% (phase 07: 1/4 plans)
+Progress: [█████████░] 90% (phase 07: 2/4 plans)
 
 ## Performance Metrics
 
@@ -76,6 +76,7 @@ _Updated after each plan completion_
 | Phase 06 P01 | 11min | 3 tasks | 12 files |
 | Phase 06 P02 | 12m | 2 tasks | 5 files |
 | Phase 07 P01 | 6min | 3 tasks | 17 files |
+| Phase 07 P02 | 2m | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -108,6 +109,7 @@ Recent decisions affecting current work:
 - [Phase ?]: 06-02: unwrap success toast gated to stage===finalized effect (no optimistic success; T-06-06/UNW-02 preserved)
 - [Phase ?]: 06-02: write hooks expose additive txHash for explorer links + real-tx success toasts without touching the SDK stage machine
 - [07-01]: Wrap cinematic HONESTY is structural, not conventional — lib/cinematicBeats.ts encodes the reveal beats (pop/token) ONLY on stage==="done" in a per-stage Record, unit-locked by 18 RED→GREEN vitest cases; the WrapCinematic overlay consumes it, so it cannot show success before the mined receipt (T-07-01). Overlay reflects stage, never drives it; onSkip (Skip button + Esc) closes ONLY the overlay, never the useWrap mutation; prefers-reduced-motion suppresses it (plain WrapStageIndicator carries the flow). Six beats ffmpeg-compressed 720p H.264 crf28 +faststart -an to 0.29–0.86MB each, self-hosted under public/cinematic (same-origin → crossOriginIsolated intact, DIF-02); audio stripped (07-02 owns ambient). Preloader video branch warms only the first beat. Live proofs deferred to 07-UAT.md.
+- [Phase 07]: Ambient audio defaults muted (opt-in), self-hosted same-origin mp3 to preserve crossOriginIsolated under COEP require-corp
 
 ### Pending Todos
 
@@ -135,6 +137,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-08T07:36:37.505Z
-Stopped at: Completed 07-01-PLAN.md (signature wrap cinematic — honest reveal-gated engine + ffmpeg-compressed self-hosted beats + skippable tx-driven overlay; vitest 130/130, build clean; live proofs deferred to 07-UAT.md).
+Last session: 2026-07-08T07:45:20.435Z
+Stopped at: Completed 07-02-PLAN.md
 Resume file: None
