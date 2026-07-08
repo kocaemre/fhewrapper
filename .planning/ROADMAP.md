@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation + Deploy Spike** - Live Sepolia dApp shell, cross-origin-isolated FHE runtime, wallet + chain guard, proven on a real Vercel URL (completed 2026-07-07)
 - [x] **Phase 2: Registry Browse** - Every official ERC-20 ↔ ERC-7984 pair surfaced from the onchain registry with real token metadata (no SDK dependency) (completed 2026-07-07)
 - [x] **Phase 3: User-Decryption (EIP-712)** - Decrypt any ERC-7984 balance via a correct EIP-712 flow — the tool that verifies every other flow (completed 2026-07-07)
-- [ ] **Phase 4: Faucet + Wrap** - Claim test tokens, then approve → wrap → confirm with an onchain-accurate preview
+- [x] **Phase 4: Faucet + Wrap** - Claim test tokens, then approve → wrap → confirm with an onchain-accurate preview (completed 2026-07-08)
 - [ ] **Phase 5: Unwrap (async finalize)** - ERC-7984 → ERC-20 with the two-step pending→finalized flow modeled honestly; closes the core loop
 - [ ] **Phase 6: Error Handling + Status System** - Typed human-readable errors, toasts, tx stages, explorer links, and a production-grade async-wait state
 - [ ] **Phase 7: Polish + Animation Differentiator + Submission** - Signature bottle cinematic, reveal micro-interactions, reusable hooks, and the full submission package
@@ -96,10 +96,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. Wrapping runs approve → wrap → confirmation, and the wrapped result — verified via Phase 3 decrypt — equals the previewed amount.
 4. The wrap preview reads `rate()` + `decimals()` per pair onchain, rounds down, and warns when the entered amount is below one confidential unit (never hardcodes 18 decimals).
 
-**Plans**: 1/2 plans executed
+**Plans**: 2/2 plans complete
 
 - [x] 04-01-PLAN.md — Faucet slice: public `mint` claim engine + The test-token cask screen + edge-case copy (FCT-01/02) (Wave 1)
-- [ ] 04-02-PLAN.md — Wrap slice: tested previewWrap/rate math + `useShield` 4-stage + decrypt==preview proof (WRP-01/02) (Wave 1)
+- [x] 04-02-PLAN.md — Wrap slice: tested previewWrap/rate math + `useShield` 4-stage + decrypt==preview proof (WRP-01/02) (Wave 1)
 
 ### Phase 5: Unwrap (async finalize)
 
@@ -157,7 +157,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 1. Foundation + Deploy Spike       | 3/3 | Complete    | 2026-07-07 |
 | 2. Registry Browse                 | 4/4 | Complete    | 2026-07-07 |
 | 3. User-Decryption (EIP-712)       | 3/3 | Complete    | 2026-07-07 |
-| 4. Faucet + Wrap                   | 1/2 | In Progress|  |
+| 4. Faucet + Wrap                   | 2/2 | Complete   | 2026-07-08 |
 | 5. Unwrap (async finalize)         | 0/TBD          | Not started | -         |
 | 6. Error Handling + Status System  | 0/TBD          | Not started | -         |
 | 7. Polish + Animation + Submission | 0/TBD          | Not started | -         |

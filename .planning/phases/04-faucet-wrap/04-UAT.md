@@ -32,6 +32,8 @@ Run every check on the LIVE deployed URL, **not** localhost — the real relayer
 
 > **04-01 readiness (2026-07-08):** the faucet surface these checks exercise is now live in-repo — `/faucet` route under ChainGuard, Header Faucet nav, per-pair claim rows (`useFaucet` public mint), the low-Sepolia-ETH banner, and the tGBP restricted-copy disable. All automated gates green (vitest 64/64, check-types, build). The checks below remain **pending** the end-of-project live-URL session.
 
+> **04-02 readiness (2026-07-08):** the wrap surface for WRP-01/WRP-02 is now live in-repo — the PairCard **Wrap →** CTA links to `/wrap?token=<confidential>`, the `/wrap` route resolves the pair from the trusted registry under ChainGuard, and `WrapPanel` renders the From-ERC-20 / To-ERC-7984 preview (`useWrap` → onchain `rate()` + `previewWrap`, never hardcoding 18), the 4-stage indicator (`onApprovalSubmitted`/`onShieldSubmitted`/receipt via `useShield`), `toWrapError` copy, the below-one-unit disable, and the on-`done` Phase-3 `PairCardDecrypt` for the decrypt==preview proof. Pure logic locked by vitest (previewWrap + wrapErrors, 11 tests); all automated gates green (vitest 75/75, check-types, build with `/wrap` emitted). The live approve→wrap→decrypt==preview checks below (and the RESEARCH Open Q1/A2 amount-scale confirmation) remain **pending** the end-of-project live-URL session — the tx path is SDK/wagmi-owned and cannot be unit-proven.
+
 ### FCT-01 — Claim underlying ERC-20 (balance arrives)
 - [ ] Open `/faucet` (Faucet nav link). Click **Claim** on a freely-mintable pair (e.g. USDCMock).
 - [ ] After the receipt, the underlying ERC-20 balance increases (check MetaMask assets or the wrap From-balance).

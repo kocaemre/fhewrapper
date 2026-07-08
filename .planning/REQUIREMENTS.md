@@ -38,8 +38,8 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 ### Wrap
 
-- [ ] **WRP-01**: User can wrap a registry ERC-20 into its ERC-7984 equivalent (approve → wrap → confirmation)
-- [ ] **WRP-02**: Wrap reads `rate()` + `decimals()` per pair onchain and previews the resulting amount (rounds down; warns below one confidential unit) — never hardcodes 18 decimals
+- [x] **WRP-01**: User can wrap a registry ERC-20 into its ERC-7984 equivalent (approve → wrap → confirmation)
+- [x] **WRP-02**: Wrap reads `rate()` + `decimals()` per pair onchain and previews the resulting amount (rounds down; warns below one confidential unit) — never hardcodes 18 decimals
 
 ### Unwrap
 
@@ -110,8 +110,8 @@ Explicitly excluded to prevent scope creep.
 | DEC-04      | Phase 3 | Complete |
 | FCT-01      | Phase 4 | Complete |
 | FCT-02      | Phase 4 | Complete |
-| WRP-01      | Phase 4 | Pending  |
-| WRP-02      | Phase 4 | Pending  |
+| WRP-01      | Phase 4 | Complete |
+| WRP-02      | Phase 4 | Complete |
 | UNW-01      | Phase 5 | Pending  |
 | UNW-02      | Phase 5 | Pending  |
 | UX-01       | Phase 6 | Pending  |

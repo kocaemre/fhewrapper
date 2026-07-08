@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 4
 current_phase_name: Faucet + Wrap
 status: executing
-stopped_at: Completed 04-01-PLAN.md (faucet slice; live faucet proof deferred to 04-UAT.md)
-last_updated: "2026-07-08T05:35:07.018Z"
+stopped_at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md)
+last_updated: "2026-07-08T05:48:03Z"
 last_activity: 2026-07-08
-last_activity_desc: Phase 04 Plan 01 (faucet slice) complete
+last_activity_desc: Phase 04 Plan 02 (wrap slice) complete — Phase 04 done
 progress:
   total_phases: 7
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 12
-  completed_plans: 11
-  percent: 43
+  completed_plans: 12
+  percent: 57
 ---
 
 # Project State
@@ -28,18 +28,18 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 
 ## Current Position
 
-Phase: 4 — Faucet + Wrap
-Plan: 04-01 complete (faucet slice); 04-02 (wrap) next
-Status: Executing — 04-01 shipped: faucetErrors map + amount clamp (≤1e6), useFaucet public-mint engine, /faucet cask screen under ChainGuard, Header Faucet nav. Gates green (check-types / build / vitest 64). Live faucet proof (FCT-01/FCT-02) deferred to 04-UAT.md end-of-project session.
-Last activity: 2026-07-08 — Phase 04 Plan 01 (faucet slice) complete
+Phase: 4 — Faucet + Wrap (both plans complete)
+Plan: 04-01 (faucet) + 04-02 (wrap) complete — Phase 04 done
+Status: Executing — 04-02 shipped: previewWrap pure math (RED→GREEN, 6-dp & 18-dp "1 whole → 1.0"), toWrapError map, useWrap (useShield 4-stage + onchain rate()), /wrap screen under ChainGuard with From/To preview + below-one-unit disable + on-done decrypt==preview proof, PairCard Wrap → CTA wired. Gates green (check-types / build with /wrap emitted / vitest 75). Live wrap + decrypt==preview proof (WRP-01/02) deferred to 04-UAT.md end-of-project session.
+Last activity: 2026-07-08 — Phase 04 Plan 02 (wrap slice) complete
 
-Progress: [█████░░░░░] 50% (phase 04: 1/2 plans)
+Progress: [██████████] 100% (phase 04: 2/2 plans)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 10
+- Total plans completed: 11
 - Average duration: — min
 - Total execution time: 0.0 hours
 
@@ -50,7 +50,7 @@ Progress: [█████░░░░░] 50% (phase 04: 1/2 plans)
 | 01 | 3 | - | - |
 | 02 | 4 | - | - |
 | 03 | 3 | - | - |
-| 04 | 1 | - | - |
+| 04 | 2 | - | - |
 
 **Recent Trend:**
 
@@ -69,6 +69,7 @@ _Updated after each plan completion_
 | Phase 03 P02 | 24 | 3 tasks | 7 files |
 | Phase 03 P03 | 22 | 2 tasks | 5 files |
 | Phase 04 P01 | 4min | 3 tasks | 8 files |
+| Phase 04 P02 | 9min | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,7 @@ Recent decisions affecting current work:
 - [03-03]: Decrypt hero shipped as optimized PNG (295x440, 277KB) NOT WebP — the plan's files_modified + automated verify (test -f public/02-bottle-hero.png) + <img src="/02-bottle-hero.png"> pin the .png filename; no lossy PNG compressor (pngquant/oxipng) installed, so 277KB is the practical PNG floor (cwebp would be ~104KB if the filename constraint relaxes).
 - [03-03]: Live-URL decrypt phase gate DEFERRED (time-box directive) to a single end-of-project manual session — see 03-UAT.md (DEC-01…DEC-04 + record concrete no-ACL error class → resolves RESEARCH Open Q1). Code + automated gates green now.
 - [04-01]: Faucet is a plain wagmi public mint(address,uint256) on the cTokenMock UNDERLYING ERC-20 (verified selector 0x40c10f19, no access control, 1,000,000/call cap) — NO SDK/FHE, NO cooldown (a cooldown UI would be fiction). Success = receipt, not submit. Amount clamped then parseUnits by the token's own decimals (never 18). tGBP detected by symbol and disabled up-front with restricted copy; every failure mapped to readable copy (no raw revert). Live faucet proof (FCT-01/FCT-02) deferred to 04-UAT.md.
+- [04-02]: WRAP = ONE useShield({ tokenAddress, wrapperAddress }) — both = confidential addr (ERC7984ERC20Wrapper IS the confidential token; installed 3.0.0, NOT docs' { address }). approve+wrap auto-orchestrated; onApprovalSubmitted/onShieldSubmitted + mutation receipt drive the 4-stage indicator (never hand-roll approve+wrap). previewWrap is PURE bigint floor(underlyingRaw/rate) with rate() + per-side decimals read onchain via rateContract (never hardcode 18); belowOneUnit disables Wrap. toWrapError = instanceof ZamaError subclasses → copy (no raw revert). Decrypt==preview proof reuses Phase-3 PairCardDecrypt on stage=done. approvalStrategy default 'max'. /wrap resolves the pair from trusted useRegistryPairs (?token=) under ChainGuard + Suspense. Live wrap + decrypt==preview proof (WRP-01/02, amount-scale Open Q1/A2) deferred to 04-UAT.md.
 
 ### Pending Todos
 
@@ -124,6 +126,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-08T05:35:07.018Z
-Stopped at: Completed 04-01-PLAN.md (faucet slice; live faucet proof deferred to 04-UAT.md)
+Last session: 2026-07-08T05:48:03Z
+Stopped at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md). Phase 04 complete.
 Resume file: None
