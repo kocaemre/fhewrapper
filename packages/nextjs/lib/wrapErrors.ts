@@ -1,48 +1,14 @@
-import {
-  ApprovalFailedError,
-  InsufficientERC20BalanceError,
-  SigningRejectedError,
-  TransactionRevertedError,
-  ZamaError,
-} from "@zama-fhe/react-sdk";
+import { toAppError } from "./appError";
 
 /**
  * Wrap error taxonomy (WRP-01 messaging).
  *
- * Maps every wrap-flow `ZamaError` subclass (plus unknowns) to a single line of
- * readable copy. Classification is by `instanceof` against the typed subclasses —
- * never string-matching raw revert text (04-RESEARCH "Don't Hand-Roll"). All
- * error classes are re-exported by `@zama-fhe/react-sdk` (installed exact 3.0.0).
- *
- * Ordering: the specific subclasses are caught BEFORE the generic `ZamaError`
- * fallthrough; non-SDK errors map to the unknown copy last.
+ * Delegates to the unified `toAppError` classifier (CONTEXT Decision A) under
+ * the `"wrap"` flow, returning just the body line the wrap panel renders. The
+ * copy is identical to the pre-consolidation map — classification remains by
+ * `instanceof` against the typed `@zama-fhe/react-sdk` subclasses inside
+ * `toAppError`, never string-matching raw revert text.
  */
 export function toWrapError(e: unknown): string {
-  // User rejected the wallet prompt (approve or wrap signature).
-  if (e instanceof SigningRejectedError) {
-    return "You declined the wallet prompt.";
-  }
-
-  // Not enough underlying ERC-20 to shield — point them at the faucet.
-  if (e instanceof InsufficientERC20BalanceError) {
-    return "Not enough underlying tokens — use the faucet first.";
-  }
-
-  // The ERC-20 approval transaction failed.
-  if (e instanceof ApprovalFailedError) {
-    return "The ERC-20 approval failed — please try again.";
-  }
-
-  // The wrap transaction reverted on-chain.
-  if (e instanceof TransactionRevertedError) {
-    return "The wrap transaction reverted.";
-  }
-
-  // Any other typed SDK failure.
-  if (e instanceof ZamaError) {
-    return "The wrap could not be completed.";
-  }
-
-  // Unknown / non-SDK error.
-  return "Unexpected error while wrapping.";
+  return toAppError(e, { flow: "wrap" }).body;
 }
