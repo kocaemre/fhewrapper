@@ -1,101 +1,25 @@
-# FHEVM React Template
+# The Cellar Registry — Confidential Wrapper Registry
 
-A minimal React + Foundry template for building FHEVM-enabled dApps. Ships with `FHECounter.sol` (a trivial encrypted counter) and a Next.js frontend that reads, writes, and decrypts its value.
+**Browse every official ERC-20 ↔ ERC-7984 wrapper pair on Sepolia, wrap/unwrap, decrypt any confidential balance via EIP-712, and claim faucet test tokens — from one app.**
 
-FHEVM (Fully Homomorphic Encryption Virtual Machine) lets smart contracts compute on encrypted data. Inputs, storage, and ciphertext handles stay private; only authorized callers can decrypt.
+**▶ Live app: https://fhewrapper-nextjs.vercel.app/**
 
-## Stack
+Built for the **Zama Developer Program — Mainnet Season 3 Bounty Track**. The Cellar Registry turns the Zama **Wrappers Registry** into a usable product: it reads the official registry live onchain, makes "use the official registry" the path of least resistance, and wraps the whole confidential-token loop (wrap → decrypt → unwrap) in a signature cinematic.
 
-- **Contracts** — Foundry, Solidity 0.8.27, [forge-fhevm](https://github.com/zama-ai/forge-fhevm) for host contracts + testing helpers
-- **Frontend** — Next.js 15 (App Router), React 19, wagmi, viem, RainbowKit, Tailwind + daisyUI
-- **FHE SDK** — `@zama-fhe/sdk` + `@zama-fhe/react-sdk` v3; `RelayerCleartext` on localhost, `RelayerWeb` on Sepolia
+FHEVM (Fully Homomorphic Encryption Virtual Machine) lets smart contracts compute on encrypted data — ERC-7984 balances stay private ciphertext handles, decryptable only by the authorized holder via the EIP-712 user-decryption flow.
 
-## Prerequisites
+## Supported network
 
-Node.js ≥ 20, pnpm, [Foundry](https://book.getfoundry.sh/getting-started/installation) (`forge` / `anvil` / `cast`), `jq`, MetaMask.
+**Sepolia testnet only** (chain id `11155111`). Mainnet is a read-only reference; all write operations (wrap, unwrap, faucet) are Sepolia. The app detects the wallet's chain and prompts a switch to Sepolia (ChainGuard).
 
-## Quick start
+## What it does
 
-```bash
-pnpm install            # node deps + husky + regenerate ABIs
-pnpm contracts:install  # forge soldeer install — required before `pnpm chain`
-```
-
-### Local
-
-```bash
-# Terminal 1 — anvil + FHEVM cleartext host + FHECounter
-pnpm chain
-
-# Terminal 2 — frontend (http://localhost:3000)
-pnpm start
-```
-
-Add the local network to MetaMask: RPC `http://127.0.0.1:8545`, chain id `31337`. Import any anvil dev account (e.g. private key `0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80`, address `0xf39F…2266`, 10 000 ETH).
-
-To redeploy `FHECounter` without restarting anvil: `pnpm deploy:localhost`.
-
-### Sepolia
-
-```bash
-cp .env.example .env.local   # then fill in the three values below
-```
-
-```bash
-DEPLOYER_PRIVATE_KEY=0x...                         # deployer funded with Sepolia ETH
-SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_KEY
-ETHERSCAN_API_KEY=...                              # optional, enables --verify
-```
-
-Add an Alchemy key to `packages/nextjs/.env.local`:
-
-```bash
-NEXT_PUBLIC_ALCHEMY_API_KEY=YOUR_KEY
-```
-
-Deploy + run:
-
-```bash
-pnpm deploy:sepolia
-pnpm start
-```
-
-## Scripts
-
-| Command                  | What it does                                                                                 |
-| ------------------------ | -------------------------------------------------------------------------------------------- |
-| `pnpm chain`             | Anvil + FHEVM cleartext host + `FHECounter` on port 8545                                     |
-| `pnpm deploy:localhost`  | Deploys `FHECounter` to local anvil, then regenerates frontend ABIs                          |
-| `pnpm deploy:sepolia`    | Deploys to Sepolia (reads `.env.local`), then regenerates frontend ABIs                      |
-| `pnpm contracts:install` | `forge soldeer install` — fetches forge-fhevm and other contract deps                        |
-| `pnpm contracts:build`   | `forge build` in `packages/foundry`                                                          |
-| `pnpm contracts:test`    | `forge test -vv` in `packages/foundry`                                                       |
-| `pnpm generate`          | Emits `packages/nextjs/contracts/<Name>.ts` + `<Name>.local.ts` from forge broadcasts + out/ |
-| `pnpm start`             | `next dev`                                                                                   |
-| `pnpm next:build`        | Production build of the frontend                                                             |
-| `pnpm next:check-types`  | TypeScript check on the frontend                                                             |
-| `pnpm lint`              | Lint the frontend                                                                            |
-| `pnpm format`            | Prettier over the whole repo (`format:check` for no-write)                                   |
-
-## Project structure
-
-```
-fhevm-react-template/
-├── scripts/                       # chain.sh, deploy-*.sh, generateTsAbis.ts
-├── packages/foundry/              # Solidity contracts
-│   ├── src/FHECounter.sol
-│   ├── script/DeployFHECounter.s.sol
-│   └── test/FHECounter.t.sol      # inherits forge-fhevm's FhevmTest
-└── packages/nextjs/               # Frontend
-    ├── components/DappWrapperWithProviders.tsx   # wires ZamaProvider + relayer
-    ├── hooks/fhecounter-example/useFHECounterWagmi.tsx
-    ├── contracts/
-    │   ├── FHECounter.ts          # non-local (Sepolia, …) — tracked
-    │   └── FHECounter.local.ts    # chainId 31337 overlay — gitignored
-    └── utils/contract.ts          # ContractDeployment + deploymentFor()
-```
-
-The per-contract `Name.ts` imports `Name.local.ts` and merges at module load, so consumer code is agnostic to which chain a deployment lives on. `postinstall` regenerates both on every `pnpm install`, including an empty stub sidecar on a fresh clone.
+- **Browse the registry** — reads the **onchain** Sepolia Wrappers Registry (`0x2f0750Bbb0A246059d80e94c454586a7F27a128e`) as the source of truth; resolves both sides' symbol/name/decimals in one Multicall3 batch; flags revoked pairs via the registry's `isValid` bit. Search, valid/revoked filter chips, and address-copy affordances included.
+- **Faucet** — claim the official cTokenMock underlying ERC-20 test tokens (cUSDC, cUSDT, cWETH, cBRON, cZAMA, ctGBP, cXAUt) straight from the app, with cooldown / low-gas / wrong-network handling.
+- **Wrap** — approve + wrap a registry ERC-20 into its ERC-7984 equivalent; reads `rate()` + `decimals()` per pair onchain and previews the resulting amount (never hardcodes 18 decimals).
+- **Unwrap** — the honest two-tx async flow (burn → gateway public-decrypt → finalize); success is shown only when the ERC-20 actually arrives (`finalizeUnwrap` receipt), with a resumable pending state.
+- **Decrypt any ERC-7984 balance** — one reusable EIP-712 permit user-decrypts the connected wallet's balance for **any** ERC-7984 token, including tokens **outside** the registry (paste-an-address); the "no ACL access" case is detected and messaged, not left spinning.
+- **Signature cinematic + ambient audio** — a fal.ai-rendered "fold → insert → seal → age → pop → token" sequence driven by the real wrap tx lifecycle (skippable, `prefers-reduced-motion`-aware), over self-hosted ElevenLabs ambient audio.
 
 ## Wrapper registry
 
@@ -151,23 +75,96 @@ The addresses above are **illustrative** — the shipped `pairs.config.ts` stays
 
 **Precedence rule (dedup by confidential address, onchain wins):** merged entries are deduped by the **lowercased ERC-7984 (`confidentialTokenAddress`)**. When the same confidential address exists both onchain and in `localPairs`, **the onchain registry entry always wins** — a local entry can only surface a pair the registry does not already list, and can never override or mask a real onchain pair.
 
-## Troubleshooting
+## Reusable hooks (public API)
 
-- **MetaMask nonce mismatch after restarting anvil** — MetaMask → Settings → Advanced → _Clear activity tab data_.
-- **Stale view-function results** — MetaMask caches across reloads; restart the browser (not the tab).
-- **`Contract address is not a valid address`** — the relayer SDK requires EIP-55 checksummed addresses. Rerun `pnpm generate`.
-- **`pnpm install` asks for a package manager version** — the root pins `packageManager: "pnpm@10.18.3"`. `corepack prepare pnpm@10.18.3 --activate` or match locally.
+The four table-stakes flows are exposed as clean, well-typed React hooks from a single barrel, `packages/nextjs/hooks/index.ts` — the deliberate public surface a judge or downstream dev imports from:
 
-## FHEVM notes
+```ts
+import { useRegistry, useWrap, useUnwrap, useUserDecrypt, useFaucet } from "~~/hooks";
+```
 
-- **ACL is mandatory.** Every encrypted value needs `FHE.allowThis(handle)` + `FHE.allow(handle, user)` — reads silently fail without it. `FHECounter.sol` does this explicitly.
-- **Types are baked into ciphertext handles.** The frontend's `type: "euint32"` must match the contract's `externalEuint32` parameter — mismatch reverts with `InvalidType()`.
-- **Local runs cleartext mode.** Anvil hosts a `CleartextFHEVMExecutor` that mirrors every FHE op into a `plaintexts(bytes32)` mapping. No KMS, no gateway, no WASM — `RelayerCleartext` reads plaintext directly. Dev-only.
-- **Sepolia uses the real relayer.** `RelayerWeb` spins up a Web Worker and pulls FHE crypto from Zama's CDN. Needs `NEXT_PUBLIC_ALCHEMY_API_KEY`.
+| Hook                                         | Returns (abridged)                                                        | Onchain state                                                                            |
+| -------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `useRegistry` (alias of `useRegistryPairs`)  | `{ pairs, validCount, isLoading, isError, refetch }`                      | reads the Wrappers Registry (enumerate + metadata multicall) + local overlay — read-only |
+| `useWrap(confidentialAddr)`                  | `{ stage, wrap, isPending, rate, preview, confirmed, txHash }`            | reads `rate()`; writes ERC-20 approval + wrap (shield)                                   |
+| `useUnwrap(confidentialAddr)`                | `{ stage, unwrap, unwrapAll, resumePending, isPending, reset, txHash }`   | writes the honest two-tx unwrap; success gated on the finalize receipt                   |
+| `useUserDecrypt(tokenAddress, { decimals })` | `{ stage, reveal, reset, value, error, hasPermit, isFetching, decimals }` | signs one reusable EIP-712 permit; user-decrypts ANY ERC-7984 balance locally            |
+| `useFaucet()`                                | `{ claim, txHash, isPending, confirming, isSuccess, error }`              | writes the cTokenMock `mint(to, amount)`; success is the receipt                         |
+
+The barrel is a re-export only — `check-types` resolves every symbol, so the documented API can never drift from the implementations.
+
+## Stack / versions
+
+- **Frontend** — Next.js 15 (App Router), React 19, TypeScript, wagmi 2 / viem 2, RainbowKit 2, Tailwind + daisyUI.
+- **FHE SDK** — [`@zama-fhe/sdk`](https://github.com/zama-ai/sdk) + `@zama-fhe/react-sdk`, **pinned EXACT `3.0.0`** (no caret/tilde).
+- **Animation / media** — self-hosted fal.ai cinematic (`/public/cinematic/*.mp4`) + ElevenLabs ambient audio (`/public/audio/cellar-ambient.mp3`).
+
+### Why the SDK is exact-pinned to 3.0.0
+
+The official `fhevm-react-template` locks `@zama-fhe/sdk` + `@zama-fhe/react-sdk` to **3.0.0**, and the preserved client-only provider targets the 3.0.0 API. 3.2.0 introduced breaking changes (`SepoliaConfig` / `RelayerWeb` location / `hardhatCleartextConfig` / `ZERO_HANDLE`) incompatible with that provider. Both packages are therefore pinned to an exact `3.0.0` — no range — and a guard script, `packages/nextjs/scripts/check-pins.mjs`, exits non-zero if either drifts off exact `3.0.0`, so an unpinned SDK can never auto-update into a judged deploy.
+
+## Cross-origin isolation (COOP / COEP)
+
+The FHE WASM worker needs `SharedArrayBuffer`, which requires the page to be **cross-origin isolated** (`crossOriginIsolated === true`). `packages/nextjs/next.config.ts` emits, on every route:
+
+```
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+```
+
+Because COEP is `require-corp` (not `credentialless`), cross-origin subresources would be blocked — so **all media (cinematic MP4s, ambient audio) is self-hosted under `/public`**. Confirmed live on the deployed URL: COOP/COEP on the wire and `crossOriginIsolated === true` in-browser.
+
+> **Warning:** a static export (`output: "export"`, triggered by `NEXT_PUBLIC_IPFS_BUILD=true`) **silently drops these headers**. Leave `NEXT_PUBLIC_IPFS_BUILD` unset for any hosted deploy, or cross-origin isolation — and therefore decryption — breaks.
+
+## Deploy
+
+The live app deploys via **GitHub → Vercel dashboard import** (no Vercel CLI needed). The reproducible pipeline:
+
+1. Push the repo to GitHub and **import it into Vercel** (New Project → import the repo).
+2. Set **Root Directory = `packages/nextjs`** (the monorepo frontend).
+3. Leave the Install/Build commands on **Vercel defaults** — the committed exact-pinned `package-lock.json` resolves everything; **npm is the package manager** (the stale `pnpm-lock.yaml` and `packageManager` field were removed so Vercel/CI auto-detect npm — do not reintroduce a second lockfile).
+4. Leave **`NEXT_PUBLIC_IPFS_BUILD` unset** so `next.config.ts` `headers()` emit the COOP/COEP headers (see above) instead of a static export.
+5. No env vars are required to boot — with no `NEXT_PUBLIC_ALCHEMY_API_KEY` the app falls back to public Sepolia RPCs. Set `NEXT_PUBLIC_ALCHEMY_API_KEY` (name only — never commit the value) for a dedicated RPC.
+
+After import, the deploy is a hybrid build (`.next`, no `out/`) at a public URL — confirmed at https://fhewrapper-nextjs.vercel.app/.
+
+### Local development
+
+```bash
+cd packages/nextjs
+npm install
+npm run dev          # http://localhost:3000
+```
+
+> Local dev is fine for UI work, but **decryption / relayer flows must be verified on the live isolated URL** — `crossOriginIsolated` and the real Sepolia relayer are the true gate.
+
+Frontend scripts (`packages/nextjs`):
+
+| Command                       | What it does                           |
+| ----------------------------- | -------------------------------------- |
+| `npm run dev`                 | Next dev server                        |
+| `npm run build`               | Production build                       |
+| `npm run check-types`         | `tsc --noEmit`                         |
+| `npm run test`                | `vitest run`                           |
+| `npm run lint`                | Next lint                              |
+| `node scripts/check-pins.mjs` | Assert `@zama-fhe/*` are exact `3.0.0` |
+
+## Verified onchain addresses (Sepolia)
+
+| Contract              | Address                                      |
+| --------------------- | -------------------------------------------- |
+| **Wrappers Registry** | `0x2f0750Bbb0A246059d80e94c454586a7F27a128e` |
+| cUSDC (Mock)          | `0x7c5BF43B851c1dff1a4feE8dB225b87f2C223639` |
+| cUSDT (Mock)          | `0x4E7B06D78965594eB5EF5414c357ca21E1554491` |
+| cWETH (Mock)          | `0x46208622DA27d91db4f0393733C8BA082ed83158` |
+| cBRON (Mock)          | `0xaa5612FA27c927a0c7961f5AEFEE5ba3A0F9C891` |
+| cZAMA (Mock)          | `0xf2D628d2598aF4eAF94CB76a437Ff86CA78FfbFB` |
+| ctGBP (Mock)          | `0xfCE5c7069c5525eF6c8C2b2E35A745bA20a2F7CC` |
+| cXAUt (Mock)          | `0xe4FcF848739845BC81Dee1d5352cf3844F0a60C7` |
 
 ## References
 
-[Zama Protocol docs](https://docs.zama.org/) · [`@zama-fhe/sdk`](https://github.com/zama-ai/sdk) · [forge-fhevm](https://github.com/zama-ai/forge-fhevm) · [OpenZeppelin Confidential Contracts](https://github.com/OpenZeppelin/openzeppelin-confidential-contracts) · [Discord](https://discord.com/invite/zama)
+[Zama Protocol docs](https://docs.zama.org/) · [`@zama-fhe/sdk`](https://github.com/zama-ai/sdk) · [OpenZeppelin Confidential Contracts](https://github.com/OpenZeppelin/openzeppelin-confidential-contracts) · [Discord](https://discord.com/invite/zama)
 
 ## License
 
