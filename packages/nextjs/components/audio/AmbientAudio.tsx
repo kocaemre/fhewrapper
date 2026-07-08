@@ -14,18 +14,22 @@ const AMBIENT_VOLUME = 0.35;
 /**
  * Ambient cellar audio control (DIF-02).
  *
- * Autoplay is BLOCKED by browser policy until a user gesture, and we default to
- * a respectful MUTED state so no judge is ambushed by sound. The `Howl` is
- * constructed lazily in a ref (never at module scope → SSR-safe) on the first
- * unmute. A one-time first-gesture listener primes Howler's audio context so the
- * loop starts smoothly on unmute even under strict autoplay policy — but nothing
- * plays until the user explicitly opts in. Everything is torn down on unmount.
+ * DEFAULT-ON: the loop is meant to be playing from the moment the browser allows.
+ * AUTOPLAY CAVEAT — browsers BLOCK audio playback until the page has received a
+ * user gesture (click/keypress), so a bare `.play()` on mount is typically
+ * rejected. We therefore do both: (1) attempt `.play()` on mount (works if the
+ * user already interacted, e.g. clicked through the preloader), and (2) register a
+ * one-time first-gesture listener that starts the loop the instant a gesture
+ * arrives if the mount attempt was blocked. State defaults to UNMUTED; the visible
+ * toggle now turns the ambience OFF. The `Howl` is built lazily in a ref (never at
+ * module scope → SSR-safe) and torn down on unmount.
  */
 export const AmbientAudio = () => {
-  // muted === true is the initial, respectful default: silent until opt-in.
-  const [muted, setMuted] = useState(true);
+  // muted === false is the initial default: ambience ON as soon as the browser allows.
+  const [muted, setMuted] = useState(false);
   const howlRef = useRef<Howl | null>(null);
-  const primedRef = useRef(false);
+  // Mirrors `muted` for the gesture handler (avoids stale-closure reads).
+  const mutedRef = useRef(false);
 
   // Lazily create the Howl (client-only). Safe to call repeatedly.
   const ensureHowl = useCallback((): Howl => {
@@ -35,28 +39,34 @@ export const AmbientAudio = () => {
         loop: true,
         html5: true,
         volume: AMBIENT_VOLUME,
-        preload: false,
+        preload: true,
       });
     }
     return howlRef.current;
   }, []);
 
-  // Prime Howler's audio context on the first user gesture so the loop can start
-  // smoothly on unmute — but keep it silent (muted default) until the user opts in.
-  useEffect(() => {
-    const prime = () => {
-      if (primedRef.current) return;
-      primedRef.current = true;
-      // Constructing the Howl within the gesture handler unlocks the audio context.
-      ensureHowl();
-    };
-    window.addEventListener("pointerdown", prime, { once: true });
-    window.addEventListener("keydown", prime, { once: true });
-    return () => {
-      window.removeEventListener("pointerdown", prime);
-      window.removeEventListener("keydown", prime);
-    };
+  const startIfWanted = useCallback(() => {
+    if (mutedRef.current) return;
+    const howl = ensureHowl();
+    howl.volume(AMBIENT_VOLUME);
+    if (!howl.playing()) howl.play();
   }, [ensureHowl]);
+
+  // Try to start on mount (works only if a gesture already happened), then fall
+  // back to a one-time first-gesture listener for the common autoplay-blocked case.
+  useEffect(() => {
+    startIfWanted();
+
+    const onGesture = () => {
+      startIfWanted();
+    };
+    window.addEventListener("pointerdown", onGesture, { once: true });
+    window.addEventListener("keydown", onGesture, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", onGesture);
+      window.removeEventListener("keydown", onGesture);
+    };
+  }, [startIfWanted]);
 
   // Unmount cleanup: stop and free the Howl instance.
   useEffect(() => {
@@ -71,12 +81,13 @@ export const AmbientAudio = () => {
   const toggle = useCallback(() => {
     setMuted(prev => {
       const next = !prev;
+      mutedRef.current = next;
       const howl = ensureHowl();
       if (next) {
         // Muting: pause the loop so we're not decoding audio in the background.
         howl.pause();
       } else {
-        // Unmuting: (re)start the loop from a gesture-unlocked context.
+        // Unmuting: (re)start the loop from a (now gesture-unlocked) context.
         howl.volume(AMBIENT_VOLUME);
         if (!howl.playing()) howl.play();
       }

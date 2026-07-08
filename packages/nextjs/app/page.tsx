@@ -7,7 +7,6 @@ import { RegistryEmpty } from "~~/components/registry/RegistryEmpty";
 import { RegistryError } from "~~/components/registry/RegistryError";
 import { RegistryHero } from "~~/components/registry/RegistryHero";
 import { RegistryToolbar } from "~~/components/registry/RegistryToolbar";
-import { SideMotifs } from "~~/components/registry/SideMotifs";
 import { useRegistryPairs } from "~~/hooks/useRegistryPairs";
 import { type RegistryFilter, filterPairs } from "~~/lib/filterPairs";
 import { signalRegistrySettled } from "~~/lib/preloadSignals";
@@ -83,26 +82,18 @@ function RegistryBody() {
 
 export default function Home() {
   return (
-    // position:relative establishes the full-page-height containing block for the
-    // absolutely-positioned SideMotifs (top:0; bottom:0) so they scroll with the
-    // page and flank the content top-to-bottom. overflowX:clip guards against any
-    // gutter strip ever nudging horizontal scroll.
-    <div style={{ position: "relative", overflowX: "clip" }}>
-      {/* Decorative engraving strips flanking the centered content (absolute, full
-          page height, behind everything, hidden < 1280px — see SideMotifs). */}
-      <SideMotifs />
-      <main
-        style={{
-          position: "relative",
-          zIndex: 1,
-          maxWidth: 1180,
-          margin: "0 auto",
-          padding: "40px 30px 120px",
-          width: "100%",
-        }}
-      >
-        <RegistryBody />
-      </main>
-    </div>
+    // The SideMotifs gutters + position:relative/overflowX:clip root now live in the
+    // shared shell (DappWrapperWithProviders) so every route gets them — this page
+    // just renders its centered content column.
+    <main
+      style={{
+        maxWidth: 1180,
+        margin: "0 auto",
+        padding: "40px 30px 120px",
+        width: "100%",
+      }}
+    >
+      <RegistryBody />
+    </main>
   );
 }

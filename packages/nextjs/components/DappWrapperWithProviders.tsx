@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { WagmiProvider, useChainId } from "wagmi";
 import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/helper";
+import { SideMotifs } from "~~/components/registry/SideMotifs";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 // Swap to `@zama-fhe/react-sdk/wagmi` once a patched stable ships — the fix
 // is already in the alpha track (≥ 3.0.0-alpha.16). See wagmiSigner.ts.
@@ -93,7 +94,17 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
             <ProgressBar height="3px" color="#2299dd" />
             <div className={`flex flex-col min-h-screen`}>
               <Header />
-              <main className="relative flex flex-col flex-1">{children}</main>
+              {/* Shared content shell for EVERY route. `relative` + `overflowX:clip`
+                  is the page-root positioning wrapper the SideMotifs need: the
+                  gutter strips are `position:absolute; top:0; bottom:0`, so this
+                  makes them span the full content height and scroll with the page
+                  on all routes (home/faucet/decrypt/wrap/unwrap) — no per-page
+                  mount. The inner `relative z-[1]` wrapper lifts page content above
+                  the z-index:0 motifs (which underlap the centered content). */}
+              <main className="relative flex flex-col flex-1" style={{ overflowX: "clip" }}>
+                <SideMotifs />
+                <div className="relative z-[1] flex flex-col flex-1">{children}</div>
+              </main>
             </div>
             <Toaster />
           </ZamaRuntimeProvider>

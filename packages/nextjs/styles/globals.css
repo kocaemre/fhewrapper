@@ -296,37 +296,93 @@
 }
 
 /* ============================================================================
-   Registry hero legibility (02 visual polish). The hero art `01-hero.png` is a
-   dark cellar engraving; the overlay copy is FIXED to the parchment ink palette
-   (dark-on-light) per the design source, so we lay a cream scrim (matching the
-   hero's #EFE6CC ground) behind the text to restore contrast WITHOUT re-tinting
-   the type or hiding the art. On desktop the scrim is a left→right cream fade
-   (text sits on the left half, art breathes on the right). On narrow screens
-   the copy spans full width, so the scrim becomes a near-solid cream veil and
-   the overlay padding relaxes to full width.
+   Registry hero (redesigned — separated text + looping cellar visual). The copy
+   sits in a clean TEXT column on the flat parchment ground (theme-aware, fully
+   legible, no scrim), and the `01-hero.png` engraving lives in its own bordered
+   VISUAL frame beside it (below it on narrow screens). The visual loops via a
+   slow CSS "Ken-Burns" zoom/pan + a warm flicker overlay so it reads as a living
+   frame; `prefers-reduced-motion: reduce` freezes it to a static still.
    ========================================================================== */
-.hero-scrim {
-  background: linear-gradient(
-    90deg,
-    rgba(239, 230, 204, 0.99) 0%,
-    rgba(239, 230, 204, 0.98) 44%,
-    rgba(239, 230, 204, 0.9) 54%,
-    rgba(239, 230, 204, 0.5) 67%,
-    rgba(239, 230, 204, 0.14) 81%,
-    rgba(239, 230, 204, 0) 91%
-  );
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: stretch;
+  margin-bottom: 34px;
 }
 
-.hero-overlay {
-  padding: clamp(28px, 5%, 52px) 52% clamp(28px, 5%, 52px) 6.5%;
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
 }
 
-@media (max-width: 760px) {
-  .hero-scrim {
-    background: linear-gradient(180deg, rgba(239, 230, 204, 0.97) 0%, rgba(239, 230, 204, 0.93) 100%);
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 30px;
   }
-  .hero-overlay {
-    padding: 30px 24px;
+}
+
+.hero-visual {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  min-height: 300px;
+  background: #efe6cc;
+}
+
+.hero-visual img,
+.hero-visual video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+}
+
+/* Warm cellar-lantern flicker — a decorative overlay above the art, below content. */
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 85% at 32% 22%, rgba(255, 214, 150, 0.16), transparent 62%);
+  mix-blend-mode: soft-light;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-kenburns {
+    animation: heroKenBurns 26s ease-in-out infinite alternate;
+    transform-origin: 60% 40%;
+    will-change: transform;
+  }
+  .hero-visual::after {
+    animation: heroFlicker 7s ease-in-out infinite;
+  }
+}
+
+@keyframes heroKenBurns {
+  from {
+    transform: scale(1.04) translate(0, 0);
+  }
+  to {
+    transform: scale(1.12) translate(-1.5%, -1.2%);
+  }
+}
+
+@keyframes heroFlicker {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  45% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.4;
   }
 }
 
