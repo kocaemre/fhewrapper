@@ -131,9 +131,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 2. Every write flow shows toasts, transaction-stage indicators, and a working block-explorer link to the transaction.
 3. The async unwrap "pending decryption" wait is presented as a visible, reassuring state, never a silent hang.
 
-**Plans**: 2 plans
+**Plans**: 1/2 plans executed
 
-- [ ] 06-01-PLAN.md — Unified typed error model (toAppError) + shared status primitives (toast + explorer link), proven end-to-end on the faucet flow (Wave 1)
+- [x] 06-01-PLAN.md — Unified typed error model (toAppError) + shared status primitives (toast + explorer link), proven end-to-end on the faucet flow (Wave 1)
 - [ ] 06-02-PLAN.md — Wrap + unwrap toasts/explorer/unified error rows + the reassuring async-wait state (UX-03) (Wave 2)
 
 **UI hint**: yes
@@ -166,5 +166,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. User-Decryption (EIP-712)       | 3/3 | Complete    | 2026-07-07 |
 | 4. Faucet + Wrap                   | 2/2 | Complete    | 2026-07-08 |
 | 5. Unwrap (async finalize)         | 2/2 | Complete    | 2026-07-08 |
-| 6. Error Handling + Status System  | 0/2 | Not started | -         |
+| 6. Error Handling + Status System  | 1/2 | In Progress|  |
 | 7. Polish + Animation + Submission | 0/TBD          | Not started | -         |

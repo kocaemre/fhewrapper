@@ -48,8 +48,8 @@ Requirements for the bounty submission. Each maps to a roadmap phase. Every tabl
 
 ### UX & Error Handling
 
-- [ ] **UX-01**: Typed, human-readable error handling for missing approvals, insufficient balance, network mismatch, unsupported tokens, ACL denial, and faucet cooldown
-- [ ] **UX-02**: Status system — toasts, transaction-stage indicators, and block-explorer links across every write flow
+- [x] **UX-01**: Typed, human-readable error handling for missing approvals, insufficient balance, network mismatch, unsupported tokens, ACL denial, and faucet cooldown
+- [x] **UX-02**: Status system — toasts, transaction-stage indicators, and block-explorer links across every write flow
 - [ ] **UX-03**: The async unwrap "pending decryption" wait is presented as production-grade UX, not a silent hang
 
 ### Differentiator & Polish
@@ -114,8 +114,8 @@ Explicitly excluded to prevent scope creep.
 | WRP-02      | Phase 4 | Complete |
 | UNW-01      | Phase 5 | Complete |
 | UNW-02      | Phase 5 | Complete |
-| UX-01       | Phase 6 | Pending  |
-| UX-02       | Phase 6 | Pending  |
+| UX-01       | Phase 6 | Complete |
+| UX-02       | Phase 6 | Complete |
 | UX-03       | Phase 6 | Pending  |
 | DIF-01      | Phase 7 | Pending  |
 | DIF-02      | Phase 7 | Pending  |

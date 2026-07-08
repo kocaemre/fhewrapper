@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 6
 current_phase_name: Error Handling + Status System
 status: executing
-stopped_at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md). Phase 04 complete.
-last_updated: "2026-07-08T06:33:03.204Z"
+stopped_at: Completed 06-01-PLAN.md (unified toAppError + status primitives, proven on the faucet flow; live check deferred to 06-UAT.md).
+last_updated: "2026-07-08T06:58:00.000Z"
 last_activity: 2026-07-08
-last_activity_desc: Phase 05 complete, transitioned to Phase 6
+last_activity_desc: 06-01 complete (unified error model + status primitives)
 progress:
   total_phases: 7
   completed_phases: 5
-  total_plans: 14
-  completed_plans: 14
-  percent: 71
+  total_plans: 17
+  completed_plans: 16
+  percent: 76
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 ## Current Position
 
 Phase: 6 — Error Handling + Status System
-Plan: Not started
-Status: Executing — 05-02 shipped the reachable honest unwrap surface: /unwrap screen (mirror of /wrap, reversed) with amount-from-decrypted-balance (useUserDecrypt Reveal max + parseUnwrapAmount cap), Unwrap-all (no decrypt), the honest 4-stage UnwrapStageIndicator (Request → Decrypting → Finalize → Done), a finalized-only end-state that refetches the ERC-20 balanceOf (increased) + PairCardDecrypt (dropped) — no optimistic success (UNW-02), a Resume banner via resumePending() (never-strand-funds), all under ChainGuard with trusted-registry ?token= resolution. Loop closed (SC4): WrapPanel Unwrap toggle + PairCard Unwrap → link both navigate to /unwrap. Gates green (check-types / next build with /unwrap emitted / vitest 98). Live full wrap → decrypt → unwrap loop proof deferred to 05-UAT.md.
-Last activity: 2026-07-08 — Phase 05 complete, transitioned to Phase 6
+Plan: 1 of 2 complete (06-01 done; 06-02 next)
+Status: Executing — 06-01 systematized error/status handling: ONE unified toAppError classifier (lib/appError.ts) returning {chip,body,recoverable} for every faucet/wrap/unwrap/decrypt failure (never a raw revert); the four per-flow maps now delegate with signatures intact (98 pre-existing tests unchanged + 14 new = 112 green). Added host-pinned Sepolia explorer helpers (lib/explorer.ts), themed react-hot-toast wrappers (components/status/txToast.tsx) + ExplorerTxLink, and a Submit→Confirm→Done FaucetStageIndicator. Proved the primitives end-to-end on the faucet claim: pending→success/error toast (success carries a working sepolia.etherscan.io/tx link), stage view, and typed error body (UX-01/UX-02). check-types + next build (/faucet emitted) clean. Live "each error surfaces" check deferred to 06-UAT.md.
+Last activity: 2026-07-08 — 06-01 complete
 
-Progress: [██████████] 100% (phase 05: 2/2 plans)
+Progress: [█████░░░░░] 50% (phase 06: 1/2 plans)
 
 ## Performance Metrics
 
@@ -72,6 +72,7 @@ _Updated after each plan completion_
 | Phase 04 P01 | 4min | 3 tasks | 8 files |
 | Phase 04 P02 | 9min | 3 tasks | 10 files |
 | Phase 05 P02 | 6min | 3 tasks | 6 files |
+| Phase 06 P01 | 11min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -128,6 +129,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-08T06:31:01.021Z
-Stopped at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md). Phase 04 complete.
+Last session: 2026-07-08T06:58:00.000Z
+Stopped at: Completed 06-01-PLAN.md (unified toAppError + status primitives, proven on the faucet flow; live "each error surfaces" check deferred to 06-UAT.md).
 Resume file: None
