@@ -19,7 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Faucet + Wrap** - Claim test tokens, then approve → wrap → confirm with an onchain-accurate preview (completed 2026-07-08)
 - [x] **Phase 5: Unwrap (async finalize)** - ERC-7984 → ERC-20 with the two-step pending→finalized flow modeled honestly; closes the core loop (completed 2026-07-08)
 - [x] **Phase 6: Error Handling + Status System** - Typed human-readable errors, toasts, tx stages, explorer links, and a production-grade async-wait state (completed 2026-07-08)
-- [ ] **Phase 7: Polish + Animation Differentiator + Submission** - Signature bottle cinematic, reveal micro-interactions, reusable hooks, and the full submission package
+- [x] **Phase 7: Polish + Animation Differentiator + Submission** - Signature bottle cinematic, reveal micro-interactions, reusable hooks, and the full submission package (completed 2026-07-08)
 
 ## Phase Details
 
@@ -151,12 +151,12 @@ Decimal phases appear between their surrounding integers in numeric order.
 3. The codebase exposes clean, well-typed reusable hooks (`useRegistry`, `useWrap`, `useUnwrap`, `useUserDecrypt`) in a public, open-source GitHub repository.
 4. The README covers live URL, supported networks, how the registry is sourced, how to add a pair, and deploy scripts; a 3-minute real-person pitch video shows the full flow and an X thread / article is published.
 
-**Plans**: 3/4 plans executed
+**Plans**: 4/4 plans complete
 
 - [x] 07-01-PLAN.md — Wrap cinematic: tested honest beat engine + compressed self-hosted videos + tx-driven skippable overlay (Wave 1)
 - [x] 07-02-PLAN.md — Ambient cellar audio: howler install + self-host + gesture-unlocked default-muted header toggle (Wave 1)
 - [x] 07-03-PLAN.md — Public hooks API barrel + decrypt reveal / registry polish-verify (Wave 1)
-- [ ] 07-04-PLAN.md — Submission README + deferred UAT (repo public, real-person pitch, X thread, live checks) (Wave 2)
+- [x] 07-04-PLAN.md — Submission README + deferred UAT (repo public, real-person pitch, X thread, live checks) (Wave 2)
 
 **UI hint**: yes
 
@@ -173,4 +173,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 4. Faucet + Wrap                   | 2/2 | Complete    | 2026-07-08 |
 | 5. Unwrap (async finalize)         | 2/2 | Complete    | 2026-07-08 |
 | 6. Error Handling + Status System  | 2/2 | Complete    | 2026-07-08 |
-| 7. Polish + Animation + Submission | 3/4 | In Progress|  |
+| 7. Polish + Animation + Submission | 4/4 | Complete   | 2026-07-08 |
