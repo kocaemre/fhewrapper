@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 4
-current_phase_name: Faucet + Wrap
+current_phase: 5
+current_phase_name: async finalize
 status: executing
-stopped_at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md)
-last_updated: "2026-07-08T05:48:03Z"
+stopped_at: Completed 04-02-PLAN.md (wrap slice; live wrap + decrypt==preview proof deferred to 04-UAT.md). Phase 04 complete.
+last_updated: "2026-07-08T05:52:38.665Z"
 last_activity: 2026-07-08
-last_activity_desc: Phase 04 Plan 02 (wrap slice) complete — Phase 04 done
+last_activity_desc: Phase 04 complete, transitioned to Phase 5
 progress:
   total_phases: 7
   completed_phases: 4
@@ -28,10 +28,10 @@ See: .planning/PROJECT.md (updated 2026-07-07)
 
 ## Current Position
 
-Phase: 4 — Faucet + Wrap (both plans complete)
-Plan: 04-01 (faucet) + 04-02 (wrap) complete — Phase 04 done
+Phase: 5 — Unwrap (async finalize)
+Plan: Not started
 Status: Executing — 04-02 shipped: previewWrap pure math (RED→GREEN, 6-dp & 18-dp "1 whole → 1.0"), toWrapError map, useWrap (useShield 4-stage + onchain rate()), /wrap screen under ChainGuard with From/To preview + below-one-unit disable + on-done decrypt==preview proof, PairCard Wrap → CTA wired. Gates green (check-types / build with /wrap emitted / vitest 75). Live wrap + decrypt==preview proof (WRP-01/02) deferred to 04-UAT.md end-of-project session.
-Last activity: 2026-07-08 — Phase 04 Plan 02 (wrap slice) complete
+Last activity: 2026-07-08 — Phase 04 complete, transitioned to Phase 5
 
 Progress: [██████████] 100% (phase 04: 2/2 plans)
 
@@ -39,7 +39,7 @@ Progress: [██████████] 100% (phase 04: 2/2 plans)
 
 **Velocity:**
 
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: — min
 - Total execution time: 0.0 hours
 
